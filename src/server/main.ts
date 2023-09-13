@@ -16,7 +16,7 @@ app.get("/hello", (_, res) => {
 app.post('/user', async (req: Request, res: Response) => {
   try {
     const newUser = new User({
-      name: 'Felix'
+      name: 'Häxa'
     });
     const createdUser = await newUser.save();
     console.log('User created:', createdUser);
