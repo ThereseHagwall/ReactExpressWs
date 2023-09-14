@@ -37,7 +37,7 @@ app.get('/products', async (req: Request, res: Response) => {
   try {
     const products = await Product.find();
     console.log('products', products);
-    
+
     // Send the products as a JSON response
     res.json(products);
   } catch (error) {
@@ -50,9 +50,10 @@ app.get('/products', async (req: Request, res: Response) => {
 app.post('/product', async (req: Request, res: Response) => {
   try {
     const newProduct = new Product({
-    productName: 'fan',
+    productName: 'Blubb',
     productPrice: 100,
     size: 'S',
+    quantity: 2,
     });
     const createdProduct = await newProduct.save();
     console.log('Product created:', createdProduct);
