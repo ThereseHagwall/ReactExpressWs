@@ -3,35 +3,14 @@ config();
 import express, {Request, Response} from "express";
 import ViteExpress from "vite-express";
 import mongoose from 'mongoose';
-import User from "./models/User";
 import Product from "./models/Product"
+import userRouter from './routes/userRoutes'
 
 const app = express();
+// const userRouter = require('./routes/userRoutes');
 
 app.use(express.json());
-
-app.get("/hello", (_, res) => {
-  res.send("Hello Vite + React + TypeScript!");
-});
-
-app.get('/users', async(req: Request, res: Response) => {
-  const users = await User.find()
-  console.log('users', users);
-})
-
-app.post('/user', async (req: Request, res: Response) => {
-  try {
-    const newUser = new User({
-      name: 'Häxa'
-    });
-    const createdUser = await newUser.save();
-    console.log('User created:', createdUser);
-    res.json(createdUser);
-  } catch (error) {
-    console.error('Error creating user:', error);
-    res.status(500).json({ error: 'An error occurred while creating the user' });
-  }
-});
+app.use('/user', userRouter);
 
 app.get('/products', async (req: Request, res: Response) => {
   try {
