@@ -14,6 +14,11 @@ app.get("/hello", (_, res) => {
   res.send("Hello Vite + React + TypeScript!");
 });
 
+app.get('/users', async(req: Request, res: Response) => {
+  const users = await User.find()
+  console.log('users', users);
+})
+
 app.post('/user', async (req: Request, res: Response) => {
   try {
     const newUser = new User({
