@@ -34,7 +34,7 @@ router.get("/products/:id", async (req, res) => {
       .json({ error: 'erorr' });
   }
 });
- 
+
 
 
 //SKAPAR NY PRODUKT
