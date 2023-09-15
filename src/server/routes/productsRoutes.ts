@@ -19,7 +19,7 @@ router.get('/products', async (req: Request, res: Response) => {
 });
 
 // HÄMTA EN PRODUKT
-router.get("/:id", async (req, res) => {
+router.get("/products/:id", async (req, res) => {
   try {
     const productId = req.params.id;
     const product = await productModel.findById(productId);
