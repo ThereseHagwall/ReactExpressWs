@@ -11,6 +11,7 @@ const app = express();
 app.use(express.json());
 app.use('/user', userRouter);
 app.use('/product', productsRouter);
+app.use('/:id', productsRouter)
 
 
 mongoose.connect(process.env.VITE_REACT_APP_URL!).then(() => {

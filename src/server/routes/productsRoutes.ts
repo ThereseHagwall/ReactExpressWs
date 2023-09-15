@@ -1,5 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import Product from '../models/ProductModel';
+import productModel from "../models/ProductModel";
 
 var router = express.Router();
 
@@ -16,6 +17,24 @@ router.get('/products', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+// HÄMTA EN PRODUKT
+router.get("/:id", async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const product = await productModel.findById(productId);
+
+    if (!product) {
+      return res.status(401).json({ error: 'cant find any product' });
+    }
+    res.status(200).json(product);
+  } catch (error) {
+    res
+      .status(404)
+      .json({ error: 'erorr' });
+  }
+});
+ 
 
 
 //SKAPAR NY PRODUKT
