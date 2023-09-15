@@ -31,6 +31,7 @@ router.post('/add', async (req: Request, res: Response) => {
   }
 })
 
+//Hämta alla ordrar
 router.get('/orders', async (req: Request, res: Response) => {
   try {
     const orders = await Order.find();
