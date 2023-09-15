@@ -21,10 +21,9 @@ router.post('/add', async (req: Request, res: Response) => {
       quantity: 2,
       customerName: 'Hans Petter',
     });
-    newOrder.save()
-      .then((savedOrder) => {
-        console.log('order sparad', savedOrder);
-      })
+    const createOrder = await newOrder.save()
+    console.log('createOrder', createOrder);
+    res.json(createOrder);
   }
   catch (err) {
     console.error("Error", err)
