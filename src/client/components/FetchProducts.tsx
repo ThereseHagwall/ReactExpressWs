@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { ProductId } from './FetchSingleProduct';
+import { useNavigate } from 'react-router-dom';
 
-interface Product {
+export interface Product {
   _id: string;
   productName: String,
   productPrice: String,
@@ -10,10 +12,16 @@ interface Product {
 }
 
 const FetchProducts = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const navigate = useNavigate(); // Get the navigate function
+  const handleProductClick = (productId: ProductId | null) => {
+    if (productId) {
+      navigate(`/products/${productId._id}`); // Navigate to the single product page
+    }
+  }; 
 
   useEffect(() => {
-    // Fetch orders from your Express backend
+    // Fetch products from your Express backend
     fetch('http://localhost:3000/product/products')
       .then((response) => response.json())
       .then((data) => setProducts(data))
@@ -26,7 +34,12 @@ const FetchProducts = () => {
       <ul>
         {products.map((product: Product) => (
           <li key={product._id}>
-            <p>{product.productName}</p>
+            <h2
+              onClick={() => handleProductClick({ _id: product._id })}
+              style={{ cursor: 'pointer' }}
+            >
+              {product.productName}
+            </h2>
             <p>{product.productDescription}</p>
             <p>{product.size}</p>
             <p>{product.productMaterial}</p>
