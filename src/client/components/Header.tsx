@@ -1,29 +1,33 @@
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import LoginBtn from "./LoginBtn";
+import { Link } from "react-router-dom"; // Importera Link
 
 export default function Header() {
-    return (
-      <header
+  return (
+    <header
+      style={{
+        height: "6rem",
+        backgroundColor: "black",
+        color: "yellow",
+        display: "flex",
+        flexDirection: "column",
+        padding: "1rem",
+      }}
+    >
+      <div
         style={{
-          height: "6rem",
-          backgroundColor: "black",
-          color: "yellow",
           display: "flex",
-          flexDirection: "column",
-          padding: "1rem",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}
-        >
-          <h1>Star Wars Shope</h1>
-          <ShoppingCartIcon />
-        </div>
-      </header>
-    );
-  }
+        <Link to="/"> {/* Länka till startsidan */}
+          <h1>Star Wars Shop</h1>
+        </Link>
+        <ShoppingCartIcon />
+        <LoginBtn />
+      </div>
+    </header>
+  );
+}
