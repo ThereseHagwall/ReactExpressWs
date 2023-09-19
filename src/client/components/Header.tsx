@@ -21,7 +21,7 @@ export default function Header() {
             alignItems: "center"
           }}
         >
-          <h1>Star Wars</h1>
+          <h1>Star Wars Shope</h1>
           <ShoppingCartIcon />
         </div>
       </header>
