@@ -1,4 +1,8 @@
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Badge from '@mui/material/Badge';
+import IconButton from '@mui/material/IconButton';
+
+
 
 
 export default function Header() {
@@ -22,7 +26,16 @@ export default function Header() {
           }}
         >
           <h1>Star Wars Shope</h1>
-          <ShoppingCartIcon />
+          
+            <IconButton color='warning' size='large' href='/CheckOutcart'>
+              <Badge badgeContent={4} color="error" >
+                <ShoppingCartIcon  fontSize="large" />
+              </Badge>
+              
+            </IconButton>
+            
+          
+          
         </div>
       </header>
     );

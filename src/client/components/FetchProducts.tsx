@@ -19,6 +19,11 @@ const FetchProducts = () => {
       navigate(`/products/${productId._id}`); // Navigate to the single product page
     }
   }; 
+  const handleCartClick = (productId: ProductId | null) => {
+    if (productId) {
+      navigate(`/products/${productId._id}`); // Navigate to the single product page
+    }
+  };
 
   useEffect(() => {
     // Fetch products from your Express backend
@@ -44,7 +49,8 @@ const FetchProducts = () => {
             <p>{product.size}</p>
             <p>{product.productMaterial}</p>
             <p>{product.productPrice} €</p> 
-            <button>Add to cart</button> 
+            <button onClick={() => handleProductClick({ _id: product._id })}
+              style={{ cursor: 'pointer' }}>View Product</button> 
             <br/>
           </li>
         ))}
