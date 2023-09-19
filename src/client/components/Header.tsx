@@ -22,28 +22,17 @@ export default function Header() {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: "center"
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}
-        >
-          <h1>Star Wars Shope</h1>
-          <LoginBtn />
-            <IconButton color='warning' size='large' href='/CheckOutcart'>
-              <Badge badgeContent={4} color="error" >
-                <ShoppingCartIcon  fontSize="large" />
-              </Badge>
-              
-            </IconButton>
-            
-         
-        </div>
-      </header>
-    );
-  }
+        <h1>Star Wars Shope</h1>
+        <LoginBtn />
+        <IconButton color='warning' size='large' href='/CheckOutcart'>
+          <Badge badgeContent={4} color="error" >
+            <ShoppingCartIcon fontSize="large" />
+          </Badge>
+        </IconButton>
+      </div>
+    </header>
+  );
+}
