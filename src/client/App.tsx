@@ -15,9 +15,6 @@ function App() {
   return (
     <>
       <Header />
-      <FetchProducts />
-      <OrderList />
-      <h1>Webbshop</h1>
       <Routes>
         <Route path='*' element={<PageNotFound />} />
         <Route path='/' element={<MainContent />} />
@@ -30,5 +27,3 @@ function App() {
 }
 
 export default App;
-
-
