@@ -12,7 +12,7 @@ function ProductPage() {
 function App() {
   return (
     <>
-      <h1>Webbshop</h1>
+      <Header />
       <Routes>
         <Route path='*' element={<PageNotFound />} />
         <Route path='/' element={<MainContent />} />
@@ -24,5 +24,3 @@ function App() {
 }
 
 export default App;
-
-
