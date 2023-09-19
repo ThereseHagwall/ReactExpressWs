@@ -13,7 +13,6 @@ app.use(express.json());
 app.use('/user', userRouter);
 app.use('/product', productsRouter);
 app.use('/order', orderRouter);
-app.use('/:id', productsRouter)
 
 
 

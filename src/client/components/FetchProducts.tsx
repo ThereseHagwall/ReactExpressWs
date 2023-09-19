@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom';
 
 export interface Product {
   _id: string;
-  productName: String,
-  productPrice: String,
-  size: String,
-  productMaterial: String,
-  productDescription: String
+  productName: string;
+  productPrice: string;
+  sizes: string[]; 
+  productMaterial: string;
+  productDescription: string;
 }
+
 
 const FetchProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -29,26 +30,20 @@ const FetchProducts = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Products</h1>
-      <ul>
+    <div style={{"display": "flex", "flexWrap": "wrap"}}>
         {products.map((product: Product) => (
-          <li key={product._id}>
+          <ol key={product._id} style={{"border": "solid 2px white", "margin": "10px", "padding": "10px", "minWidth": "200px"}}>
             <h2
               onClick={() => handleProductClick({ _id: product._id })}
               style={{ cursor: 'pointer' }}
             >
               {product.productName}
             </h2>
-            <p>{product.productDescription}</p>
-            <p>{product.size}</p>
-            <p>{product.productMaterial}</p>
             <p>{product.productPrice} €</p> 
             <button>Add to cart</button> 
             <br/>
-          </li>
+          </ol>
         ))}
-      </ul>
     </div>
   );
 };
