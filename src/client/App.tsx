@@ -1,14 +1,12 @@
-
 import OrderList from "./components/OrderList";
 import FetchProducts from "./components/FetchProducts";
+import Header from "./components/Header";
 
 
 function App() {
   return (
     <>
-
-    
-      <div><h1>Webbshop</h1></div>
+      <Header />
       <FetchProducts />
       <OrderList />
     </>
