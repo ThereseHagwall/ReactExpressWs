@@ -5,6 +5,7 @@ import PageNotFound from "./components/PageNotFound";
 import FetchSingleProduct from "./components/FetchSingleProduct";
 import Header from "./components/Header";
 import LoginForm from "./components/LoginForm";
+import AdminView from "./components/AdminView";
 
 function ProductPage() {
   return <FetchSingleProduct productId={""} />;
@@ -20,6 +21,7 @@ function App() {
         <Route path="/orderlist" element={<OrderList />} />
         <Route path="/products/:productId" element={<ProductPage />} />
         <Route path="/login" element={<LoginForm />} />
+        <Route path="/admin" element={<AdminView />} />
       </Routes>
     </>
   );

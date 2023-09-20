@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 // const ObjectId = mongoose.Types.ObjectId;
 
 const UserSchema = new Schema({
-  name: String,
+  userName: String,
+  password: String,
 });
 
 const UserModel = mongoose.model("User", UserSchema);

@@ -3,31 +3,24 @@ import User from '../models/UserModel';
 
 var router = express.Router();
 
-//HÄMTAR ALLA ANVÄNDARE
-router.get('/users', async (req: Request, res: Response) => {
-  try {
-    const users = await User.find()
-    console.log('users', users);
-    res.json(users);
-  }
-  catch (error) {
-    console.error('Error finding users:', error);
-    res.status(500).json({ error: 'An error occurred while finding the users' });
-  }
-})
+// INLOGGNING
+router.post('/login', async (req: Request, res: Response) => {
+  const { username, password } = req.body;
 
-//SKAPAR NY ANVÄNDARE
-router.post('/add', async (req: Request, res: Response) => {
   try {
-    const newUser = new User({
-      name: 'Nizze'
-    });
-    const createdUser = await newUser.save();
-    console.log('User created:', createdUser);
-    res.json(createdUser);
+    // Hitta användaren i databasen baserat på användarnamnet
+    const user = await User.findOne({ username });
+
+    // Om användaren inte finns eller lösenordet inte stämmer överens, returnera en felmeddelande
+    if (!user || user.password !== password) {
+      return res.status(401).json({ error: 'Felaktigt användarnamn eller lösenord' });
+    }
+
+    // Om användaren är autentiserad, returnera användarinformationen
+    return res.json({ message: 'Inloggning lyckades', user });
   } catch (error) {
-    console.error('Error creating user:', error);
-    res.status(500).json({ error: 'An error occurred while creating the user' });
+    console.error('Error logging in user:', error);
+    res.status(500).json({ error: 'Ett fel uppstod vid inloggningen' });
   }
 });
 
