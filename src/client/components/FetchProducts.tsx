@@ -3,14 +3,15 @@ import { ProductId } from './FetchSingleProduct';
 import { useNavigate } from 'react-router-dom';
 
 export interface Product {
-  _id: string;
+  _id: string,
   productName: string,
   productPrice: string,
-  size: string,
+  sizes: string[],
   productMaterial: string,
   productDescription: string,
   productImage: string
 }
+
 
 const FetchProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -20,6 +21,11 @@ const FetchProducts = () => {
       navigate(`/products/${productId._id}`); // Navigate to the single product page
     }
   }; 
+  const handleCartClick = (productId: ProductId | null) => {
+    if (productId) {
+      navigate(`/products/${productId._id}`); // Navigate to the single product page
+    }
+  };
 
   useEffect(() => {
     // Fetch products from your Express backend
@@ -30,26 +36,21 @@ const FetchProducts = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Products</h1>
-      <ul>
+    <div style={{"display": "flex", "flexWrap": "wrap"}}>
         {products.map((product: Product) => (
-          <li key={product._id}>
+          <ol key={product._id} style={{"border": "solid 2px white", "margin": "10px", "padding": "10px", "minWidth": "200px"}}>
             <h2
               onClick={() => handleProductClick({ _id: product._id })}
               style={{ cursor: 'pointer' }}
             >
               {product.productName}
             </h2>
-            <p>{product.productDescription}</p>
-            <p>{product.size}</p>
-            <p>{product.productMaterial}</p>
             <p>{product.productPrice} €</p> 
-            <button>Add to cart</button> 
+            <button onClick={() => handleProductClick({ _id: product._id })}
+              style={{ cursor: 'pointer' }}>View Product</button> 
             <br/>
-          </li>
+          </ol>
         ))}
-      </ul>
     </div>
   );
 };

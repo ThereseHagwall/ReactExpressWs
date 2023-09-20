@@ -1,6 +1,7 @@
-import express, { Request, Response, Router } from "express";
+import express, { Request, Response } from "express";
 import Product from '../models/ProductModel';
 import productModel from "../models/ProductModel";
+import ProductSize from "../models/ProductSizeModel";
 
 var router = express.Router();
 
@@ -8,7 +9,6 @@ var router = express.Router();
 router.get('/products', async (req: Request, res: Response) => {
   try {
     const products = await Product.find();
-    console.log('products', products);
     // Send the products as a JSON response
     res.json(products);
   } catch (error) {
@@ -35,21 +35,32 @@ router.get("/products/:id", async (req, res) => {
   }
 });
 
-
-
-//SKAPAR NY PRODUKT
+/// SKAPAR NY PRODUKT
 router.post('/add', async (req: Request, res: Response) => {
   try {
     const newProduct = new Product({
     productName: 'Mankini',
     productPrice: 200,
-    size: 'L',
-    quantity: 5,
+    productMaterial: 'Bomull',
     productDescription: 'Mankini är en mankini',
     productImage: 'https://i.imgur.com/lTimEbG.jpeg',
-    
     });
+    
     const createdProduct = await newProduct.save();
+    const sizes = ['S', 'M', 'L', 'XL'];
+    const productSizes = [];
+
+    for (const sizeName of sizes) {
+      const productSize = new ProductSize({
+        productId: createdProduct._id,
+        sizeName: sizeName,
+        quantity: Math.floor(Math.random() * 10)
+      });
+      productSizes.push(productSize);
+    }
+
+    // Spara produktstorlekarna
+    await ProductSize.insertMany(productSizes);
     console.log('Product created:', createdProduct);
     res.json(createdProduct);
   } catch (error) {
@@ -57,5 +68,24 @@ router.post('/add', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'An error occurred while creating the product' });
   }
 });
+
+
+
+//Hämta produktstorlekarna
+router.get('/:productId', async (req, res) => {
+  const productId = req.params.productId;
+  try {
+    const productSizes = await ProductSize.find({ productId });
+    res.json(productSizes);
+  } catch (error) {
+    console.error('Error fetching product sizes:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+module.exports = router;
+
+
+
 
 export default router;

@@ -3,12 +3,18 @@ import { useParams } from 'react-router-dom';
 import { Product } from './FetchProducts';
 import { Box, Button } from '@mui/material';
 
-export interface ProductId {
-    _id: string;
-  }
-
 interface Props {
   productId: string;
+}
+
+export interface ProductId {
+  _id: string;
+}
+
+interface ProductSize {
+  _id: string;
+  sizeName: string;
+  quantity: string;
 }
 
 const primary = {
@@ -16,10 +22,11 @@ const primary = {
   contrastText: '#FFE81F',
 };
 
-
 const FetchSingleProduct: React.FC<Props> = ({ productId }) => {
   const { productId: routeProductId } = useParams<{ productId: string | undefined }>();
   const [singleProduct, setSingleProduct] = useState<Product | null>(null);
+  const [productSizes, setProductSizes] = useState<ProductSize[]>([]);
+  const [selectedSize, setSelectedSize] = useState<string | undefined>(undefined);
   const resolvedProductId = routeProductId || productId;
 
   useEffect(() => {
@@ -28,7 +35,17 @@ const FetchSingleProduct: React.FC<Props> = ({ productId }) => {
       .then((response) => response.json())
       .then((data) => setSingleProduct(data))
       .catch((error) => console.error('Error fetching Product:', error));
+
+    // Fetch product sizes for the single product from your Express backend using the resolvedProductId
+    fetch(`http://localhost:3000/product/${resolvedProductId}`)
+      .then((response) => response.json())
+      .then((data) => setProductSizes(data))
+      .catch((error) => console.error('Error fetching Product Sizes:', error));
   }, [resolvedProductId]);
+
+  const handleSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSize(event.target.value);
+  };
 
   return (
     <Box 
@@ -57,6 +74,15 @@ const FetchSingleProduct: React.FC<Props> = ({ productId }) => {
           src={singleProduct.productImage}
           alt="product image" ></Box>
           <p>{singleProduct.productPrice} €</p>
+          <label htmlFor="sizeDropdown">Storlek:</label>
+          <select id="sizeDropdown" value={selectedSize || ''} onChange={handleSizeChange}>
+            <option value="">Välj storlek</option>
+            {productSizes.map((productSize, index) => (
+              <option key={index} value={productSize.sizeName}>
+                {productSize.sizeName} {productSize.quantity} st
+              </option>
+            ))}
+          </select>
           <Button 
               variant="contained"  
               sx={{
