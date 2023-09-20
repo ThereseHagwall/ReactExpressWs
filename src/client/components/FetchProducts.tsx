@@ -4,11 +4,12 @@ import { useNavigate } from 'react-router-dom';
 
 export interface Product {
   _id: string;
-  productName: String,
-  productPrice: String,
-  size: String,
-  productMaterial: String,
-  productDescription: String
+  productName: string,
+  productPrice: string,
+  size: string,
+  productMaterial: string,
+  productDescription: string,
+  productImage: string
 }
 
 const FetchProducts = () => {

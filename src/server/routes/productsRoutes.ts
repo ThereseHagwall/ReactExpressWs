@@ -45,6 +45,9 @@ router.post('/add', async (req: Request, res: Response) => {
     productPrice: 200,
     size: 'L',
     quantity: 5,
+    productDescription: 'Mankini är en mankini',
+    productImage: 'https://i.imgur.com/lTimEbG.jpeg',
+    
     });
     const createdProduct = await newProduct.save();
     console.log('Product created:', createdProduct);
