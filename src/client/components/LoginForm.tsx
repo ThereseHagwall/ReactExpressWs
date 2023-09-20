@@ -1,17 +1,20 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom"; // Importera useNavigate
 
 interface FormData {
-  email: string;
+  userName: string;
   password: string;
 }
 
 export default function LoginForm() {
   const [formData, setFormData] = useState<FormData>({
-    email: "",
+    userName: "",
     password: "",
   });
+
+  const navigate = useNavigate(); // Använd useNavigate för att hantera navigering
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -23,20 +26,43 @@ export default function LoginForm() {
     });
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    // Här kan du implementera logiken för att skicka inloggningsuppgifterna till din server
-    console.log("Inloggning skickad:", formData);
+
+    try {
+      // Gör en POST-förfrågan till din server med användarnamn och lösenord
+      const response = await fetch("http://localhost:3000/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        // Om inloggningen lyckas, gör något här, t.ex. lagra användarinformation i en session
+        const data = await response.json();
+        console.log("Inloggning lyckades:", data);
+
+        // Navigera till den önskade sidan, till exempel "/admin"
+        navigate("/admin");
+      } else {
+        // Om inloggningen misslyckas, hantera felmeddelandet här
+        console.error("Inloggning misslyckades");
+      }
+    } catch (error) {
+      console.error("Fel vid inloggning:", error);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
         <TextField
-          label="E-post"
-          type="email"
-          name="email"
-          value={formData.email}
+          label="Användarnamn"
+          type="text"
+          name="userName"
+          value={formData.userName}
           onChange={handleChange}
           required
         />
