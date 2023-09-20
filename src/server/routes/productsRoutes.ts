@@ -39,11 +39,13 @@ router.get("/products/:id", async (req, res) => {
 router.post('/add', async (req: Request, res: Response) => {
   try {
     const newProduct = new Product({
-      productName: 'Darth Vader',
-      productPrice: 65,
-      productDescription: 'En bekväm t-shirt med Darth Vader.',
-      productMaterial: 'Bomull'
+    productName: 'Mankini',
+    productPrice: 200,
+    productMaterial: 'Bomull',
+    productDescription: 'Mankini är en mankini',
+    productImage: 'https://i.imgur.com/lTimEbG.jpeg',
     });
+    
     const createdProduct = await newProduct.save();
     const sizes = ['S', 'M', 'L', 'XL'];
     const productSizes = [];

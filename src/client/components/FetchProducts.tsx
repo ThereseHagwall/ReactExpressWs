@@ -3,12 +3,13 @@ import { ProductId } from './FetchSingleProduct';
 import { useNavigate } from 'react-router-dom';
 
 export interface Product {
-  _id: string;
-  productName: string;
-  productPrice: string;
-  sizes: string[]; 
-  productMaterial: string;
-  productDescription: string;
+  _id: string,
+  productName: string,
+  productPrice: string,
+  sizes: string[],
+  productMaterial: string,
+  productDescription: string,
+  productImage: string
 }
 
 
