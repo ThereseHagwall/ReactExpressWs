@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ProductId } from './FetchSingleProduct';
 import { useNavigate } from 'react-router-dom';
+import Grid from '@mui/system/Unstable_Grid';
 
 export interface Product {
   _id: string,
@@ -36,7 +37,14 @@ const FetchProducts = () => {
   }, []);
 
   return (
-    <div style={{"display": "flex", "flexWrap": "wrap"}}>
+    <Grid 
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      maxWidth="lg"
+      sx={{
+      display: "flex", 
+      flexWrap: "wrap", }}>
         {products.map((product: Product) => (
           <ol key={product._id} style={{"border": "solid 2px white", "borderRadius": "12px", "margin": "10px", "padding": "10px", height: "400px", "minWidth": "300px"}}>
             <h2
@@ -44,15 +52,19 @@ const FetchProducts = () => {
               style={{ cursor: 'pointer' }}
             >
               {product.productName}
-            </h2>
-            <img src={product.productImage} alt={product.productName} height={"200px"} style={{width: "100%", objectFit: "cover"}} />
+            </h2> 
+            <img 
+            src={product.productImage} 
+            alt={product.productName} 
+            height={"200px"} 
+            style={{width: "100%", objectFit: "cover"}} />
             <p>{product.productPrice} €</p> 
             <button onClick={() => handleProductClick({ _id: product._id })}
               style={{ cursor: 'pointer' }}>View Product</button> 
             <br/>
           </ol>
         ))}
-    </div>
+    </Grid>
   );
 };
 
