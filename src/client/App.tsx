@@ -4,6 +4,7 @@ import MainContent from "./components/MainContent";
 import PageNotFound from "./components/PageNotFound";
 import FetchSingleProduct from "./components/FetchSingleProduct";
 import Header from "./components/Header";
+import CheckoutCart from "./components/CheckoutCart";
 import LoginForm from "./components/LoginForm";
 import AdminView from "./components/AdminView";
 
