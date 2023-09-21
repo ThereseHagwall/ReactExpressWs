@@ -5,9 +5,11 @@ import IconButton from '@mui/material/IconButton';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { useAuth } from './AuthContext'; // Importera useAuth-hook
+import { useShoppingCart  } from './ShoppingCartContext';
 
 export default function Header() {
   const { isLoggedIn, logout } = useAuth();
+  const { cartItemCount } = useShoppingCart();
 
   return (
     <header style={{
@@ -25,11 +27,6 @@ export default function Header() {
           alignItems: "center",
         }}>
         <h1>Star Wars Shop</h1>
-        <IconButton color="warning" size="large" href="/CheckOutcart">
-          <Badge badgeContent={4} color="error">
-            <ShoppingCartIcon fontSize="large" />
-          </Badge>
-        </IconButton>
         {isLoggedIn ? (
           <Button variant="contained" onClick={logout}>
             Logga ut
@@ -39,6 +36,12 @@ export default function Header() {
             <Button variant="contained">ADMIN</Button>
           </Link>
         )}
+        <IconButton color="warning" size="large" href="/CheckOutcart">
+          <Badge badgeContent={cartItemCount} color="error">
+            <ShoppingCartIcon fontSize="large" />
+          </Badge>
+        </IconButton>
+        
       </div>
     </header>
   );

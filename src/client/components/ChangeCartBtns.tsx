@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Product } from './FetchProducts';
 import { Box, Button } from '@mui/material';
 import { useShoppingCart } from './ShoppingCartContext';
@@ -21,11 +21,15 @@ export function ChangeCartBtns( {product}:CartItem ) {
         increaseQuantity, 
         decreaseQuantity, 
         removeFromCart 
-      } = useShoppingCart()
+      } = useShoppingCart();
 
       const productId = typeof product._id === 'string' ? parseInt(product._id, 10) : product._id;
 
-      const quantity = getItemQuantity(productId);
+      const [quantity, setQuantity] = useState(getItemQuantity(productId));
+
+      useEffect(() => {
+        setQuantity(getItemQuantity(productId));
+      }, [getItemQuantity, productId]);
     
   return (
     <>
