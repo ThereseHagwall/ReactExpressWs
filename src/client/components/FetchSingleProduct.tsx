@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Box } from '@mui/material';
 import { Product } from './FetchProducts';
-import { Box, Button } from '@mui/material';
+import { ChangeCartBtns } from './ChangeCartBtns';
 
 interface Props {
   productId: string;
@@ -83,14 +84,7 @@ const FetchSingleProduct: React.FC<Props> = ({ productId }) => {
               </option>
             ))}
           </select>
-          <Button 
-              variant="contained"  
-              sx={{
-              backgroundColor: primary.main,
-              color: primary.contrastText,
-            }}>
-            Add to cart
-            </Button>
+          <ChangeCartBtns product={singleProduct} />
           <p>{singleProduct.productMaterial}</p>
           <br />
         </Box>
