@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import CheckoutCart from "./components/CheckoutCart";
 import LoginForm from "./components/LoginForm";
 import AdminView from "./components/AdminView";
+import { AuthProvider } from './components/AuthContext';
 
 function ProductPage() {
   return <FetchSingleProduct productId={""} />;
@@ -15,7 +16,8 @@ function ProductPage() {
 function App() {
   return (
     <>
-      <Header />
+      <AuthProvider>
+        <Header />
         <Routes>
           <Route path="*" element={<PageNotFound />} />
           <Route path="/" element={<MainContent />} />
@@ -24,6 +26,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/admin" element={<AdminView />} />
         </Routes>
+      </AuthProvider>
     </>
   );
 }
