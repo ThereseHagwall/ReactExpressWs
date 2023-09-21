@@ -9,6 +9,7 @@ import LoginForm from "./components/LoginForm";
 import AdminView from "./components/AdminView";
 import { AuthProvider } from './components/AuthContext';
 
+
 function ProductPage() {
   return <FetchSingleProduct productId={""} />;
 }
@@ -25,6 +26,7 @@ function App() {
           <Route path="/products/:productId" element={<ProductPage />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/admin" element={<AdminView />} />
+          <Route path='/checkoutcart' element={<CheckoutCart />} />
         </Routes>
       </AuthProvider>
     </>
