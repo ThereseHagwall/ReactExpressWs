@@ -7,30 +7,28 @@ var router = express.Router();
 //SKAPA NY ORDER
 router.post('/add', async (req: Request, res: Response) => {
   try {
+    const { productName, productPrice, size, quantity, customerName } = req.body;
+
     const newOrder = new Order({
       products: [{
-        productName: 'Tröja',
-        productPrice: 200,
-        size: 'XL',
-        quantity: 2,
-      },
-      {
-        productName: 'Byxa',
-        productPrice: 250,
-        size: 'L',
-        quantity: 4,
+        productName,
+        productPrice,
+        size,
+        quantity,
       }],
-      quantity: 2,
-      customerName: 'Hans Petter',
+      quantity,
+      customerName, // Use the customerName from the request body
     });
-    const createOrder = await newOrder.save()
+
+    const createOrder = await newOrder.save();
     console.log('createOrder', createOrder);
     res.json(createOrder);
-  }
-  catch (err) {
-    console.error("Error", err)
+  } catch (err) {
+    console.error("Error", err);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 })
+
 
 //Hämta alla ordrar
 router.get('/orders', async (req: Request, res: Response) => {
