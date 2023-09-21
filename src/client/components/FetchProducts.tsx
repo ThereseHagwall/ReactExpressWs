@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { ProductId } from './FetchSingleProduct';
 import { useNavigate } from 'react-router-dom';
+import { ChangeCartBtns } from './ChangeCartBtns'; 
+
 
 export interface Product {
   _id: string,
@@ -48,8 +50,10 @@ const FetchProducts = () => {
             <img src={product.productImage} alt={product.productName} height={"200px"} style={{width: "100%", objectFit: "cover"}} />
             <p>{product.productPrice} €</p> 
             <button onClick={() => handleProductClick({ _id: product._id })}
+
               style={{ cursor: 'pointer' }}>View Product</button> 
             <br/>
+            <ChangeCartBtns product={product} />
           </ol>
         ))}
     </div>
