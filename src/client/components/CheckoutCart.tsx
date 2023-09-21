@@ -14,6 +14,7 @@ const CheckoutCart: React.FC = () => {
     productPrice: 0,
     size: '',
     quantity: 0,
+    customerName: '',
   });
 
   useEffect(() => {
@@ -53,6 +54,7 @@ const CheckoutCart: React.FC = () => {
           productPrice: 0,
           size: '',
           quantity: 0,
+          customerName: '',
         });
       })
       .catch((error) => {
