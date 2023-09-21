@@ -22,6 +22,8 @@ function App() {
         <Route path='/orderlist' element={<OrderList />} />
         <Route path='/products/:productId' element={<ProductPage />} />
         <Route path='/checkoutcart' element={<CheckoutCart />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/admin" element={<AdminView />} />
       </Routes>
     </>
   );
