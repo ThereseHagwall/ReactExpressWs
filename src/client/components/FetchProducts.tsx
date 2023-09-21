@@ -22,7 +22,7 @@ const FetchProducts = () => {
     if (productId) {
       navigate(`/products/${productId._id}`); // Navigate to the single product page
     }
-  }; 
+  };
   const handleCartClick = (productId: ProductId | null) => {
     if (productId) {
       navigate(`/products/${productId._id}`); // Navigate to the single product page
@@ -61,7 +61,7 @@ const FetchProducts = () => {
             <p>{product.productPrice} €</p>
 
             <br/>
-            <ChangeCartBtns product={product} />
+            <ChangeCartBtns product={product}  />
           </ol>
         ))}
     </Grid>

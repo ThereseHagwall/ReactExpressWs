@@ -1,75 +1,92 @@
-import React, { createContext, useContext, ReactNode, useState } from 'react'
+import React, { createContext, useContext, ReactNode, useState } from 'react';
 
 type ShoppingCartProviderProps = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 type ShoppingCartContext = {
-  getItemQuantity: (id: number) => number,
-  increaseQuantity: (id: number) => void,
-  decreaseQuantity: (id: number) => void,
-  removeFromCart: (id: number) => void,
-}
+  getCartItemQuantity: (productId: number, sizeId: number) => number;
+  increaseQuantity: (productId: number, sizeId: number) => void;
+  decreaseQuantity: (productId: number, sizeId: number) => void;
+  removeFromCart: (productId: number, sizeId: number) => void;
+};
 
 type CartItem = {
-  id: number,
-  quantity: number
-}
+  productId: number;
+  sizeId: number;
+  quantity: number;
+};
 
-const ShoppingCartContext = createContext({} as ShoppingCartContext )
+const ShoppingCartContext = createContext({} as ShoppingCartContext);
 
 export function useShoppingCart() {
-  return useContext(ShoppingCartContext)
+  return useContext(ShoppingCartContext);
 }
 
-export function ShoppingCartProvider( { children }: 
-  ShoppingCartProviderProps) {
-  const [cartItems, setCartItems] = useState<CartItem[]>([])
+export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  function getItemQuantity(id: number) {
-    return cartItems.find(item => item.id === id)?.quantity || 0
+  function getCartItemQuantity(productId: number, sizeId: number) {
+    return (
+      cartItems.find((item) => item.productId === productId && item.sizeId === sizeId)?.quantity || 0
+    );
   }
 
-  function increaseQuantity(id: number){
-    setCartItems(currentItems => {
-      if (currentItems.find(item => item.id === id) == null){
-        return [...currentItems, {id, quantity: 1}]
+  function increaseQuantity(productId: number, sizeId: number) {
+    setCartItems((currentItems) => {
+      const existingItem = currentItems.find(
+        (item) => item.productId === productId && item.sizeId === sizeId
+      );
+
+      if (!existingItem) {
+        return [...currentItems, { productId, sizeId, quantity: 1 }];
       } else {
-        return currentItems.map(item => {
-          if (item.id === id){
-            return {...item, quantity: item.quantity + 1}
+        return currentItems.map((item) => {
+          if (item.productId === productId && item.sizeId === sizeId) {
+            return { ...item, quantity: item.quantity + 1 };
           } else {
-            return item
+            return item;
           }
-        })
-          } 
-    })
+        });
+      }
+    });
   }
 
-  function decreaseQuantity(id: number){
-    setCartItems(currentItems => {
-      if (currentItems.find(item => item.id === id)?.quantity === 1){
-        return currentItems.filter(item => item.id !== id)
+  function decreaseQuantity(productId: number, sizeId: number) {
+    setCartItems((currentItems) => {
+      const existingItem = currentItems.find(
+        (item) => item.productId === productId && item.sizeId === sizeId
+      );
+
+      if (existingItem && existingItem.quantity === 1) {
+        return currentItems.filter(
+          (item) => !(item.productId === productId && item.sizeId === sizeId)
+        );
       } else {
-        return currentItems.map(item => {
-          if (item.id === id){
-            return {...item, quantity: item.quantity - 1}
+        return currentItems.map((item) => {
+          if (item.productId === productId && item.sizeId === sizeId) {
+            return { ...item, quantity: item.quantity - 1 };
           } else {
-            return item
+            return item;
           }
-        })
-          } 
-    })
+        });
+      }
+    });
   }
 
-  function removeFromCart(id: number){
-    setCartItems(currentItems => {
-      return currentItems.filter(item => item.id !== id)
-    }) 
+  function removeFromCart(productId: number, sizeId: number) {
+    setCartItems((currentItems) => {
+      return currentItems.filter(
+        (item) => !(item.productId === productId && item.sizeId === sizeId)
+      );
+    });
   }
 
-  return( 
-  <ShoppingCartContext.Provider value={{ getItemQuantity, increaseQuantity, decreaseQuantity, removeFromCart }} >
-    {children}
-  </ShoppingCartContext.Provider>)
+  return (
+    <ShoppingCartContext.Provider
+      value={{ getCartItemQuantity, increaseQuantity, decreaseQuantity, removeFromCart }}
+    >
+      {children}
+    </ShoppingCartContext.Provider>
+  );
 }
