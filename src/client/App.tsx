@@ -6,6 +6,7 @@ import FetchSingleProduct from "./components/FetchSingleProduct";
 import Header from "./components/Header";
 import LoginForm from "./components/LoginForm";
 import AdminView from "./components/AdminView";
+import { AuthProvider } from './components/AuthContext';
 
 function ProductPage() {
   return <FetchSingleProduct productId={""} />;
@@ -14,15 +15,17 @@ function ProductPage() {
 function App() {
   return (
     <>
-      <Header />
-      <Routes>
-        <Route path="*" element={<PageNotFound />} />
-        <Route path="/" element={<MainContent />} />
-        <Route path="/orderlist" element={<OrderList />} />
-        <Route path="/products/:productId" element={<ProductPage />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/admin" element={<AdminView />} />
-      </Routes>
+      <AuthProvider>
+        <Header />
+        <Routes>
+          <Route path="*" element={<PageNotFound />} />
+          <Route path="/" element={<MainContent />} />
+          <Route path="/orderlist" element={<OrderList />} />
+          <Route path="/products/:productId" element={<ProductPage />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/admin" element={<AdminView />} />
+        </Routes>
+      </AuthProvider>
     </>
   );
 }

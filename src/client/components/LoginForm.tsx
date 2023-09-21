@@ -1,7 +1,10 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom"; // Importera useNavigate
+// LoginForm.tsx
+
+import React, { useState, ChangeEvent, FormEvent } from 'react';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext'; // Importera useAuth-hook
 
 interface FormData {
   userName: string;
@@ -10,15 +13,14 @@ interface FormData {
 
 export default function LoginForm() {
   const [formData, setFormData] = useState<FormData>({
-    userName: "",
-    password: "",
+    userName: '',
+    password: '',
   });
 
-  const navigate = useNavigate(); // Använd useNavigate för att hantera navigering
+  const navigate = useNavigate();
+  const { login } = useAuth(); 
 
-  const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData({
       ...formData,
@@ -26,32 +28,13 @@ export default function LoginForm() {
     });
   };
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-
-    try {
-      // Gör en POST-förfrågan till din server med användarnamn och lösenord
-      const response = await fetch("http://localhost:3000/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        // Om inloggningen lyckas, gör något här, t.ex. lagra användarinformation i en session
-        const data = await response.json();
-        console.log("Inloggning lyckades:", data);
-
-        // Navigera till den önskade sidan, till exempel "/admin"
-        navigate("/admin");
-      } else {
-        // Om inloggningen misslyckas, hantera felmeddelandet här
-        console.error("Inloggning misslyckades");
-      }
-    } catch (error) {
-      console.error("Fel vid inloggning:", error);
+    if (formData.userName !== '' && formData.password !== '') {
+      login(); 
+      navigate('/admin');
+    } else {
+      console.error('Inloggning misslyckades');
     }
   };
 
