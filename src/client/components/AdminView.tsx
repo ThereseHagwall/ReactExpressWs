@@ -9,6 +9,7 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
+import EditProduct from "./EditProduct"; // Importera EditProduct-komponenten
 
 interface Product {
   _id: string;
@@ -16,11 +17,14 @@ interface Product {
   productPrice: number;
   productMaterial: string;
   productDescription: string;
-  sizes: { sizeName: string; quantity: number }[]; // Add sizes to the Product interface
+  productImage: string;
+  sizes: { sizeName: string; quantity: number }[];
 }
 
 export default function AdminView() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Håll koll på den valda produkten
+  const [openEditDialog, setOpenEditDialog] = useState(false); // Öppna och stäng redigeringsdialogen
 
   useEffect(() => {
     // Fetch all products and their sizes when the component mounts
@@ -45,6 +49,18 @@ export default function AdminView() {
       })
       .catch((error) => console.error(error));
   }, []);
+
+  // Funktion för att öppna redigeringsdialogen och ställa in den valda produkten
+  const handleOpenEditDialog = (product: Product) => {
+    setSelectedProduct(product);
+    setOpenEditDialog(true);
+  };
+
+  // Funktion för att stänga redigeringsdialogen
+  const handleCloseEditDialog = () => {
+    setSelectedProduct(null);
+    setOpenEditDialog(false);
+  };
 
   return (
     <div>
@@ -83,7 +99,11 @@ export default function AdminView() {
                   </ul>
                 </TableCell>
                 <TableCell>
-                  <Button variant="outlined" color="primary">
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => handleOpenEditDialog(product)} // Öppna redigeringsdialogen när "Redigera" klickas
+                  >
                     Redigera
                   </Button>
                   <Button variant="outlined" color="secondary">
@@ -95,6 +115,13 @@ export default function AdminView() {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Visa redigeringsdialogen om den är öppen */}
+      <EditProduct
+        open={openEditDialog}
+        onClose={handleCloseEditDialog}
+        product={selectedProduct}
+      />
     </div>
   );
 }

@@ -45,7 +45,7 @@ router.post('/add', async (req: Request, res: Response) => {
     productDescription: 'Mankini är en mankini',
     productImage: 'https://i.imgur.com/lTimEbG.jpeg',
     });
-    
+
     const createdProduct = await newProduct.save();
     const sizes = ['S', 'M', 'L', 'XL'];
     const productSizes = [];
@@ -83,9 +83,26 @@ router.get('/:productId', async (req, res) => {
   }
 });
 
+router.put('/products/:id', async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const updatedProductData = req.body;
+
+    const updatedProduct = await Product.findByIdAndUpdate(productId, updatedProductData, { new: true });
+
+    if (!updatedProduct) {
+      return res.status(404).json({ error: 'Produkten hittades inte' });
+    }
+
+    res.json(updatedProduct);
+  } catch (error) {
+    console.error('Error updating product:', error);
+    res.status(500).json({ error: 'Intern serverfel' });
+  }
+});
+
+
+
+
 module.exports = router;
-
-
-
-
 export default router;
