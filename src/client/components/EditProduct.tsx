@@ -21,24 +21,42 @@ const EditProduct: React.FC<EditProductProps> = ({
   const [editedProduct, setEditedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    // Kopiera produktdata när den ändras i förälderkomponenten
     setEditedProduct(product);
   }, [product]);
 
-  const handleSizeChange = (index: number, quantity: number) => {
+  const handleSizeChange = (index: number, quantity: number, newSizeName: string) => {
     if (editedProduct && editedProduct.sizes[index]) {
-      // Kopiera storleksdata och uppdatera antalet för den angivna storleken
       const newSizes = [...editedProduct.sizes];
-      newSizes[index] = { ...newSizes[index], quantity };
+      newSizes[index] = { ...newSizes[index], quantity, sizeName: newSizeName };
       setEditedProduct({ ...editedProduct, sizes: newSizes });
+    }
+  };
+
+  const updateProductOnServer = async (updatedProduct: Product) => {
+    try {
+      const response = await fetch(`/product/products/${updatedProduct._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedProduct),
+      });
+
+      if (response.ok) {
+        console.log("Produkten har uppdaterats i databasen.");
+        console.log("Svar:", updatedProduct);
+        
+      } else {
+        console.error("Misslyckades med att uppdatera produkten i databasen.");
+      }
+    } catch (error) {
+      console.error("Ett fel inträffade:", error);
     }
   };
 
   const handleSave = () => {
     if (editedProduct) {
-      // Spara den redigerade produkten och stäng dialogen
-      // Skicka sedan updatedProduct till servern för uppdatering
-      console.log("Sparar redigerad produkt:", editedProduct);
+      updateProductOnServer(editedProduct);
       onClose();
     }
   };
@@ -52,7 +70,6 @@ const EditProduct: React.FC<EditProductProps> = ({
         </DialogContentText>
         {editedProduct && (
           <div>
-            {/* Visa formuläret för att redigera produkten */}
             <input
               type="text"
               value={editedProduct.productName}
@@ -102,7 +119,6 @@ const EditProduct: React.FC<EditProductProps> = ({
                 })
               }
             />
-            {/* Hantera storlekar */}
             <div>
               {editedProduct.sizes.map((size, index) => (
                 <div key={index}>
