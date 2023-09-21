@@ -41,21 +41,28 @@ export function ChangeCartBtns( {product}:CartItem ) {
                     onClick={() => increaseQuantity(productId)} > Add to cart </Button>
                 ) : <div>
                     <Box>
-                        <Button 
-                        variant="contained" 
+                        <Box 
                         sx={{
-                            backgroundColor: primary.main,
-                            color: primary.contrastText
+                            display: 'flex',
+                            justifyContent: 'space-between'
                         }}
-                        onClick={() => decreaseQuantity(productId)}>-</Button>
-                        <p>{quantity} st</p>
-                        <Button 
-                        variant="contained" 
-                        sx={{
-                            backgroundColor: primary.main,
-                            color: primary.contrastText
-                        }}
-                        onClick={() => increaseQuantity(productId)}>+</Button>
+                        >
+                            <Button 
+                            variant="contained" 
+                            sx={{
+                                backgroundColor: primary.main,
+                                color: primary.contrastText
+                            }}
+                            onClick={() => decreaseQuantity(productId)}>-</Button>
+                            <p>{quantity} st</p>
+                            <Button 
+                            variant="contained" 
+                            sx={{
+                                backgroundColor: primary.main,
+                                color: primary.contrastText
+                            }}
+                            onClick={() => increaseQuantity(productId)}>+</Button>
+                        </Box>
                         <Button 
                         variant="contained" 
                         sx={{

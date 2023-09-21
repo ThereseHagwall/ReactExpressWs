@@ -40,18 +40,18 @@ const FetchProducts = () => {
   return (
     <div style={{"display": "flex", "flexWrap": "wrap"}}>
         {products.map((product: Product) => (
-          <ol key={product._id} style={{"border": "solid 2px white", "borderRadius": "12px", "margin": "10px", "padding": "10px", height: "400px", "minWidth": "300px"}}>
+          <ol key={product._id} style={{"border": "solid 2px white", "borderRadius": "12px", "margin": "10px", "padding": "10px", 'minHeight': "400px", "minWidth": "300px"}}>
             <h2
               onClick={() => handleProductClick({ _id: product._id })}
-              style={{ cursor: 'pointer' }}
-            >
+              style={{ cursor: 'pointer' }}>
               {product.productName}
             </h2>
-            <img src={product.productImage} alt={product.productName} height={"200px"} style={{width: "100%", objectFit: "cover"}} />
-            <p>{product.productPrice} €</p> 
-            <button onClick={() => handleProductClick({ _id: product._id })}
-
-              style={{ cursor: 'pointer' }}>View Product</button> 
+            <img 
+            src={product.productImage} 
+            alt={product.productName} 
+            onClick={() => handleProductClick({ _id: product._id })} 
+            style={{width: "100%", objectFit: "cover", cursor: 'pointer', height: "200px", }} />
+            <p>{product.productPrice} €</p>
             <br/>
             <ChangeCartBtns product={product} />
           </ol>
