@@ -15,7 +15,7 @@ interface Product {
 interface ProductSize {
     _id: string;
     sizeName: string;
-    quantity: string;  // assuming quantity is a string
+    quantity: string; 
 }
 
 const primary = {
