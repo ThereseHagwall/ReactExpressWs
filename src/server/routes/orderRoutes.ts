@@ -60,4 +60,29 @@ router.get("/orders/:id", async (req, res) => {
   }
 });
 
+
+router.put("/orders/:id/products/:productId", async (req: Request, res: Response) => {
+  try {
+    const orderId = req.params.orderId;
+    const productId = req.params.productId;
+    const updateData = req.body;
+
+    const updateResult: any = await orderModel.updateOne(
+      { _id: orderId, "products._id": productId },
+      { $set: { "products.$": updateData } }
+    );
+    
+    if (updateResult.nModified === 0) {
+      return res.status(404).json({ error: 'Order or product not found or no changes made' });
+    }
+
+    res.status(200).json({ message: 'Product within order updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating product within order' });
+  }
+});
+
+
+
+
 export default router;

@@ -1,5 +1,6 @@
 // OrderList.tsx
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 interface Order {
   _id: number;
@@ -10,8 +11,7 @@ function OrderList() {
   const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
-    // Hämta alla ordrar när komponenten mountas
-    fetch("/order/orders") // Du kan använda relativ sökväg här, Vite kommer att hantera det
+    fetch("/order/orders")
       .then((response) => response.json())
       .then((data) => setOrders(data))
       .catch((error) => console.error("Error fetching orders:", error));
@@ -22,7 +22,9 @@ function OrderList() {
       <h2>Order List</h2>
       <ul>
         {orders.map((order) => (
-          <li key={order._id}>{order.customerName}</li>
+          <li key={order._id}>
+            <Link to={`/order/${order._id}`}>{order.customerName}</Link>
+          </li>
         ))}
       </ul>
     </div>
