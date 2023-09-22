@@ -1,84 +1,128 @@
-import React, { useState, useEffect } from 'react'
-import { Product } from './FetchProducts';
+import React, { useState, useEffect } from 'react';
 import { Box, Button } from '@mui/material';
 import { useShoppingCart } from './ShoppingCartContext';
 
 interface CartItem {
-  product: Product;
-  
+    product: Product | null;
+}
+
+interface Product {
+    _id: string | number;
+    sizes?: string[];
+    selectedSize?: string;
+}
+
+interface ProductSize {
+    _id: string;
+    sizeName: string;
+    quantity: string; 
 }
 
 const primary = {
     main: '#1B1B1E',
     contrastText: '#FFE81F',
-    alert: '#951111',
-    alertText: '#ffffff'
-  };
+    alert: '#FF0000',
+    alertText: '#FFFFFF',
+};
 
-export function ChangeCartBtns( {product}:CartItem ) {
+export function ChangeCartBtns({ product }: CartItem) {
     const {
-        getItemQuantity, 
-        increaseQuantity, 
-        decreaseQuantity, 
-        removeFromCart 
-      } = useShoppingCart();
+        getCartItemQuantity,
+        increaseQuantity,
+        decreaseQuantity,
+        removeFromCart,
+    } = useShoppingCart();
 
-      const productId = typeof product._id === 'string' ? parseInt(product._id, 10) : product._id;
+    if (!product) {
+        return null;
+    }
 
-      const [quantity, setQuantity] = useState(getItemQuantity(productId));
+    const { _id, selectedSize: initialSelectedSize } = product;
+    const [selectedSize, setSelectedSize] = useState<string>(initialSelectedSize || '');
+    const [productSizes, setProductSizes] = useState<ProductSize[]>([]);
 
-      useEffect(() => {
-        setQuantity(getItemQuantity(productId));
-      }, [getItemQuantity, productId]);
-    
-  return (
-    <>
-        <Box>
-            <div>
-                {quantity === 0 ? (
-                    <Button 
+    useEffect(() => {
+        fetch(`http://localhost:3000/product/${_id}`)
+            .then((response) => response.json())
+            .then((data) => setProductSizes(data))
+            .catch((error) => console.error('Error fetching Product Sizes:', error));
+    }, [_id]);
+
+    const handleSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newSize = event.target.value;
+        setSelectedSize(newSize);
+    };
+
+    const productId: number = typeof _id === 'string' ? parseInt(_id, 10) : _id;
+    const sizeId: string = selectedSize;  // Adjusted to be a string
+
+
+    const cartItemQuantity: number = getCartItemQuantity(productId, sizeId);
+
+    return (
+        <>
+            <label htmlFor="sizeDropdown">Storlek:</label>
+            <select id="sizeDropdown" value={selectedSize} onChange={handleSizeChange}>
+                <option value="">Välj storlek</option>
+                {productSizes.map((productSize, index) => (
+                    <option key={index} value={productSize.sizeName}>
+                        {productSize.sizeName} {productSize.quantity} st
+                    </option>
+                ))}
+            </select>
+            {cartItemQuantity === 0 ? (
+                <Button
                     sx={{
                         backgroundColor: primary.main,
-                        color: primary.contrastText
+                        color: primary.contrastText,
                     }}
-                    variant="contained" 
-                    onClick={() => increaseQuantity(productId)} > Add to cart </Button>
-                ) : <div>
-                    <Box>
-                        <Box 
+                    variant="contained"
+                    onClick={() => increaseQuantity(productId, sizeId)}
+                >
+                    Lägg till i kundvagnen
+                </Button>
+            ) : (
+                <div>
+                    <Box
                         sx={{
                             display: 'flex',
-                            justifyContent: 'space-between'
+                            justifyContent: 'space-between',
                         }}
+                    >
+                        <Button
+                            variant="contained"
+                            sx={{
+                                backgroundColor: primary.main,
+                                color: primary.contrastText,
+                            }}
+                            onClick={() => decreaseQuantity(productId, sizeId)}
                         >
-                            <Button 
-                            variant="contained" 
+                            -
+                        </Button>
+                        <p>{cartItemQuantity} st</p>
+                        <Button
+                            variant="contained"
                             sx={{
                                 backgroundColor: primary.main,
-                                color: primary.contrastText
+                                color: primary.contrastText,
                             }}
-                            onClick={() => decreaseQuantity(productId)}>-</Button>
-                            <p>{quantity} st</p>
-                            <Button 
-                            variant="contained" 
-                            sx={{
-                                backgroundColor: primary.main,
-                                color: primary.contrastText
-                            }}
-                            onClick={() => increaseQuantity(productId)}>+</Button>
-                        </Box>
-                        <Button 
-                        variant="contained" 
+                            onClick={() => increaseQuantity(productId, sizeId)}
+                        >
+                            +
+                        </Button>
+                    </Box>
+                    <Button
+                        variant="contained"
                         sx={{
                             backgroundColor: primary.alert,
-                            color: primary.alertText
-
+                            color: primary.alertText,
                         }}
-                        onClick={() => removeFromCart(productId)} >Remove</Button>
-                    </Box>
-                </div> }
-            </div>
-        </Box>
-    </>
-  )
+                        onClick={() => removeFromCart(productId, sizeId)}
+                    >
+                        Ta bort
+                    </Button>
+                </div>
+            )}
+        </>
+    );
 }

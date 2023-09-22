@@ -21,6 +21,8 @@ interface ProductSize {
 const primary = {
   main: '#1B1B1E',
   contrastText: '#FFE81F',
+  alert: '#FF0000',
+  alertText: '#FFFFFF',
 };
 
 const FetchSingleProduct: React.FC<Props> = ({ productId }) => {
@@ -48,49 +50,44 @@ const FetchSingleProduct: React.FC<Props> = ({ productId }) => {
     setSelectedSize(event.target.value);
   };
 
-  return (
-    <Box 
+  // ...
+return (
+  <Box 
     sx={{ 
       width: '100%'
      }}>
-      {singleProduct && (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100%',
-            height: '100%',
-          }}>
-          <h2>{singleProduct.productName}</h2>
-          <p>{singleProduct.productDescription}</p>
-          <Box 
+    {singleProduct && (
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          height: '100%',
+        }}>
+        <h2>{singleProduct.productName}</h2>
+        <p>{singleProduct.productDescription}</p>
+        <Box 
           component="img"
           sx={{
             maxWidth: '90%',
             maxHeight: '50%',
             borderRadius: '10px',
-            }}
+          }}
           src={singleProduct.productImage}
           alt="product image" ></Box>
-          <p>{singleProduct.productPrice} €</p>
-          <label htmlFor="sizeDropdown">Storlek:</label>
-          <select id="sizeDropdown" value={selectedSize || ''} onChange={handleSizeChange}>
-            <option value="">Välj storlek</option>
-            {productSizes.map((productSize, index) => (
-              <option key={index} value={productSize.sizeName}>
-                {productSize.sizeName} {productSize.quantity} st
-              </option>
-            ))}
-          </select>
-          <ChangeCartBtns product={singleProduct} />
-          <p>{singleProduct.productMaterial}</p>
-          <br />
-        </Box>
-      )}
-    </Box>
-  );
+        <p>{singleProduct.productPrice} €</p>
+
+        <ChangeCartBtns product={singleProduct ? { ...singleProduct, selectedSize: selectedSize || '' } : null} />
+        <p>{singleProduct.productMaterial}</p>
+        <br />
+      </Box>
+    )}
+  </Box>
+);
+// ...
+
 };
 
 export default FetchSingleProduct;
