@@ -6,22 +6,22 @@ type ShoppingCartProviderProps = {
 
 type CartItem = {
   productId: number;
-  sizeId: number;
+  sizeId: string;
   quantity: number;
 };
 
 type ShoppingCartContext = {
-  getCartItemQuantity: (productId: number, sizeId: number) => number;
-  increaseQuantity: (productId: number, sizeId: number) => void;
-  decreaseQuantity: (productId: number, sizeId: number) => void;
-  removeFromCart: (productId: number, sizeId: number) => void;
+  increaseQuantity: (productId: number, selectedSize: string) => void;
+  decreaseQuantity:(productId: number, selectedSize:string) => void;
+  getCartItemQuantity:(productId: number, selectedSize: string) => void;
+  removeFromCart: (productId: number, sizeId: string) => void;
 };
 
 const DefaultShoppingCartContext: ShoppingCartContext = {
   getCartItemQuantity: () => 0,
-  increaseQuantity: () => {},
-  decreaseQuantity: () => {},
-  removeFromCart: () => {},
+  increaseQuantity: () => { },
+  decreaseQuantity: () => { },
+  removeFromCart: () => { },
 };
 
 const ShoppingCartContext = createContext<ShoppingCartContext | undefined>(undefined);
@@ -37,23 +37,23 @@ export function useShoppingCart() {
 export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  function getCartItemQuantity(productId: number, sizeId: number) {
-    return (
-      cartItems.find((item) => item.productId === productId && item.sizeId === sizeId)?.quantity || 0
-    );
+  function getCartItemQuantity(productId: number, sizeId: string): number {
+    const item = cartItems.find((item) => item.productId === productId && item.sizeId === sizeId);
+    return item ? item.quantity : 0;
   }
 
-  function increaseQuantity(productId: number, sizeId: number) {
+
+  function increaseQuantity(productId: number, selectedSize: string) {
     setCartItems((currentItems) => {
       const existingItem = currentItems.find(
-        (item) => item.productId === productId && item.sizeId === sizeId
+        (item) => item.productId === productId && item.sizeId === selectedSize
       );
-
+  
       if (!existingItem) {
-        return [...currentItems, { productId, sizeId, quantity: 1 }];
+        return [...currentItems, { productId, sizeId: selectedSize, quantity: 1 }];
       } else {
         return currentItems.map((item) => {
-          if (item.productId === productId && item.sizeId === sizeId) {
+          if (item.productId === productId && item.sizeId === selectedSize) {
             return { ...item, quantity: item.quantity + 1 };
           } else {
             return item;
@@ -62,20 +62,20 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
       }
     });
   }
-
-  function decreaseQuantity(productId: number, sizeId: number) {
+  
+  function decreaseQuantity(productId: number, selectedSize: string) {
     setCartItems((currentItems) => {
       const existingItem = currentItems.find(
-        (item) => item.productId === productId && item.sizeId === sizeId
+        (item) => item.productId === productId && item.sizeId === selectedSize
       );
-
+  
       if (existingItem && existingItem.quantity === 1) {
         return currentItems.filter(
-          (item) => !(item.productId === productId && item.sizeId === sizeId)
+          (item) => !(item.productId === productId && item.sizeId === selectedSize)
         );
       } else {
         return currentItems.map((item) => {
-          if (item.productId === productId && item.sizeId === sizeId) {
+          if (item.productId === productId && item.sizeId === selectedSize) {
             return { ...item, quantity: item.quantity - 1 };
           } else {
             return item;
@@ -84,8 +84,10 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
       }
     });
   }
+  
 
-  function removeFromCart(productId: number, sizeId: number) {
+
+  function removeFromCart(productId: number, sizeId: string) {
     setCartItems((currentItems) => {
       return currentItems.filter(
         (item) => !(item.productId === productId && item.sizeId === sizeId)
