@@ -4,6 +4,12 @@ type ShoppingCartProviderProps = {
   children: ReactNode;
 };
 
+type CartItem = {
+  productId: number;
+  sizeId: number;
+  quantity: number;
+};
+
 type ShoppingCartContext = {
   getCartItemQuantity: (productId: number, sizeId: number) => number;
   increaseQuantity: (productId: number, sizeId: number) => void;
@@ -11,16 +17,21 @@ type ShoppingCartContext = {
   removeFromCart: (productId: number, sizeId: number) => void;
 };
 
-type CartItem = {
-  productId: number;
-  sizeId: number;
-  quantity: number;
+const DefaultShoppingCartContext: ShoppingCartContext = {
+  getCartItemQuantity: () => 0,
+  increaseQuantity: () => {},
+  decreaseQuantity: () => {},
+  removeFromCart: () => {},
 };
 
-const ShoppingCartContext = createContext({} as ShoppingCartContext);
+const ShoppingCartContext = createContext<ShoppingCartContext | undefined>(undefined);
 
 export function useShoppingCart() {
-  return useContext(ShoppingCartContext);
+  const context = useContext(ShoppingCartContext);
+  if (!context) {
+    throw new Error('useShoppingCart must be used within a ShoppingCartProvider');
+  }
+  return context;
 }
 
 export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
@@ -82,10 +93,15 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     });
   }
 
+  const contextValue = {
+    getCartItemQuantity,
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart,
+  };
+
   return (
-    <ShoppingCartContext.Provider
-      value={{ getCartItemQuantity, increaseQuantity, decreaseQuantity, removeFromCart }}
-    >
+    <ShoppingCartContext.Provider value={contextValue}>
       {children}
     </ShoppingCartContext.Provider>
   );

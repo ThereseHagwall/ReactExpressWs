@@ -21,6 +21,8 @@ interface ProductSize {
 const primary = {
   main: '#1B1B1E',
   contrastText: '#FFE81F',
+  alert: '#FF0000',
+  alertText: '#FFFFFF',
 };
 
 const FetchSingleProduct: React.FC<Props> = ({ productId }) => {
@@ -76,16 +78,8 @@ return (
           src={singleProduct.productImage}
           alt="product image" ></Box>
         <p>{singleProduct.productPrice} €</p>
-        <label htmlFor="sizeDropdown">Storlek:</label>
-        <select id="sizeDropdown" value={selectedSize || ''} onChange={handleSizeChange}>
-          <option value="">Välj storlek</option>
-          {productSizes.map((productSize, index) => (
-            <option key={index} value={productSize.sizeName}>
-              {productSize.sizeName} {productSize.quantity} st
-            </option>
-          ))}
-        </select>
-        <ChangeCartBtns product={singleProduct ? { _id: singleProduct._id, sizes: [selectedSize || ''], /* other properties */ } : null} />
+
+        <ChangeCartBtns product={singleProduct ? { ...singleProduct, selectedSize: selectedSize || '' } : null} />
         <p>{singleProduct.productMaterial}</p>
         <br />
       </Box>
