@@ -34,8 +34,11 @@ export function useShoppingCart() {
   return context;
 }
 
+
 export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
 
   function getCartItemQuantity(productId: number, sizeId: string): number {
     const item = cartItems.find((item) => item.productId === productId && item.sizeId === sizeId);
@@ -100,6 +103,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     increaseQuantity,
     decreaseQuantity,
     removeFromCart,
+    cartItemCount,
   };
 
   return (

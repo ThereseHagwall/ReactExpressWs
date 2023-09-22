@@ -56,6 +56,7 @@ export function ChangeCartBtns({ product }: CartItem) {
     const productId: number = typeof _id === 'string' ? parseInt(_id, 10) : _id;
     const sizeId: string = selectedSize;  // Adjusted to be a string
 
+
     const cartItemQuantity: number = getCartItemQuantity(productId, sizeId);
 
     return (

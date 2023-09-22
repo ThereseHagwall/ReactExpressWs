@@ -39,11 +39,11 @@ router.get("/products/:id", async (req, res) => {
 router.post('/add', async (req: Request, res: Response) => {
   try {
     const newProduct = new Product({
-    productName: 'Mankini',
-    productPrice: 200,
-    productMaterial: 'Bomull',
-    productDescription: 'Mankini är en mankini',
-    productImage: 'https://i.imgur.com/lTimEbG.jpeg',
+    productName: req.body.productName,
+    productPrice: req.body.productPrice,
+    productMaterial: req.body.productMaterial,
+    productDescription: req.body.productDescription,
+    productImage: '',
     });
     
     const createdProduct = await newProduct.save();
