@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Table,
@@ -8,6 +9,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  TextField,
 } from "@mui/material";
 
 interface Product {
@@ -16,11 +18,29 @@ interface Product {
   productPrice: number;
   productMaterial: string;
   productDescription: string;
-  sizes: { sizeName: string; quantity: number }[]; // Add sizes to the Product interface
+  sizes: { sizeName: string; quantity: number }[];
 }
+
+interface NewProduct {
+  productName: string;
+  productPrice: number;
+  productMaterial: string;
+  productDescription: string;
+  sizes: { sizeName: string; quantity: number }[];
+}
+
 
 export default function AdminView() {
   const [products, setProducts] = useState<Product[]>([]);
+  const navigate= useNavigate();
+  const [showAddProductForm, setShowAddProductForm] = useState(false);
+  const [newProduct, setNewProduct] = useState<NewProduct>({
+    productName: "",
+    productPrice: 0,
+    productMaterial: "",
+    productDescription: "",
+    sizes: [],
+  });
 
   useEffect(() => {
     // Fetch all products and their sizes when the component mounts
@@ -46,13 +66,102 @@ export default function AdminView() {
       .catch((error) => console.error(error));
   }, []);
 
+  const toggleAddProductForm = () => {
+    setShowAddProductForm(!showAddProductForm);
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setNewProduct((prevProduct) => ({
+      ...prevProduct,
+      [name]: value,
+    }));
+  };
+
+  const handleAddProductClick = async () => {
+    try {
+      const response = await fetch("/product/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newProduct),
+      });
+
+      if (response.ok) {
+        const createdProduct = await response.json();
+        setProducts((prevProducts) => [...prevProducts, createdProduct]);
+        setNewProduct({
+          productName: "",
+          productPrice: 0,
+          productMaterial: "",
+          productDescription: "",
+          sizes: [],
+        });
+        toggleAddProductForm();
+        navigate("/admin");
+      
+      } else {
+        console.error("Failed to add product");
+      }
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
+  };
+
   return (
     <div>
       <h2>AdminView</h2>
 
-      <Button variant="contained" color="primary">
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={toggleAddProductForm}
+      >
         Lägg till ny produkt
       </Button>
+
+      {showAddProductForm && (
+        <div>
+          <h3>Lägg till ny produkt</h3>
+          <TextField
+            name="productName"
+            label="Produktnamn"
+            value={newProduct.productName}
+            onChange={handleInputChange}
+          />
+          <TextField
+            name="productPrice"
+            label="Pris"
+            type="number"
+            value={newProduct.productPrice.toString()}
+            onChange={handleInputChange}
+          />
+          <TextField
+            name="productMaterial"
+            label="Material"
+            value={newProduct.productMaterial}
+            onChange={handleInputChange}
+          />
+          <TextField
+            name="productDescription"
+            label="Beskrivning"
+            multiline
+            rows={4}
+            value={newProduct.productDescription}
+            onChange={handleInputChange}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleAddProductClick}
+          >
+            Lägg till
+          </Button>
+        </div>
+      )}
 
       <TableContainer component={Paper}>
         <Table>
