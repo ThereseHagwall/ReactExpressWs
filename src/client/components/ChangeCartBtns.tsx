@@ -69,7 +69,6 @@ export function ChangeCartBtns({ product }: CartItem) {
                     </option>
                 ))}
             </select>
-            <p>Antal i kundvagn: {cartItemQuantity}</p>
             {cartItemQuantity === 0 ? (
                 <Button
                     sx={{

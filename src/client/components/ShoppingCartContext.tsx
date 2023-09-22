@@ -13,7 +13,7 @@ type CartItem = {
 type ShoppingCartContext = {
   increaseQuantity: (productId: number, selectedSize: string) => void;
   decreaseQuantity:(productId: number, selectedSize:string) => void;
-  getCartItemQuantity:(productId: number, selectedSize: string) => void;
+  getCartItemQuantity:(productId: number, selectedSize: string) => number;
   removeFromCart: (productId: number, sizeId: string) => void;
 };
 
