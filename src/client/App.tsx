@@ -24,7 +24,7 @@ function App() {
           <Route path="*" element={<PageNotFound />} />
           <Route path="/" element={<MainContent />} />
           <Route path="/orderlist" element={<OrderList />} />
-          <Route path="/order/:orderId" element={<OrderDetails />} />
+          <Route path="/order/:orderId/products/:productId" element={<OrderDetails />} />
           <Route path="/products/:productId" element={<ProductPage />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/admin" element={<AdminView />} />

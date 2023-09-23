@@ -16,18 +16,28 @@ interface Order {
   }
 
 function OrderDetails() {
-  const { orderId } = useParams(); // Get the orderId from the URL parameter
-
+  const { orderId, productId } = useParams(); // Get the orderId from the URL parameter
+  console.log("orderId:", orderId);
+  console.log("productId:", productId);
   const [order, setOrder] = useState<Order | null>(null);
 
   useEffect(() => {
-    // Fetch the order details by orderId
-    fetch(`/order/${orderId}`)
-      .then((response) => response.json())
-      .then((data) => setOrder(data))
-      .catch((error) => console.error("Error fetching order details:", error));
-  }, [orderId]);
-
+    // Fetch the order details by orderId and productId
+    fetch(`/orders/${orderId}/products/${productId}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Network response was not ok (status ${response.status})`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Data received:", data); // Log the received data
+        setOrder(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching order details:", error.message); // Log the error message
+      });
+  }, [orderId, productId]);
   if (!order) {
     return <div>Loading...</div>;
   }
@@ -35,7 +45,7 @@ function OrderDetails() {
     <div>
       <h2>Order Details</h2>
       <p>Customer Name: {order.customerName}</p>
-      <h3>Products:</h3>
+      <h3>Products: </h3>
       <ul>
         {order.products.map((product) => (
           <li key={product._id}>
