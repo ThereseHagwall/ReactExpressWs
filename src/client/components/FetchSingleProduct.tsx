@@ -78,7 +78,6 @@ const FetchSingleProduct: React.FC<Props> = ({ productId }) => {
             src={singleProduct.productImage}
             alt="product image" ></Box>
           <p>{singleProduct.productPrice} €</p>
-
           <ChangeCartBtns product={singleProduct ? { ...singleProduct, selectedSize: selectedSize || '' } : null} />
           <p>{singleProduct.productMaterial}</p>
           <br />
