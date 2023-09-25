@@ -11,6 +11,8 @@ import {
   Paper,
   TextField,
 } from "@mui/material";
+import { Link } from "react-router-dom";
+import AdminLoggedIn from "./AdminLoggedIn";
 
 interface Product {
   _id: string;
@@ -111,8 +113,14 @@ export default function AdminView() {
     }
   };
 
+
+  
   return (
-    <div>
+    <>
+    
+      <AdminLoggedIn
+      loggedInContent={ 
+      <div>
       <h2>AdminView</h2>
 
       <Button
@@ -122,7 +130,14 @@ export default function AdminView() {
       >
         Lägg till ny produkt
       </Button>
-
+      <Link to="/orderlist">
+        <Button
+          variant="contained"
+          color="primary"
+        >
+          Alla ordrar
+        </Button>
+      </Link>
       {showAddProductForm && (
         <div>
           <h3>Lägg till ny produkt</h3>
@@ -205,5 +220,8 @@ export default function AdminView() {
         </Table>
       </TableContainer>
     </div>
+    }
+    />
+    </>
   );
 }
