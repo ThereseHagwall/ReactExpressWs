@@ -15,7 +15,7 @@ interface Product {
 interface ProductSize {
     _id: string;
     sizeName: string;
-    quantity: string; 
+    quantity: string;
 }
 
 const primary = {
@@ -54,10 +54,9 @@ export function ChangeCartBtns({ product }: CartItem) {
     };
 
     const productId: number = typeof _id === 'string' ? parseInt(_id, 10) : _id;
-    const sizeId: string = selectedSize;  // Adjusted to be a string
-
-
+    const sizeId: string = selectedSize;
     const cartItemQuantity: number = getCartItemQuantity(productId, sizeId);
+    const isSizeSelected = selectedSize !== '';
 
     return (
         <>
@@ -77,7 +76,8 @@ export function ChangeCartBtns({ product }: CartItem) {
                         color: primary.contrastText,
                     }}
                     variant="contained"
-                    onClick={() => increaseQuantity(productId, sizeId)}
+                    onClick={() => isSizeSelected && increaseQuantity(productId, sizeId)}
+                    disabled={!isSizeSelected}
                 >
                     Lägg till i kundvagnen
                 </Button>
@@ -126,3 +126,4 @@ export function ChangeCartBtns({ product }: CartItem) {
         </>
     );
 }
+
