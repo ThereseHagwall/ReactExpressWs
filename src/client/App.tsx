@@ -1,4 +1,5 @@
 import OrderList from "./components/OrderList";
+import OrderDetails from "./components/OrderDetails";
 import { Routes, Route } from "react-router-dom";
 import MainContent from "./components/MainContent";
 import PageNotFound from "./components/PageNotFound";
@@ -23,6 +24,7 @@ function App() {
           <Route path="*" element={<PageNotFound />} />
           <Route path="/" element={<MainContent />} />
           <Route path="/orderlist" element={<OrderList />} />
+          <Route path="/order/:orderId" element={<OrderDetails />} />
           <Route path="/products/:productId" element={<ProductPage />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/admin" element={<AdminView />} />
