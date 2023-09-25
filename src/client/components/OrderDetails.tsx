@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import AdminLoggedIn from "./AdminLoggedIn";
+
 
 interface Order {
   _id: number;
@@ -21,8 +23,6 @@ function OrderDetails() {
   // Ensure orderId is always defined and a string
   const orderId = orderIdParam || '';
 
-  console.log("orderId:", orderId);
-
   const [order, setOrder] = useState<Order | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,12 +36,12 @@ function OrderDetails() {
         return response.json();
       })
       .then((data) => {
-        console.log("Data received:", data); // Log the received data
+        //console.log("Data received:", data);
         setOrder(data);
       })
       .catch((error) => {
-        console.error("Error fetching order details:", error.message); // Log the error message
-        setError("Error fetching order details"); // Set an error message
+        //console.error("Error fetching order details:", error.message);
+        setError("Error fetching order details");
       });
   }, [orderId]);
 
@@ -50,6 +50,9 @@ function OrderDetails() {
   }
 
   return (
+    <>
+        <AdminLoggedIn
+    loggedInContent={ 
     <div>
       <h1>Order Details</h1>
       {order ? (
@@ -71,6 +74,8 @@ function OrderDetails() {
         <p>Loading...</p>
       )}
     </div>
+     }/>
+    </>
   );
 }
 

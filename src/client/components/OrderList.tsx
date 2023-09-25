@@ -1,6 +1,7 @@
 // OrderList.tsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import AdminLoggedIn from "./AdminLoggedIn";
 
 interface Order {
   _id: string;
@@ -27,11 +28,14 @@ function OrderList() {
   }, []);
 
   return (
-    <div>
-      <h2>Order List</h2>
+    <>
+    <AdminLoggedIn
+    loggedInContent={ 
+      <div>
+      <h2>Order Lista</h2>
       <ul>
         {orders.map((order) => (
-          console.log(order),
+          //console.log(order),
           <li key={order._id}>
               <Link key={order._id} to={`/order/${order._id}`}>
                 {order.customerName}'s
@@ -40,6 +44,9 @@ function OrderList() {
         ))}
       </ul>
     </div>
+    }
+    /> 
+    </>
   );
 }
 

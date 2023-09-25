@@ -23,7 +23,7 @@ router.post('/add', async (req: Request, res: Response) => {
     });
 
     const createOrder = await newOrder.save();
-    console.log('createOrder', createOrder);
+    //console.log('createOrder', createOrder);
     res.json(createOrder);
   } catch (err) {
     console.error("Error", err);
@@ -36,7 +36,7 @@ router.post('/add', async (req: Request, res: Response) => {
 router.get('/orders', async (req: Request, res: Response) => {
   try {
     const orders = await Order.find();
-    console.log('orders', orders);
+    //console.log('orders', orders);
     // Send the products as a JSON response
     res.json(orders);
   } catch (error) {
