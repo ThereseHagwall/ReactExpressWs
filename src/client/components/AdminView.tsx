@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Button,
   Table,
@@ -32,7 +31,6 @@ interface NewProduct {
 
 export default function AdminView() {
   const [products, setProducts] = useState<Product[]>([]);
-  const navigate = useNavigate();
   const [showAddProductForm, setShowAddProductForm] = useState(false);
   const [newProduct, setNewProduct] = useState<NewProduct>({
     productName: "",
@@ -40,8 +38,6 @@ export default function AdminView() {
     productMaterial: "",
     productDescription: "",
   });
-
-  // State-variabel för att tvinga omkörning av useEffect
   const [refreshData, setRefreshData] = useState(false);
 
   useEffect(() => {
@@ -100,6 +96,7 @@ export default function AdminView() {
           productDescription: "",
         });
         setRefreshData(!refreshData);
+        toggleAddProductForm();
       } else {
         console.error("Failed to add product");
       }
