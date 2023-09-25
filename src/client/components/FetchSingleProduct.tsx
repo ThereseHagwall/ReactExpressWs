@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
-import { Product } from './FetchProducts';
+import { Product } from './AdminView';
 import { ChangeCartBtns } from './ChangeCartBtns';
 
 interface Props {
@@ -51,43 +51,41 @@ const FetchSingleProduct: React.FC<Props> = ({ productId }) => {
   };
 
   // ...
-return (
-  <Box 
-    sx={{ 
-      width: '100%'
-     }}>
-    {singleProduct && (
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
-          height: '100%',
-        }}>
-        <h2>{singleProduct.productName}</h2>
-        <p>{singleProduct.productDescription}</p>
-        <Box 
-          component="img"
+  return (
+    <Box
+      sx={{
+        width: '100%'
+      }}>
+      {singleProduct && (
+        <Box
           sx={{
-            maxWidth: '90%',
-            maxHeight: '50%',
-            borderRadius: '10px',
-          }}
-          src={singleProduct.productImage}
-          alt="product image" ></Box>
-        <p>{singleProduct.productPrice} €</p>
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            height: '100%',
+          }}>
+          <h2>{singleProduct.productName}</h2>
+          <p>{singleProduct.productDescription}</p>
+          <Box
+            component="img"
+            sx={{
+              maxWidth: '90%',
+              maxHeight: '50%',
+              borderRadius: '10px',
+            }}
+            src={singleProduct.productImage}
+            alt="product image" ></Box>
+          <p>{singleProduct.productPrice} €</p>
 
-        <ChangeCartBtns product={singleProduct ? { ...singleProduct, selectedSize: selectedSize || '' } : null} />
-        <p>{singleProduct.productMaterial}</p>
-        <br />
-      </Box>
-    )}
-  </Box>
-);
-// ...
-
+          <ChangeCartBtns product={singleProduct ? { ...singleProduct, selectedSize: selectedSize || '' } : null} />
+          <p>{singleProduct.productMaterial}</p>
+          <br />
+        </Box>
+      )}
+    </Box>
+  );
 };
 
 export default FetchSingleProduct;

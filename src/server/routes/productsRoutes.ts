@@ -39,13 +39,13 @@ router.get("/products/:id", async (req, res) => {
 router.post('/add', async (req: Request, res: Response) => {
   try {
     const newProduct = new Product({
-    productName: req.body.productName,
-    productPrice: req.body.productPrice,
-    productMaterial: req.body.productMaterial,
-    productDescription: req.body.productDescription,
-    productImage: '',
+      productName: req.body.productName,
+      productPrice: req.body.productPrice,
+      productMaterial: req.body.productMaterial,
+      productDescription: req.body.productDescription,
+      productImage: '',
     });
-    
+
     const createdProduct = await newProduct.save();
     const sizes = ['S', 'M', 'L', 'XL'];
     const productSizes = [];
@@ -80,6 +80,24 @@ router.get('/:productId', async (req, res) => {
   } catch (error) {
     console.error('Error fetching product sizes:', error);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+router.put('/products/:id', async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const updatedProductData = req.body;
+
+    const updatedProduct = await Product.findByIdAndUpdate(productId, updatedProductData, { new: true });
+
+    if (!updatedProduct) {
+      return res.status(404).json({ error: 'Produkten hittades inte' });
+    }
+
+    res.json(updatedProduct);
+  } catch (error) {
+    console.error('Error updating product:', error);
+    res.status(500).json({ error: 'Intern serverfel' });
   }
 });
 

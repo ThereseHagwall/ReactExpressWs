@@ -13,13 +13,15 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import AdminLoggedIn from "./AdminLoggedIn";
+import EditProduct from "./EditProduct"; // Importera EditProduct-komponenten
 
-interface Product {
+export interface Product {
   _id: string;
   productName: string;
   productPrice: number;
   productMaterial: string;
   productDescription: string;
+  productImage: string;
   sizes: { sizeName: string; quantity: number }[];
 }
 
@@ -31,11 +33,12 @@ interface NewProduct {
   sizes: { sizeName: string; quantity: number }[];
 }
 
-
 export default function AdminView() {
   const [products, setProducts] = useState<Product[]>([]);
-  const navigate= useNavigate();
+  const [refreshData, setRefreshData] = useState(false);
   const [showAddProductForm, setShowAddProductForm] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Håll koll på den valda produkten
+  const [openEditDialog, setOpenEditDialog] = useState(false); // Öppna och stäng redigeringsdialogen
   const [newProduct, setNewProduct] = useState<NewProduct>({
     productName: "",
     productPrice: 0,
@@ -66,7 +69,7 @@ export default function AdminView() {
         });
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [refreshData]);
 
   const toggleAddProductForm = () => {
     setShowAddProductForm(!showAddProductForm);
@@ -102,9 +105,8 @@ export default function AdminView() {
           productDescription: "",
           sizes: [],
         });
+        setRefreshData(!refreshData);
         toggleAddProductForm();
-        navigate("/admin");
-      
       } else {
         console.error("Failed to add product");
       }
@@ -113,115 +115,138 @@ export default function AdminView() {
     }
   };
 
+  // Funktion för att öppna redigeringsdialogen och ställa in den valda produkten
+  const handleOpenEditDialog = (product: Product) => {
+    setSelectedProduct(product);
+    setOpenEditDialog(true);
+  };
 
-  
+  // Funktion för att stänga redigeringsdialogen
+  const handleCloseEditDialog = () => {
+    setSelectedProduct(null);
+    setOpenEditDialog(false);
+  };
+
+  const handleUpdateProductList = () => {
+    // Uppdatera produktlistan genom att sätta refreshData till det omvända värdet
+    setRefreshData((prevRefresh) => !prevRefresh);
+  };
+
   return (
     <>
-    
+
       <AdminLoggedIn
-      loggedInContent={ 
-      <div>
-      <h2>AdminView</h2>
+        loggedInContent={
+          <div>
+            <h2>AdminView</h2>
 
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={toggleAddProductForm}
-      >
-        Lägg till ny produkt
-      </Button>
-      <Link to="/orderlist">
-        <Button
-          variant="contained"
-          color="primary"
-        >
-          Alla ordrar
-        </Button>
-      </Link>
-      {showAddProductForm && (
-        <div>
-          <h3>Lägg till ny produkt</h3>
-          <TextField
-            name="productName"
-            label="Produktnamn"
-            value={newProduct.productName}
-            onChange={handleInputChange}
-          />
-          <TextField
-            name="productPrice"
-            label="Pris"
-            type="number"
-            value={newProduct.productPrice.toString()}
-            onChange={handleInputChange}
-          />
-          <TextField
-            name="productMaterial"
-            label="Material"
-            value={newProduct.productMaterial}
-            onChange={handleInputChange}
-          />
-          <TextField
-            name="productDescription"
-            label="Beskrivning"
-            multiline
-            rows={4}
-            value={newProduct.productDescription}
-            onChange={handleInputChange}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleAddProductClick}
-          >
-            Lägg till
-          </Button>
-        </div>
-      )}
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={toggleAddProductForm}
+            >
+              Lägg till ny produkt
+            </Button>
+            <Link to="/orderlist">
+              <Button
+                variant="contained"
+                color="primary"
+              >
+                Alla ordrar
+              </Button>
+            </Link>
+            {showAddProductForm && (
+              <div>
+                <h3>Lägg till ny produkt</h3>
+                <TextField
+                  name="productName"
+                  label="Produktnamn"
+                  value={newProduct.productName}
+                  onChange={handleInputChange}
+                />
+                <TextField
+                  name="productPrice"
+                  label="Pris"
+                  type="number"
+                  value={newProduct.productPrice.toString()}
+                  onChange={handleInputChange}
+                />
+                <TextField
+                  name="productMaterial"
+                  label="Material"
+                  value={newProduct.productMaterial}
+                  onChange={handleInputChange}
+                />
+                <TextField
+                  name="productDescription"
+                  label="Beskrivning"
+                  multiline
+                  rows={4}
+                  value={newProduct.productDescription}
+                  onChange={handleInputChange}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleAddProductClick}
+                >
+                  Lägg till
+                </Button>
+              </div>
+            )}
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Namn</TableCell>
-              <TableCell>Pris</TableCell>
-              <TableCell>Material</TableCell>
-              <TableCell>Beskrivning</TableCell>
-              <TableCell>Storlekar</TableCell>
-              <TableCell>Åtgärder</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {products.map((product) => (
-              <TableRow key={product._id}>
-                <TableCell>{product.productName}</TableCell>
-                <TableCell>{product.productPrice}</TableCell>
-                <TableCell>{product.productMaterial}</TableCell>
-                <TableCell>{product.productDescription}</TableCell>
-                <TableCell>
-                  <ul>
-                    {product.sizes.map((size, index) => (
-                      <li key={index}>
-                        {size.sizeName}: {size.quantity} st
-                      </li>
-                    ))}
-                  </ul>
-                </TableCell>
-                <TableCell>
-                  <Button variant="outlined" color="primary">
-                    Redigera
-                  </Button>
-                  <Button variant="outlined" color="secondary">
-                    Ta bort
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
-    }
-    />
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Namn</TableCell>
+                    <TableCell>Pris</TableCell>
+                    <TableCell>Material</TableCell>
+                    <TableCell>Beskrivning</TableCell>
+                    <TableCell>Storlekar</TableCell>
+                    <TableCell>Åtgärder</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {products.map((product) => (
+                    <TableRow key={product._id}>
+                      <TableCell>{product.productName}</TableCell>
+                      <TableCell>{product.productPrice}</TableCell>
+                      <TableCell>{product.productMaterial}</TableCell>
+                      <TableCell>{product.productDescription}</TableCell>
+                      <TableCell>
+                        {product.sizes && (
+                          <ul>
+                            {product.sizes.map((size, index) => (
+                              <li key={index}>
+                                {size.sizeName}: {size.quantity} st
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Button variant="outlined" color="primary" onClick={() => handleOpenEditDialog(product)}>
+                          Redigera
+                        </Button>
+                        <Button variant="outlined" color="secondary">
+                          Ta bort
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <EditProduct
+              open={openEditDialog}
+              onClose={handleCloseEditDialog}
+              product={selectedProduct}
+              updateProductList={handleUpdateProductList}
+            />
+          </div>
+        }
+      />
     </>
   );
 }

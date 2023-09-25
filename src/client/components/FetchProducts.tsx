@@ -7,8 +7,8 @@ import { ChangeCartBtns } from './ChangeCartBtns';
 export interface Product {
   _id: string,
   productName: string,
-  productPrice: string,
-  sizes: string[],
+  productPrice: number,
+  sizes: {sizeName: string; quantity: number}[],
   productMaterial: string,
   productDescription: string,
   productImage: string
