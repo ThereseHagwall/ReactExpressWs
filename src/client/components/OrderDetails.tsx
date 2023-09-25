@@ -2,24 +2,26 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 interface Order {
-    _id: number;
-    customerName: string;
-    products: Product[]; // Array of products within the order
-  }
-  
-  interface Product {
-    _id: number;
-    productName: string;
-    productPrice: number;
-    size: string;
-    quantity: number;
-  }
+  _id: number;
+  customerName: string;
+  products: Product[];
+}
+
+interface Product {
+  _id: number;
+  productName: string;
+  productPrice: number;
+  size: string;
+  quantity: number;
+}
 
 function OrderDetails() {
-  const { orderId, productId } = useParams(); // Get the orderId from the URL parameter
+  const { orderId, productId } = useParams();
+
   console.log("orderId:", orderId);
   console.log("productId:", productId);
   const [order, setOrder] = useState<Order | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Fetch the order details by orderId and productId
@@ -36,26 +38,39 @@ function OrderDetails() {
       })
       .catch((error) => {
         console.error("Error fetching order details:", error.message); // Log the error message
+        setError("Error fetching order details"); // Set an error message
       });
   }, [orderId, productId]);
-  if (!order) {
-    return <div>Loading...</div>;
+
+  if (error) {
+    return <div>Error: {error}</div>;
   }
+
   return (
     <div>
-      <h2>Order Details</h2>
-      <p>Customer Name: {order.customerName}</p>
-      <h3>Products: </h3>
-      <ul>
-        {order.products.map((product) => (
-          <li key={product._id}>
-            {product.productName} - {product.quantity}
-          </li>
-        ))}
-      </ul>
-      {/* Add the ability to edit products here */}
+      <h1>Order Details</h1>
+      {order ? (
+        <>
+          <p>Customer Name: {order.customerName}</p>
+          <h2>Product Details</h2>
+          <ul>
+            {order.products.map((product) => (
+              <li key={product._id}>
+                <p>Product Name: {product.productName}</p>
+                <p>Product Price: {product.productPrice}</p>
+                <p>Size: {product.size}</p>
+                <p>Quantity: {product.quantity}</p>
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 }
 
 export default OrderDetails;
+
+
