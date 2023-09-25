@@ -31,12 +31,11 @@ function OrderList() {
       <h2>Order List</h2>
       <ul>
         {orders.map((order) => (
+          console.log(order),
           <li key={order._id}>
-            {order.products.map((product) => (
-              <Link key={product._id} to={`/order/${order._id}/products/${product._id}`}>
+              <Link key={order._id} to={`/order/${order._id}`}>
                 {order.customerName}'s
               </Link>
-            ))}
           </li>
         ))}
       </ul>

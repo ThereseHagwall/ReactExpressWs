@@ -81,7 +81,7 @@ router.put("/orders/:id/products/:productId", async (req: Request, res: Response
     // Find the product within the order based on productId
     const productToUpdate = order.products.find((product) => {
       if (product._id) {
-        return product._id.equals(productObjectId);
+        return (product._id as mongoose.Types.ObjectId).equals(productObjectId);
       }
       return false;
     });

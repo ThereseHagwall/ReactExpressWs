@@ -16,16 +16,19 @@ interface Product {
 }
 
 function OrderDetails() {
-  const { orderId, productId } = useParams();
+  const { orderId: orderIdParam} = useParams<{ orderId: string; }>();
+
+  // Ensure orderId is always defined and a string
+  const orderId = orderIdParam || '';
 
   console.log("orderId:", orderId);
-  console.log("productId:", productId);
+
   const [order, setOrder] = useState<Order | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Fetch the order details by orderId and productId
-    fetch(`/orders/${orderId}/products/${productId}`)
+    fetch(`/order/orders/${orderId}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Network response was not ok (status ${response.status})`);
@@ -40,7 +43,7 @@ function OrderDetails() {
         console.error("Error fetching order details:", error.message); // Log the error message
         setError("Error fetching order details"); // Set an error message
       });
-  }, [orderId, productId]);
+  }, [orderId]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -72,5 +75,3 @@ function OrderDetails() {
 }
 
 export default OrderDetails;
-
-
