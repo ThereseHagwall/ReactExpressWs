@@ -43,7 +43,6 @@ export default function AdminView() {
     productMaterial: "",
     productDescription: "",
   });
-  const [refreshData, setRefreshData] = useState(false);
 
   useEffect(() => {
     fetch("/product/products")
