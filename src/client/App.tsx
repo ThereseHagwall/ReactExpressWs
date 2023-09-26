@@ -18,7 +18,6 @@ function ProductPage() {
 function App() {
   return (
     <>
-    <ShoppingCartProvider>
       <AuthProvider>
         <Header />
         <Routes>
@@ -32,7 +31,6 @@ function App() {
           <Route path='/checkoutcart' element={<CheckoutCart />} />
         </Routes>
       </AuthProvider>
-      </ShoppingCartProvider>
     </>
   );
 }

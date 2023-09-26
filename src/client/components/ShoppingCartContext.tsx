@@ -130,33 +130,32 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
 
   function decreaseQuantity(productId: string, selectedSize: string) {
     setCartItems((currentItems) => {
-      const existingItem = currentItems.find(
-        (item) => item.productId === productId && item.sizeId === selectedSize
-      );
-
-      if (existingItem && existingItem.quantity === 1) {
-        return currentItems.filter(
-          (item) =>
-            !(item.productId === productId && item.sizeId === selectedSize)
-        );
-      } else {
-        return currentItems.map((item) => {
-          if (item.productId === productId && item.sizeId === selectedSize) {
-            return { ...item, quantity: item.quantity - 1 };
-          } else {
-            return item;
-          }
-        });
-      }
+      return currentItems.map((item) => {
+        if (item.productId === productId && item.sizeId === selectedSize) {
+          const newQuantity = Math.max(item.quantity - 1, 1);
+          return { ...item, quantity: newQuantity };
+        } else {
+          return item;
+        }
+      });
     });
   }
 
   function removeFromCart(productId: string, sizeId: string) {
-    setCartItems((currentItems) =>
-      currentItems.filter(
+    setCartItems((currentItems) => {
+      const updatedItems = currentItems.filter(
         (item) => !(item.productId === productId && item.sizeId === sizeId)
-      )
-    );
+      );
+  
+      if (updatedItems.length === 0) {
+        localStorage.removeItem("StarWars Shop Cart");
+        localStorage.removeItem("tot sw pris");
+        setTotalPrice(0);
+        return [];
+      }
+  
+      return updatedItems;
+    });
   }
 
   const contextValue = {
