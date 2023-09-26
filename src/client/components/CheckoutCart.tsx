@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useShoppingCart } from './ShoppingCartContext';
-import Checkout from './CheckoutBtn';
 import CheckoutBtn from './CheckoutBtn';
 
 
@@ -55,11 +54,8 @@ const CheckoutCart: React.FC = () => {
     })
       .then((response) => response.json())
       .then((newOrder) => {
-        // Handle the response from the server
         setMessage(`Order created with ID: ${newOrder._id}`);
-        // Optionally, you can also update the list of orders displayed on the page
         setOrders([...orders, newOrder]);
-        // Clear the input fields after creating the order
         setNewOrderData({
           productName: '',
           productPrice: 0,
@@ -75,31 +71,32 @@ const CheckoutCart: React.FC = () => {
 
   return (
     <div>
-      <h2>Din kundvagn</h2>
+      <h1>Din kundvagn</h1>
 
       {cartItems.length > 0 ? (
         <div>
           {cartItems.map((item) => (
             <div key={`${item.productId}-${item.sizeId}`}>
-              <p>Product: {item.productName}</p>
-              <p>Size: {item.sizeId}</p>
-              <p>Quantity: {item.quantity}</p>
-              <p>Price: {item.productPrice}</p>
-              <button onClick={() => increaseQuantity(item.productId, item.sizeId, item.productPrice, item.productName)}>Increase Quantity</button>
-              <button onClick={() => decreaseQuantity(item.productId, item.sizeId)}>Decrease Quantity</button>
-              <button onClick={() => removeFromCart(item.productId, item.sizeId)}>Remove From Cart</button>
+              <p>Produkt: {item.productName}</p>
+              <img src={item.productImage} alt={item.productName} />
+              <p>Storlek: {item.sizeId}</p>
+              <p>Antal: {item.quantity}</p>
+              <p>Pris per produkt: {item.productPrice} kr</p>
+              <button onClick={() => decreaseQuantity(item.productId, item.sizeId)}> - </button>
+              <button onClick={() => increaseQuantity(item.productId, item.sizeId, item.productPrice, item.productName, item.productImage)}>+</button>
+              <button onClick={() => removeFromCart(item.productId, item.sizeId)}>Ta bort från kundvagn</button>
             </div>
           ))}
-          <p>Total Price: ${totalPrice.toFixed(2)}</p>
+          <p>Total pris: {totalPrice.toFixed(2)} kr</p>
+          <button onClick={handlePurchaseClick}>Purchase</button>
+          {message && <p>{message}</p>}
+          <div>
+            {CheckoutBtn()}
+          </div>
         </div>
       ) : (
-        <h2>Här var det tomt.</h2>
+        <h2>Oj här var det tomt.</h2>
       )}
-      <button onClick={handlePurchaseClick}>Purchase</button>
-      {message && <p>{message}</p>}
-      <div>
-        {CheckoutBtn()}
-      </div>
     </div>
   );
 };

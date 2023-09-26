@@ -5,6 +5,7 @@ type ShoppingCartProviderProps = {
 };
 
 export type CartItem = {
+  productImage: string;
   productId: number;
   sizeId: string;
   quantity: number;
@@ -13,7 +14,7 @@ export type CartItem = {
 };
 
 type ShoppingCartContext = {
-  increaseQuantity: (productId: number, selectedSize: string, productPrice: number, productName: string) => void;
+  increaseQuantity: (productId: number, selectedSize: string, productPrice: number, productName: string, productImage: string) => void;
   decreaseQuantity: (productId: number, selectedSize: string) => void;
   getCartItemQuantity: (productId: number, selectedSize: string) => number;
   removeFromCart: (productId: number, sizeId: string) => void;
@@ -65,7 +66,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     return item ? item.quantity : 0;
   }
 
-  function increaseQuantity(productId: number, selectedSize: string, productPrice: number, productName: string) {
+  function increaseQuantity(productId: number, selectedSize: string, productPrice: number, productName: string, productImage: string) {
     setCartItems((currentItems) => {
       const existingItem = currentItems.find(
         (item) => item.productId === productId && item.sizeId === selectedSize
@@ -74,7 +75,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
       if (!existingItem) {
         return [
           ...currentItems,
-          { productId, sizeId: selectedSize, quantity: 1, productPrice, productName }
+          { productId, sizeId: selectedSize, quantity: 1, productPrice, productName, productImage }
         ];
       } else {
         return currentItems.map((item) => {
