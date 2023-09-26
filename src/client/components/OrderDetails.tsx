@@ -4,13 +4,13 @@ import AdminLoggedIn from "./AdminLoggedIn";
 
 
 interface Order {
-  _id: number;
+  _id: string;
   customerName: string;
   products: Product[];
 }
 
 interface Product {
-  _id: number;
+  _id: string;
   productName: string;
   productPrice: number;
   size: string;
@@ -52,7 +52,7 @@ function OrderDetails() {
   return (
     <>
         <AdminLoggedIn
-    loggedInContent={ 
+    loggedInContent={
     <div>
       <h1>Order Details</h1>
       {order ? (

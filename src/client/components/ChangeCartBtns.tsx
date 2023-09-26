@@ -58,8 +58,9 @@ export function ChangeCartBtns({ product }: CartItem) {
         setSelectedSize(newSize);
     };
 
-    const productId: number = typeof _id === 'string' ? parseInt(_id, 10) : _id;
+
     const sizeId: string = selectedSize;
+    const productId: string = _id;
     const cartItemQuantity: number = getCartItemQuantity(productId, sizeId);
     const isSizeSelected = selectedSize !== '';
 
