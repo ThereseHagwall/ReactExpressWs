@@ -8,7 +8,7 @@ export interface Product {
   _id: string,
   productName: string,
   productPrice: number,
-  sizes: string[],
+  sizes: {sizeName: string; quantity: number}[],
   productMaterial: string,
   productDescription: string,
   productImage: string

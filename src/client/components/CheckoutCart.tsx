@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useShoppingCart } from './ShoppingCartContext';
+import Checkout from './CheckoutBtn';
+import CheckoutBtn from './CheckoutBtn';
+
 
 interface Order {
   _id: string;
@@ -72,7 +75,7 @@ const CheckoutCart: React.FC = () => {
 
   return (
     <div>
-      <h2>Cart Contents</h2>
+      <h2>Din kundvagn</h2>
 
       {cartItems.length > 0 ? (
         <div>
@@ -90,12 +93,13 @@ const CheckoutCart: React.FC = () => {
           <p>Total Price: ${totalPrice.toFixed(2)}</p>
         </div>
       ) : (
-        <p>Your cart is empty.</p>
+        <h2>Här var det tomt.</h2>
       )}
-
-      <h2>Order Form</h2>
-
-      {/* The rest of your order form */}
+      <button onClick={handlePurchaseClick}>Purchase</button>
+      {message && <p>{message}</p>}
+      <div>
+        {CheckoutBtn()}
+      </div>
     </div>
   );
 };

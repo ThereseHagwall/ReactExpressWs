@@ -8,8 +8,8 @@ interface CartItem {
 }
 
 interface Product {
-    _id: string | number;
-    sizes?: string[];
+    _id: string;
+    sizes: {sizeName: string; quantity: number}[],
     selectedSize?: string;
     productPrice: number;
     productName: string;

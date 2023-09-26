@@ -12,13 +12,16 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import AdminLoggedIn from "./AdminLoggedIn";
+import EditProduct from "./EditProduct"; // Importera EditProduct-komponenten
+import DeleteProduct from "./DeleteProduct";
 
-interface Product {
+export interface Product {
   _id: string;
   productName: string;
   productPrice: number;
   productMaterial: string;
   productDescription: string;
+  productImage: string;
   sizes: { sizeName: string; quantity: number }[];
 }
 
@@ -31,14 +34,16 @@ interface NewProduct {
 
 export default function AdminView() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [refreshData, setRefreshData] = useState(false);
   const [showAddProductForm, setShowAddProductForm] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Håll koll på den valda produkten
+  const [openEditDialog, setOpenEditDialog] = useState(false); // Öppna och stäng redigeringsdialogen
   const [newProduct, setNewProduct] = useState<NewProduct>({
     productName: "",
     productPrice: 0,
     productMaterial: "",
     productDescription: "",
   });
-  const [refreshData, setRefreshData] = useState(false);
 
   useEffect(() => {
     fetch("/product/products")
@@ -105,6 +110,29 @@ export default function AdminView() {
     }
   };
 
+  // Funktion för att öppna redigeringsdialogen och ställa in den valda produkten
+  const handleOpenEditDialog = (product: Product) => {
+    setSelectedProduct(product);
+    setOpenEditDialog(true);
+  };
+
+  // Funktion för att stänga redigeringsdialogen
+  const handleCloseEditDialog = () => {
+    setSelectedProduct(null);
+    setOpenEditDialog(false);
+  };
+
+  const handleUpdateProductList = () => {
+    // Uppdatera produktlistan genom att sätta refreshData till det omvända värdet
+    setRefreshData((prevRefresh) => !prevRefresh);
+  };
+
+  const handleDeleteProduct = (deletedProductId: string) => {
+    setProducts((prevProducts) =>
+      prevProducts.filter((product) => product._id !== deletedProductId)
+    );
+  };
+
   return (
     <>
       <AdminLoggedIn
@@ -120,7 +148,10 @@ export default function AdminView() {
               Lägg till ny produkt
             </Button>
             <Link to="/orderlist">
-              <Button variant="contained" color="primary">
+              <Button
+                variant="contained"
+                color="primary"
+              >
                 Alla ordrar
               </Button>
             </Link>
@@ -195,18 +226,25 @@ export default function AdminView() {
                         )}
                       </TableCell>
                       <TableCell>
-                        <Button variant="outlined" color="primary">
+                        <Button variant="outlined" color="primary" onClick={() => handleOpenEditDialog(product)}>
                           Redigera
                         </Button>
-                        <Button variant="outlined" color="secondary">
-                          Ta bort
-                        </Button>
+                        <DeleteProduct
+                          productId={product._id}
+                          onDelete={() => handleDeleteProduct(product._id)}
+                        />
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
+            <EditProduct
+              open={openEditDialog}
+              onClose={handleCloseEditDialog}
+              product={selectedProduct}
+              updateProductList={handleUpdateProductList}
+            />
           </div>
         }
       />
