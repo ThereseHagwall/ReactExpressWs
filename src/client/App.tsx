@@ -19,7 +19,6 @@ function ProductPage() {
 function App() {
   return (
     <>
-    <ShoppingCartProvider>
       <AuthProvider>
         <Header />
         <Routes>
@@ -34,7 +33,6 @@ function App() {
         </Routes>
         <Footer />
       </AuthProvider>
-      </ShoppingCartProvider>
     </>
   );
 }
