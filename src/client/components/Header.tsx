@@ -8,6 +8,8 @@ import { useAuth } from './AuthContext';
 import { useShoppingCart, CartItem } from './ShoppingCartContext';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Hidden from '@mui/material/Hidden';
+import Typography from '@mui/material/Typography';
 
 export default function Header() {
   const { isLoggedIn, logout } = useAuth();
@@ -15,16 +17,13 @@ export default function Header() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const navigate = useNavigate();
   const [selectedMenuItem, setSelectedMenuItem] = useState<string | null>(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-    setIsDropdownOpen(true);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    setIsDropdownOpen(false);
   };
 
   const handleCheckoutClick = () => {
@@ -34,7 +33,7 @@ export default function Header() {
 
   const handleMenuItemClick = (itemName: string) => {
     setSelectedMenuItem(itemName);
-    // You can add additional logic here based on the selected item.
+    handleMenuClose();
   };
 
   return (
@@ -44,40 +43,51 @@ export default function Header() {
         backgroundColor: 'black',
         color: 'yellow',
         display: 'flex',
-        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         padding: '1rem',
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <Link to="/" style={{ textDecoration: 'none', color: 'yellow' }}>
-          <h1>Star Wars Shop</h1>
-        </Link>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <img
+          src="https://prod-printler-front-as.azurewebsites.net/media/photo/126208.jpg?mode=crop&width=727&height=1024&rnd=0.0.1"
+          alt=""
+          style={{ width: '100px', objectFit: 'cover', height: '100px', borderRadius: '200px' }}
+        />
+        <div>
+          <Hidden mdUp>
+            <Link to="/" style={{ textDecoration: 'none', color: 'yellow' }}>
+              <Typography variant="h1" sx={{ fontSize: '20px' }}>
+                The Force In Shirts
+              </Typography>
+            </Link>
+          </Hidden>
+          <Hidden smDown>
+            <Link to="/" style={{ textDecoration: 'none', color: 'yellow' }}>
+              <Typography variant="h1" sx={{ fontSize: '30px' }}>
+                The Force In Shirts
+              </Typography>
+            </Link>
+          </Hidden>
+        </div>
+      </div>
+
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
         {isLoggedIn ? (
           <Button variant="contained" onClick={logout}>
             Logga ut
           </Button>
         ) : (
-          <Link to="/login">
+          <Link to="/login" style={{ textDecoration: 'none' }}>
             <Button variant="contained">ADMIN</Button>
           </Link>
         )}
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <div
-          className="mouseOver"
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-          onMouseEnter={handleMenuClick}  // Uppdaterad hantering för mouseover
-          onMouseLeave={handleMenuClose}  // Uppdaterad hantering för mouseleave
+          onMouseEnter={handleMenuClick}
+          onMouseLeave={handleMenuClose}
         >
           <IconButton
             color="warning"
@@ -93,7 +103,7 @@ export default function Header() {
             id="cart-menu"
             anchorEl={anchorEl}
             keepMounted
-            open={Boolean(anchorEl)}  // Uppdaterad hantering för att visa menyn
+            open={Boolean(anchorEl)}
             onClose={handleMenuClose}
           >
             {cartItems.map((item: CartItem) => (
@@ -102,20 +112,20 @@ export default function Header() {
                 selected={item.productName === selectedMenuItem}
                 onClick={() => {
                   handleMenuItemClick(item.productName);
-                  handleMenuClose();
                 }}
               >
-                {item.productName} - Quantity: {item.quantity}
+                {item.productName} - Antal: {item.quantity}
               </MenuItem>
             ))}
             <MenuItem
-              selected={'Checkout' === selectedMenuItem}
               onClick={() => {
                 handleCheckoutClick();
-                handleMenuItemClick('Checkout');
               }}
+              style={{ display: 'flex', justifyContent: 'center' }}
             >
-              Checkout
+              <Button color="success" variant="contained">
+                Till varukorgen
+              </Button>
             </MenuItem>
           </Menu>
         </div>
