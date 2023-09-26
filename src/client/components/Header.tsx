@@ -76,10 +76,8 @@ export default function Header() {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}
-          onClick={handleMenuClick}
-          role="button"
-          onMouseEnter={() => setIsDropdownOpen(true)}
-          onMouseLeave={() => setIsDropdownOpen(false)}
+          onMouseEnter={handleMenuClick}  // Uppdaterad hantering för mouseover
+          onMouseLeave={handleMenuClose}  // Uppdaterad hantering för mouseleave
         >
           <IconButton
             color="warning"
@@ -95,12 +93,12 @@ export default function Header() {
             id="cart-menu"
             anchorEl={anchorEl}
             keepMounted
-            open={isDropdownOpen}
+            open={Boolean(anchorEl)}  // Uppdaterad hantering för att visa menyn
             onClose={handleMenuClose}
           >
             {cartItems.map((item: CartItem) => (
               <MenuItem
-                key={item.productId}
+                key={item.productId + item.sizeId}
                 selected={item.productName === selectedMenuItem}
                 onClick={() => {
                   handleMenuItemClick(item.productName);

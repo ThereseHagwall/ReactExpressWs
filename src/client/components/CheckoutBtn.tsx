@@ -15,7 +15,9 @@ export default function CheckoutBtn() {
         Gå till kassan
       </Button>
 
-      {showCheckout && <Checkout />}
+      {showCheckout && <Checkout onHide={function (): void {
+        throw new Error('Function not implemented.');
+      } } />}
     </div>
   );
 }
