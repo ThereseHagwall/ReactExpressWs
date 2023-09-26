@@ -55,8 +55,9 @@ const CheckoutCart: React.FC = () => {
   return (
     <div>
       <h1>Din kundvagn</h1>
-
-      {cartItems.length > 0 ? (
+      {cartItems.length === 0 ? (
+        <h2>Oj här var det tomt.</h2>
+      ) : (
         <div>
           {cartItems.map((item) => (
             <div key={`${item.productId}-${item.sizeId}`}>
@@ -70,32 +71,32 @@ const CheckoutCart: React.FC = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                   <CardContent sx={{ flex: '1 0 auto' }}>
                     <Typography component="div" variant="h5">
-                    {item.productName}
+                      {item.productName}
                     </Typography>
                     <Typography variant="subtitle1" color="text.secondary" component="div">
-                    Storlek: {item.sizeId}
+                      Storlek: {item.sizeId}
                     </Typography>
                     <Typography variant="subtitle1" color="text.secondary" component="div">
-                    Antal: {item.quantity}
+                      Antal: {item.quantity}
                     </Typography>
                     <Typography variant="subtitle1" color="text.secondary" component="div">
-                    Pris per produkt: {item.productPrice} kr
+                      Pris per produkt: {item.productPrice} kr
                     </Typography>
                   </CardContent>
                   <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                    <IconButton 
-                    onClick={() => decreaseQuantity(item.productId, item.sizeId)}
-                    aria-label="previous">
+                    <IconButton
+                      onClick={() => decreaseQuantity(item.productId, item.sizeId)}
+                      aria-label="previous">
                       {theme.direction === 'rtl' ? <AddIcon /> : <RemoveIcon />}
                     </IconButton>
-                    <IconButton 
-                    onClick={() => removeFromCart(item.productId, item.sizeId)}
-                    aria-label="play/pause">
+                    <IconButton
+                      onClick={() => removeFromCart(item.productId, item.sizeId)}
+                      aria-label="play/pause">
                       <DeleteForeverIcon sx={{ height: 38, width: 38 }} />
                     </IconButton>
-                    <IconButton 
-                    onClick={() => increaseQuantity(item.productId, item.sizeId, item.productPrice, item.productName, item.productImage)}
-                    aria-label="next">
+                    <IconButton
+                      onClick={() => increaseQuantity(item.productId, item.sizeId, item.productPrice, item.productName, item.productImage)}
+                      aria-label="next">
                       {theme.direction === 'rtl' ? <RemoveIcon /> : <AddIcon />}
                     </IconButton>
                   </Box>
@@ -104,13 +105,11 @@ const CheckoutCart: React.FC = () => {
             </div>
           ))}
           <Typography variant="subtitle1" color="text.main" component="div">
-          Total pris: {totalPrice.toFixed(2)} kr
+            Total pris: {totalPrice.toFixed(2)} kr
           </Typography>
           {message && <p>{message}</p>}
-          <div>{CheckoutBtn()}</div>
+          <div><CheckoutBtn /></div>
         </div>
-      ) : (
-        <h2>Oj här var det tomt.</h2>
       )}
     </div>
   );
