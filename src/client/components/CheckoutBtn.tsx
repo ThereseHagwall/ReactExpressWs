@@ -6,7 +6,7 @@ export default function CheckoutBtn() {
   return (
     <div>
       <Link to="/checkout">
-        <Button variant="contained">Go to checkout</Button>
+        <Button variant="contained">Gå till kassan</Button>
       </Link>
     </div>
   )
