@@ -13,6 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import AdminLoggedIn from "./AdminLoggedIn";
 import EditProduct from "./EditProduct"; // Importera EditProduct-komponenten
+import DeleteProduct from "./DeleteProduct";
 
 export interface Product {
   _id: string;
@@ -126,6 +127,12 @@ export default function AdminView() {
     setRefreshData((prevRefresh) => !prevRefresh);
   };
 
+  const handleDeleteProduct = (deletedProductId: string) => {
+    setProducts((prevProducts) =>
+      prevProducts.filter((product) => product._id !== deletedProductId)
+    );
+  };
+
   return (
     <>
       <AdminLoggedIn
@@ -222,9 +229,10 @@ export default function AdminView() {
                         <Button variant="outlined" color="primary" onClick={() => handleOpenEditDialog(product)}>
                           Redigera
                         </Button>
-                        <Button variant="outlined" color="secondary">
-                          Ta bort
-                        </Button>
+                        <DeleteProduct
+                          productId={product._id}
+                          onDelete={() => handleDeleteProduct(product._id)}
+                        />
                       </TableCell>
                     </TableRow>
                   ))}
