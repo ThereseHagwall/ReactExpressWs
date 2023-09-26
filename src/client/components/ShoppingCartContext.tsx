@@ -22,7 +22,7 @@ type ShoppingCartContext = {
   totalPrice: number;
 };
 
-const DefaultShoppingCartContext: ShoppingCartContext = {
+export const DefaultShoppingCartContext: ShoppingCartContext = {
   getCartItemQuantity: () => 0,
   increaseQuantity: () => {},
   decreaseQuantity: () => {},
@@ -71,7 +71,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
       const existingItem = currentItems.find(
         (item) => item.productId === productId && item.sizeId === selectedSize
       );
-  
+
       if (!existingItem) {
         return [
           ...currentItems,
@@ -88,7 +88,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
       }
     });
   }
-  
+
 
   function decreaseQuantity(productId: number, selectedSize: string) {
     setCartItems((currentItems) => {

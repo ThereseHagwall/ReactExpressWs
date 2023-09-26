@@ -11,9 +11,17 @@ const ProductSchema = new Schema({
 
 const OrderSchema = new Schema({
   products: [ProductSchema],
-  quantity: { type: Number, required: true },
-  customerName: { type: String, required: true },
   orderDate: { type: Date, default: Date.now },
+  name: { type: String, required: true },
+  mail: { type: String, required: true },
+  mobile: { type: String, required: true },
+  adress: { type: String, required: true },
+  paymentMethod: { type: String, required: true },
+  shipping: { type: String, required: true },
+  swishNumber: { type: Number },
+  bankDetails: { type: String},
+  cartItems: {type: Array},
+  totalPrice: { type: Number, required: true },
 });
 
 const orderModel = mongoose.model("Order", OrderSchema);
