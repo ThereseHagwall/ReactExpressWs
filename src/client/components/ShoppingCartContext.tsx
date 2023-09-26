@@ -19,6 +19,7 @@ type ShoppingCartContext = {
   removeFromCart: (productId: number, sizeId: string) => void;
   cartItems: CartItem[];
   totalPrice: number;
+  cartItemCount: number;
 };
 
 const DefaultShoppingCartContext: ShoppingCartContext = {
@@ -28,6 +29,8 @@ const DefaultShoppingCartContext: ShoppingCartContext = {
   removeFromCart: () => {},
   cartItems: [],
   totalPrice: 0,
+  cartItemCount: 0,
+  
 };
 
 const ShoppingCartContext = createContext<ShoppingCartContext | undefined>(undefined);
