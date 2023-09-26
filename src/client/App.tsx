@@ -10,6 +10,7 @@ import LoginForm from "./components/LoginForm";
 import AdminView from "./components/AdminView";
 import { AuthProvider } from './components/AuthContext';
 import { ShoppingCartProvider } from "./components/ShoppingCartContext";
+import Footer from "./components/Footer";
 
 function ProductPage() {
   return <FetchSingleProduct productId={""} />;
@@ -31,6 +32,7 @@ function App() {
           <Route path="/admin" element={<AdminView />} />
           <Route path='/checkoutcart' element={<CheckoutCart />} />
         </Routes>
+        <Footer />
       </AuthProvider>
       </ShoppingCartProvider>
     </>
