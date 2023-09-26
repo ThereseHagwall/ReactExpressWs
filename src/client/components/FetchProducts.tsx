@@ -61,7 +61,7 @@ const FetchProducts = () => {
             <p>{product.productPrice} €</p>
 
             <br/>
-            <ChangeCartBtns product={product}  />
+            <ChangeCartBtns product={product} productName={product.productName} />
           </ol>
         ))}
     </Grid>

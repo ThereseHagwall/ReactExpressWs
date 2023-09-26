@@ -4,12 +4,15 @@ import { useShoppingCart } from './ShoppingCartContext';
 
 interface CartItem {
     product: Product | null;
+    productName: string;
 }
 
 interface Product {
     _id: string;
     sizes: {sizeName: string; quantity: number}[],
     selectedSize?: string;
+    productPrice: number;
+    productName: string;
 }
 
 interface ProductSize {
@@ -37,7 +40,7 @@ export function ChangeCartBtns({ product }: CartItem) {
         return null;
     }
 
-    const { _id, selectedSize: initialSelectedSize } = product;
+    const { _id, selectedSize: initialSelectedSize, productPrice, productName } = product;
     const [selectedSize, setSelectedSize] = useState<string>(initialSelectedSize || '');
     const [productSizes, setProductSizes] = useState<ProductSize[]>([]);
 
@@ -65,7 +68,7 @@ return (
             <option value="">Välj storlek</option>
             {productSizes.map((productSize, index) => (
                 <option key={index} value={productSize.sizeName}>
-                    {productSize.sizeName} {productSize.quantity} st
+                    {productSize.sizeName} {'( '} {productSize.quantity} st {' )'}
                 </option>
             ))}
         </select>
@@ -76,7 +79,7 @@ return (
                     color: primary.contrastText,
                 }}
                 variant="contained"
-                onClick={() => isSizeSelected && increaseQuantity(productId, sizeId)}
+                onClick={() => isSizeSelected && increaseQuantity(productId, sizeId, productPrice, productName)}
                 disabled={!isSizeSelected}
             >
                 Lägg till i kundvagnen
@@ -106,7 +109,7 @@ return (
                             backgroundColor: primary.main,
                             color: primary.contrastText,
                         }}
-                        onClick={() => isSizeSelected && increaseQuantity(productId, sizeId)}
+                        onClick={() => isSizeSelected && increaseQuantity(productId, sizeId, productPrice, productName)}
                         disabled={
                             !isSizeSelected ||
                             cartItemQuantity ===
