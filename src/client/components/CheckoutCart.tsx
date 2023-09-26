@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useShoppingCart } from './ShoppingCartContext';
 
 interface Order {
   _id: string;
   customerName: string;
-  // Other order fields
 }
 
 const CheckoutCart: React.FC = () => {
@@ -16,6 +16,14 @@ const CheckoutCart: React.FC = () => {
     quantity: 0,
     customerName: '',
   });
+
+  const {
+    cartItems,
+    totalPrice,
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart,
+  } = useShoppingCart();
 
   useEffect(() => {
     // Fetch orders when the component mounts
@@ -64,47 +72,33 @@ const CheckoutCart: React.FC = () => {
 
   return (
     <div>
-      <h2>Produkter</h2>
-      
-      <input
-        type="text"
-        name="customerName"
-        placeholder="customer Name"
-        value={newOrderData.customerName}
-        onChange={handleInputChange}
-      />
-      <input
-        type="text"
-        name="productName"
-        placeholder="Product Name"
-        value={newOrderData.productName}
-        onChange={handleInputChange}
-      />
-      <input
-        type="number"
-        name="productPrice"
-        placeholder="Product Price"
-        value={newOrderData.productPrice}
-        onChange={handleInputChange}
-      />
-      <input
-        type="text"
-        name="size"
-        placeholder="Size"
-        value={newOrderData.size}
-        onChange={handleInputChange}
-      />
-      <input
-        type="number"
-        name="quantity"
-        placeholder="Quantity"
-        value={newOrderData.quantity}
-        onChange={handleInputChange}
-      />
-      <button onClick={handlePurchaseClick}>Purchase</button>
-      {message && <p>{message}</p>}
+      <h2>Cart Contents</h2>
+
+      {cartItems.length > 0 ? (
+        <div>
+          {cartItems.map((item) => (
+            <div key={`${item.productId}-${item.sizeId}`}>
+              <p>Product: {item.productName}</p>
+              <p>Size: {item.sizeId}</p>
+              <p>Quantity: {item.quantity}</p>
+              <p>Price: {item.productPrice}</p>
+              <button onClick={() => increaseQuantity(item.productId, item.sizeId, item.productPrice, item.productName)}>Increase Quantity</button>
+              <button onClick={() => decreaseQuantity(item.productId, item.sizeId)}>Decrease Quantity</button>
+              <button onClick={() => removeFromCart(item.productId, item.sizeId)}>Remove From Cart</button>
+            </div>
+          ))}
+          <p>Total Price: ${totalPrice.toFixed(2)}</p>
+        </div>
+      ) : (
+        <p>Your cart is empty.</p>
+      )}
+
+      <h2>Order Form</h2>
+
+      {/* The rest of your order form */}
     </div>
   );
 };
 
 export default CheckoutCart;
+

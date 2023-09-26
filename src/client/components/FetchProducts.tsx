@@ -7,7 +7,7 @@ import { ChangeCartBtns } from './ChangeCartBtns';
 export interface Product {
   _id: string,
   productName: string,
-  productPrice: string,
+  productPrice: number,
   sizes: string[],
   productMaterial: string,
   productDescription: string,
@@ -61,7 +61,7 @@ const FetchProducts = () => {
             <p>{product.productPrice} €</p>
 
             <br/>
-            <ChangeCartBtns product={product}  />
+            <ChangeCartBtns product={product} productName={product.productName} />
           </ol>
         ))}
     </Grid>

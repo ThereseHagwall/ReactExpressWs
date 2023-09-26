@@ -1,27 +1,33 @@
-import React, { createContext, useContext, ReactNode, useState } from 'react';
+import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 
 type ShoppingCartProviderProps = {
   children: ReactNode;
 };
 
-type CartItem = {
+export type CartItem = {
   productId: number;
   sizeId: string;
   quantity: number;
+  productPrice: number;
+  productName: string;
 };
 
 type ShoppingCartContext = {
-  increaseQuantity: (productId: number, selectedSize: string) => void;
-  decreaseQuantity:(productId: number, selectedSize:string) => void;
-  getCartItemQuantity:(productId: number, selectedSize: string) => number;
+  increaseQuantity: (productId: number, selectedSize: string, productPrice: number, productName: string) => void;
+  decreaseQuantity: (productId: number, selectedSize: string) => void;
+  getCartItemQuantity: (productId: number, selectedSize: string) => number;
   removeFromCart: (productId: number, sizeId: string) => void;
+  cartItems: CartItem[];
+  totalPrice: number;
 };
 
 const DefaultShoppingCartContext: ShoppingCartContext = {
   getCartItemQuantity: () => 0,
-  increaseQuantity: () => { },
-  decreaseQuantity: () => { },
-  removeFromCart: () => { },
+  increaseQuantity: () => {},
+  decreaseQuantity: () => {},
+  removeFromCart: () => {},
+  cartItems: [],
+  totalPrice: 0,
 };
 
 const ShoppingCartContext = createContext<ShoppingCartContext | undefined>(undefined);
@@ -34,26 +40,42 @@ export function useShoppingCart() {
   return context;
 }
 
-
 export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    const localStorageCart = localStorage.getItem('StarWars Shop Cart');
+    return localStorageCart ? JSON.parse(localStorageCart) : [];
+  });
+
+  const [totalPrice, setTotalPrice] = useState(() => {
+    const localStoragePrice = localStorage.getItem('tot sw pris');
+    return localStoragePrice ? parseFloat(localStoragePrice) : 0;
+  });
+
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
+  useEffect(() => {
+    const total = cartItems.reduce((acc, item) => acc + item.quantity * item.productPrice, 0);
+    setTotalPrice(total);
+    localStorage.setItem('StarWars Shop Cart', JSON.stringify(cartItems));
+    localStorage.setItem('tot sw pris', total.toString());
+  }, [cartItems]);
 
   function getCartItemQuantity(productId: number, sizeId: string): number {
     const item = cartItems.find((item) => item.productId === productId && item.sizeId === sizeId);
     return item ? item.quantity : 0;
   }
 
-
-  function increaseQuantity(productId: number, selectedSize: string) {
+  function increaseQuantity(productId: number, selectedSize: string, productPrice: number, productName: string) {
     setCartItems((currentItems) => {
       const existingItem = currentItems.find(
         (item) => item.productId === productId && item.sizeId === selectedSize
       );
   
       if (!existingItem) {
-        return [...currentItems, { productId, sizeId: selectedSize, quantity: 1 }];
+        return [
+          ...currentItems,
+          { productId, sizeId: selectedSize, quantity: 1, productPrice, productName }
+        ];
       } else {
         return currentItems.map((item) => {
           if (item.productId === productId && item.sizeId === selectedSize) {
@@ -66,12 +88,13 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     });
   }
   
+
   function decreaseQuantity(productId: number, selectedSize: string) {
     setCartItems((currentItems) => {
       const existingItem = currentItems.find(
         (item) => item.productId === productId && item.sizeId === selectedSize
       );
-  
+
       if (existingItem && existingItem.quantity === 1) {
         return currentItems.filter(
           (item) => !(item.productId === productId && item.sizeId === selectedSize)
@@ -87,15 +110,11 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
       }
     });
   }
-  
-
 
   function removeFromCart(productId: number, sizeId: string) {
-    setCartItems((currentItems) => {
-      return currentItems.filter(
-        (item) => !(item.productId === productId && item.sizeId === sizeId)
-      );
-    });
+    setCartItems((currentItems) =>
+      currentItems.filter((item) => !(item.productId === productId && item.sizeId === sizeId))
+    );
   }
 
   const contextValue = {
@@ -104,6 +123,8 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     decreaseQuantity,
     removeFromCart,
     cartItemCount,
+    cartItems,
+    totalPrice
   };
 
   return (
