@@ -9,6 +9,7 @@ import {
   RadioGroup,
   Radio,
 } from "@mui/material";
+import CheckoutCart from "./CheckoutCart";
 
 interface Order {
   _id: string;
@@ -29,6 +30,11 @@ export default function Checkout() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [newOrderData, setNewOrderData] = useState({});
 
+  const handleClearCart = () => {
+    localStorage.removeItem('StarWars Shop Cart')
+    localStorage.removeItem('tot sw pris')
+  };
+
   const handelSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -45,13 +51,6 @@ export default function Checkout() {
       totalPrice,
     };
 
-    setName("");
-    setMail("");
-    setMobil("");
-    setAdress("");
-    setPaymentMethod("");
-    setShipping("");
-
     fetch("/order/add", {
       method: "POST",
       headers: {
@@ -61,8 +60,7 @@ export default function Checkout() {
     })
       .then((response) => response.json())
       .then((newOrder) => {
-
-        setMessage(`Order created with ID: ${newOrder._id}`);
+        setMessage(`Din order har lagts. Ditt order nummer är: ${newOrder._id}`);
         setOrders([...orders, newOrder]);
         setNewOrderData({
           name: "",
@@ -76,6 +74,15 @@ export default function Checkout() {
           cartItems: [],
           totalPrice: 0,
         });
+
+        setName("");
+        setMail("");
+        setMobil("");
+        setAdress("");
+        setPaymentMethod("");
+        setShipping("");
+
+        handleClearCart();
       })
       .catch((error) => {
         console.error("Error creating order:", error);
@@ -105,93 +112,99 @@ export default function Checkout() {
   };
 
   return (
-    <form onSubmit={handelSubmit}>
-      <TextField
-        required
-        id="standard-basic1"
-        label="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        variant="standard"
-      />
-      <br />
-      <TextField
-        required
-        id="standard-basic2"
-        label="Mail"
-        value={mail}
-        onChange={(e) => setMail(e.target.value)}
-        variant="standard"
-      />
-      <br />
-      <TextField
-        required
-        id="standard-basic3"
-        label="Mobilnummer"
-        value={mobile}
-        onChange={(e) => setMobil(e.target.value)}
-        variant="standard"
-      />
-      <br />
-      <TextField
-        required
-        id="standard-basic4"
-        label="Adress"
-        value={adress}
-        onChange={(e) => setAdress(e.target.value)}
-        variant="standard"
-      />
-      <br />
-      <FormControl>
-        <FormLabel id="Payment">Betalsätt</FormLabel>
-        <RadioGroup
-          aria-labelledby="payment"
-          defaultValue=""
-          name="radio-buttons-group"
-          value={paymentMethod}
-          onChange={handelPayment}
-        >
-          <FormControlLabel value="Bankkort" control={<Radio />} label="Bank Kort" />
-          <FormControlLabel value="Swish" control={<Radio />} label="Swish" />
-        </RadioGroup>
-      </FormControl><br />
-      {paymentMethod === 'Swish' && (
-        <TextField
-          required
-          id="swish-number"
-          label="Swish number"
-          value={swishNumber}
-          onChange={(e) => setSwishNumber(e.target.value)}
-          variant="standard"
-        />
-      )}
-      {paymentMethod === 'Bankkort' && (
-        <TextField
-          required
-          id="bank-details"
-          label="XXXX-XXXX-XXXX-XXXX"
-          value={bankDetails}
-          onChange={(e) => setBankDetails(e.target.value)}
-          variant="standard"
-        />
-      )}
+    <div>
+      {message ? (
+        <div>{message}</div>
+      ) : (
+        <form onSubmit={handelSubmit}>
+          <TextField
+            required
+            id="standard-basic1"
+            label="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            variant="standard"
+          />
+          <br />
+          <TextField
+            required
+            id="standard-basic2"
+            label="Mail"
+            value={mail}
+            onChange={(e) => setMail(e.target.value)}
+            variant="standard"
+          />
+          <br />
+          <TextField
+            required
+            id="standard-basic3"
+            label="Mobilnummer"
+            value={mobile}
+            onChange={(e) => setMobil(e.target.value)}
+            variant="standard"
+          />
+          <br />
+          <TextField
+            required
+            id="standard-basic4"
+            label="Adress"
+            value={adress}
+            onChange={(e) => setAdress(e.target.value)}
+            variant="standard"
+          />
+          <br />
+          <FormControl>
+            <FormLabel id="Payment">Betalsätt</FormLabel>
+            <RadioGroup
+              aria-labelledby="payment"
+              defaultValue=""
+              name="radio-buttons-group"
+              value={paymentMethod}
+              onChange={handelPayment}
+            >
+              <FormControlLabel value="Bankkort" control={<Radio />} label="Bank Kort" />
+              <FormControlLabel value="Swish" control={<Radio />} label="Swish" />
+            </RadioGroup>
+          </FormControl><br />
+          {paymentMethod === 'Swish' && (
+            <TextField
+              required
+              id="swish-number"
+              label="Swish number"
+              value={swishNumber}
+              onChange={(e) => setSwishNumber(e.target.value)}
+              variant="standard"
+            />
+          )}
+          {paymentMethod === 'Bankkort' && (
+            <TextField
+              required
+              id="bank-details"
+              label="XXXX-XXXX-XXXX-XXXX"
+              value={bankDetails}
+              onChange={(e) => setBankDetails(e.target.value)}
+              variant="standard"
+            />
+          )}
 
-      <FormControl>
-        <FormLabel id="shipping">Frakt</FormLabel>
-        <RadioGroup
-          aria-labelledby="shipping"
-          defaultValue=""
-          name="radio-buttons-group"
-          value={shipping}
-          onChange={(e) => setShipping(e.target.value)}
-        >
-          <FormControlLabel value="dhl" control={<Radio />} label={`DHL (leveranstid: ${getDeliveryTime('dhl')})`} />
-          <FormControlLabel value="postnord" control={<Radio />} label={`Postnord (leveranstid: ${getDeliveryTime('postnord')})`} />
-          <FormControlLabel value="ups" control={<Radio />} label={`Ups (leveranstid: ${getDeliveryTime('ups')})`} />
-        </RadioGroup>
-      </FormControl><br />
-      <Button variant="contained" onClick={handelSubmit}>Skicka beställning</Button>
-    </form>
+          <FormControl>
+            <FormLabel id="shipping">Frakt</FormLabel>
+            <RadioGroup
+              aria-labelledby="shipping"
+              defaultValue=""
+              name="radio-buttons-group"
+              value={shipping}
+              onChange={(e) => setShipping(e.target.value)}
+            >
+              <FormControlLabel value="dhl" control={<Radio />} label={`DHL (leveranstid: ${getDeliveryTime('dhl')})`} />
+              <FormControlLabel value="postnord" control={<Radio />} label={`Postnord (leveranstid: ${getDeliveryTime('postnord')})`} />
+              <FormControlLabel value="ups" control={<Radio />} label={`Ups (leveranstid: ${getDeliveryTime('ups')})`} />
+            </RadioGroup>
+          </FormControl><br />
+          <Button variant="contained" type="submit">Skicka beställning</Button>
+        </form>
+      )}
+    </div>
   );
 };
 
