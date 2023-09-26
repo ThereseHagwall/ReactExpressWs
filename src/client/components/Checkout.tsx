@@ -149,7 +149,7 @@ export default function Checkout() {
           defaultValue=""
           name="radio-buttons-group"
           value={paymentMethod}
-          onChange={handlePayment}
+          onChange={handelPayment}
         >
           <FormControlLabel value="Bankkort" control={<Radio />} label="Bank Kort" />
           <FormControlLabel value="Swish" control={<Radio />} label="Swish" />
@@ -190,10 +190,8 @@ export default function Checkout() {
           <FormControlLabel value="ups" control={<Radio />} label={`Ups (leveranstid: ${getDeliveryTime('ups')})`} />
         </RadioGroup>
       </FormControl><br />
-      <Button variant="contained" onClick={handleSubmit}>Skicka beställning</Button>
+      <Button variant="contained" onClick={handelSubmit}>Skicka beställning</Button>
     </form>
   );
 };
-
-export default Checkout;
 

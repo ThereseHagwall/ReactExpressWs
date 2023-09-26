@@ -106,7 +106,6 @@ const CheckoutCart: React.FC = () => {
           <Typography variant="subtitle1" color="text.main" component="div">
           Total pris: {totalPrice.toFixed(2)} kr
           </Typography>
-          <button onClick={handlePurchaseClick}>Purchase</button>
           {message && <p>{message}</p>}
           <div>{CheckoutBtn()}</div>
         </div>
