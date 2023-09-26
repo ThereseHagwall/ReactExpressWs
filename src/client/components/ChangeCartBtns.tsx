@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button } from '@mui/material';
 import { useShoppingCart } from './ShoppingCartContext';
 
-interface CartItem {
+export interface CartItem {
     product: Product | null;
     productName: string;
     productImage: string;
