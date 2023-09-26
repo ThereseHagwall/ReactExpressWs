@@ -104,19 +104,27 @@ router.put('/products/:id', async (req, res) => {
 
 //TA BORT EN PRODUKT
 router.delete('/products/:id', async (req, res) => {
+  const productId = req.params.id;
+  console.log('Delete product whit id:', productId);
+
   try {
-    const productId = req.params.id;
+    // Ta bort produktstorlekar som tillhör den angivna produkten
+    await ProductSize.deleteMany({ productId });
+
+    // Ta bort själva produkten
     const deletedProduct = await Product.findOneAndDelete({ '_id': productId });
+    
     if (!deletedProduct) {
       return res.status(404).json({ error: 'Produkten hittades inte' });
     }
+
     res.json(deletedProduct);
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Error deleting product:', error);
     res.status(500).json({ error: 'Intern serverfel' });
   }
 });
+
 
 module.exports = router;
 
