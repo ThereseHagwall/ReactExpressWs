@@ -5,6 +5,7 @@ import { useShoppingCart } from './ShoppingCartContext';
 interface CartItem {
     product: Product | null;
     productName: string;
+    productImage: string;
 }
 
 interface Product {
@@ -13,6 +14,7 @@ interface Product {
     selectedSize?: string;
     productPrice: number;
     productName: string;
+    productImage: string;
 }
 
 interface ProductSize {
@@ -40,7 +42,7 @@ export function ChangeCartBtns({ product }: CartItem) {
         return null;
     }
 
-    const { _id, selectedSize: initialSelectedSize, productPrice, productName } = product;
+    const { _id, selectedSize: initialSelectedSize, productPrice, productName, productImage } = product;
     const [selectedSize, setSelectedSize] = useState<string>(initialSelectedSize || '');
     const [productSizes, setProductSizes] = useState<ProductSize[]>([]);
 
@@ -79,7 +81,7 @@ return (
                     color: primary.contrastText,
                 }}
                 variant="contained"
-                onClick={() => isSizeSelected && increaseQuantity(productId, sizeId, productPrice, productName)}
+                onClick={() => isSizeSelected && increaseQuantity(productId, sizeId, productPrice, productName, productImage)}
                 disabled={!isSizeSelected}
             >
                 Lägg till i kundvagnen
@@ -109,7 +111,7 @@ return (
                             backgroundColor: primary.main,
                             color: primary.contrastText,
                         }}
-                        onClick={() => isSizeSelected && increaseQuantity(productId, sizeId, productPrice, productName)}
+                        onClick={() => isSizeSelected && increaseQuantity(productId, sizeId, productPrice, productName, productImage)}
                         disabled={
                             !isSizeSelected ||
                             cartItemQuantity ===

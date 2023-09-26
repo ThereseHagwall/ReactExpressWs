@@ -58,10 +58,10 @@ const FetchProducts = () => {
             alt={product.productName} 
             onClick={() => handleProductClick({ _id: product._id })} 
             style={{width: "100%", objectFit: "cover", cursor: 'pointer', height: "200px", }} />
-            <p>{product.productPrice} €</p>
+            <p>{product.productPrice} kr</p>
 
             <br/>
-            <ChangeCartBtns product={product} productName={product.productName} />
+            <ChangeCartBtns product={product} productName={product.productName} productImage={product.productImage} />
           </ol>
         ))}
     </Grid>
