@@ -22,6 +22,7 @@ const OrderSchema = new Schema({
   bankDetails: { type: String},
   cartItems: {type: Array},
   totalPrice: { type: Number, required: true },
+  isSent: {type: Boolean}
 });
 
 const orderModel = mongoose.model("Order", OrderSchema);
