@@ -88,11 +88,21 @@ router.put('/products/:id', async (req, res) => {
   try {
     const productId = req.params.id;
     const updatedProductData = req.body;
-
     const updatedProduct = await Product.findByIdAndUpdate(productId, updatedProductData, { new: true });
 
     if (!updatedProduct) {
       return res.status(404).json({ error: 'Produkten hittades inte' });
+    }
+    if (req.body.sizes) {
+      const updatedSizes = req.body.sizes;
+
+      for (const updatedSize of updatedSizes) {
+        await ProductSize.findOneAndUpdate(
+          { productId, sizeName: updatedSize.sizeName },
+          { quantity: updatedSize.quantity },
+          { upsert: true }
+        );
+      }
     }
 
     res.json(updatedProduct);
@@ -101,6 +111,7 @@ router.put('/products/:id', async (req, res) => {
     res.status(500).json({ error: 'Intern serverfel' });
   }
 });
+
 
 //TA BORT EN PRODUKT
 router.delete('/products/:id', async (req, res) => {

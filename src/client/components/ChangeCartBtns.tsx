@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button } from '@mui/material';
 import { useShoppingCart } from './ShoppingCartContext';
 
-interface CartItem {
+export interface CartItem {
     product: Product | null;
     productName: string;
     productImage: string;
@@ -10,7 +10,7 @@ interface CartItem {
 
 interface Product {
     _id: string;
-    sizes: {sizeName: string; quantity: number}[],
+    sizes: { sizeName: string; quantity: number }[];
     selectedSize?: string;
     productPrice: number;
     productName: string;
@@ -58,85 +58,91 @@ export function ChangeCartBtns({ product }: CartItem) {
         setSelectedSize(newSize);
     };
 
-    const productId: number = typeof _id === 'string' ? parseInt(_id, 10) : _id;
+
     const sizeId: string = selectedSize;
+    const productId: string = _id;
     const cartItemQuantity: number = getCartItemQuantity(productId, sizeId);
     const isSizeSelected = selectedSize !== '';
 
-return (
-    <>
-        <label htmlFor="sizeDropdown">Storlek:</label>
-        <select id="sizeDropdown" value={selectedSize} onChange={handleSizeChange}>
-            <option value="">Välj storlek</option>
-            {productSizes.map((productSize, index) => (
-                <option key={index} value={productSize.sizeName}>
-                    {productSize.sizeName} {'( '} {productSize.quantity} st {' )'}
-                </option>
-            ))}
-        </select>
-        {cartItemQuantity === 0 ? (
-            <Button
-                sx={{
-                    backgroundColor: primary.main,
-                    color: primary.contrastText,
-                }}
-                variant="contained"
-                onClick={() => isSizeSelected && increaseQuantity(productId, sizeId, productPrice, productName, productImage)}
-                disabled={!isSizeSelected}
-            >
-                Lägg till i kundvagnen
-            </Button>
-        ) : (
-            <div>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                    }}
-                >
-                    <Button
-                        variant="contained"
-                        sx={{
-                            backgroundColor: primary.main,
-                            color: primary.contrastText,
-                        }}
-                        onClick={() => decreaseQuantity(productId, sizeId)}
-                    >
-                        -
-                    </Button>
-                    <p>{cartItemQuantity} st</p>
-                    <Button
-                        variant="contained"
-                        sx={{
-                            backgroundColor: primary.main,
-                            color: primary.contrastText,
-                        }}
-                        onClick={() => isSizeSelected && increaseQuantity(productId, sizeId, productPrice, productName, productImage)}
-                        disabled={
-                            !isSizeSelected ||
-                            cartItemQuantity ===
-                                (parseInt(
-                                    productSizes.find((ps) => ps.sizeName === selectedSize)?.quantity || '0',
-                                    10
-                                ))
-                        }>
-                        +
-                    </Button>
-                </Box>
+    return (
+        <>
+            <label htmlFor="sizeDropdown">Storlek:</label>
+            <select id="sizeDropdown" value={selectedSize} onChange={handleSizeChange}>
+                <option value="">Välj storlek</option>
+                {productSizes.map((productSize, index) => (
+                    <option key={index} value={productSize.sizeName}>
+                        {productSize.sizeName} {'( '} {productSize.quantity} st {' )'}
+                    </option>
+                ))}
+            </select>
+            {cartItemQuantity === 0 ? (
                 <Button
-                    variant="contained"
                     sx={{
-                        backgroundColor: primary.alert,
-                        color: primary.alertText,
+                        backgroundColor: primary.main,
+                        color: primary.contrastText,
                     }}
-                    onClick={() => removeFromCart(productId, sizeId)}
+                    variant="contained"
+                    onClick={() =>
+                        isSizeSelected &&
+                        increaseQuantity(productId, sizeId, productPrice, productName, productImage)
+                    }
+                    disabled={!isSizeSelected}
                 >
-                    Ta bort
+                    Lägg till i kundvagnen
                 </Button>
-            </div>
-        )}
-    </>
-);
-
+            ) : (
+                <div>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Button
+                            variant="contained"
+                            sx={{
+                                backgroundColor: primary.main,
+                                color: primary.contrastText,
+                            }}
+                            onClick={() => decreaseQuantity(productId, sizeId)}
+                        >
+                            -
+                        </Button>
+                        <p>{cartItemQuantity} st</p>
+                        <Button
+                            variant="contained"
+                            sx={{
+                                backgroundColor: primary.main,
+                                color: primary.contrastText,
+                            }}
+                            onClick={() =>
+                                isSizeSelected &&
+                                increaseQuantity(productId, sizeId, productPrice, productName, productImage)
+                            }
+                            disabled={
+                                !isSizeSelected ||
+                                cartItemQuantity ===
+                                    (parseInt(
+                                        productSizes.find((ps) => ps.sizeName === selectedSize)?.quantity || '0',
+                                        10
+                                    ))
+                            }
+                        >
+                            +
+                        </Button>
+                    </Box>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            backgroundColor: primary.alert,
+                            color: primary.alertText,
+                        }}
+                        onClick={() => removeFromCart(productId, sizeId)}
+                    >
+                        Ta bort
+                    </Button>
+                </div>
+            )}
+        </>
+    );
 }
-

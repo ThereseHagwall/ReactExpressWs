@@ -18,7 +18,7 @@ interface Order {
 }
 
 interface Product {
-  _id: number;
+  _id: string;
   productName: string;
   productPrice: number;
   sizeId: string;

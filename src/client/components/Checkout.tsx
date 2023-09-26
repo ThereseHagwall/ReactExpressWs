@@ -149,18 +149,13 @@ export default function Checkout() {
           defaultValue=""
           name="radio-buttons-group"
           value={paymentMethod}
-          onChange={handelPayment}
+          onChange={handlePayment}
         >
-          <FormControlLabel
-            value="Bankkort"
-            control={<Radio />}
-            label="Bank Kort"
-          />
+          <FormControlLabel value="Bankkort" control={<Radio />} label="Bank Kort" />
           <FormControlLabel value="Swish" control={<Radio />} label="Swish" />
         </RadioGroup>
-      </FormControl>
-      <br />
-      {paymentMethod === "Swish" && (
+      </FormControl><br />
+      {paymentMethod === 'Swish' && (
         <TextField
           required
           id="swish-number"
@@ -170,7 +165,7 @@ export default function Checkout() {
           variant="standard"
         />
       )}
-      {paymentMethod === "Bankkort" && (
+      {paymentMethod === 'Bankkort' && (
         <TextField
           required
           id="bank-details"
@@ -182,7 +177,7 @@ export default function Checkout() {
       )}
 
       <FormControl>
-        <FormLabel id="Shipping">Frakt</FormLabel>
+        <FormLabel id="shipping">Frakt</FormLabel>
         <RadioGroup
           aria-labelledby="shipping"
           defaultValue=""
@@ -190,27 +185,15 @@ export default function Checkout() {
           value={shipping}
           onChange={(e) => setShipping(e.target.value)}
         >
-          <FormControlLabel
-            value="dhl"
-            control={<Radio />}
-            label={`DHL (leveranstid: ${getDeliveryTime("dhl")})`}
-          />
-          <FormControlLabel
-            value="postnord"
-            control={<Radio />}
-            label={`Postnord (leveranstid: ${getDeliveryTime("postnord")})`}
-          />
-          <FormControlLabel
-            value="ups"
-            control={<Radio />}
-            label={`Ups (leveranstid: ${getDeliveryTime("up")})`}
-          />
+          <FormControlLabel value="dhl" control={<Radio />} label={`DHL (leveranstid: ${getDeliveryTime('dhl')})`} />
+          <FormControlLabel value="postnord" control={<Radio />} label={`Postnord (leveranstid: ${getDeliveryTime('postnord')})`} />
+          <FormControlLabel value="ups" control={<Radio />} label={`Ups (leveranstid: ${getDeliveryTime('ups')})`} />
         </RadioGroup>
-      </FormControl>
-      <br />
-      <Button variant="contained" onClick={handelSubmit}>
-        Skicka beställning
-      </Button>
+      </FormControl><br />
+      <Button variant="contained" onClick={handleSubmit}>Skicka beställning</Button>
     </form>
   );
-}
+};
+
+export default Checkout;
+
