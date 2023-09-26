@@ -26,7 +26,9 @@ export default function Header() {
           justifyContent: "space-between",
           alignItems: "center",
         }}>
-        <h1>Star Wars Shop</h1>
+        <Link to="/" style={{ textDecoration: 'none', color: 'yellow' }}>
+          <h1>Star Wars Shop</h1>
+        </Link>
         {isLoggedIn ? (
           <Button variant="contained" onClick={logout}>
             Logga ut
