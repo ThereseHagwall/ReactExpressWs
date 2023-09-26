@@ -75,43 +75,65 @@ router.get("/orders/:id", async (req, res) => {
   }
 });
 
-router.put("/orders/:id/products/:productId", async (req: Request, res: Response) => {
+router.put("/orders/:id", async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const updatedData = req.body; 
+
+    const updatedOrder = await orderModel.findByIdAndUpdate(orderId, updatedData, { new: true });
+
+    if (!updatedOrder) {
+      return res.status(404).json({ error: 'Cannot find the order to update' });
+    }
+
+    res.status(200).json(updatedOrder);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.put("/orders/:id/products/:productId", async (req, res) => {
   try {
     const orderId = req.params.id;
     const productId = req.params.productId;
     const updateData = req.body;
 
-    // Fetch the order by ID
     const order = await orderModel.findById(orderId);
 
     if (!order) {
       return res.status(404).json({ error: 'Order not found' });
     }
-
-    // Convert productId to ObjectId for comparison
-    const productObjectId = new mongoose.Types.ObjectId(productId);
-
-    // Find the product within the order based on productId
-    const productToUpdate = order.products.find((product) => {
-      if (product._id) {
-        return (product._id as mongoose.Types.ObjectId).equals(productObjectId);
-      }
-      return false;
+    const productToUpdateIndex = order.products.findIndex(product => {
+      return product._id && product._id.toString() === productId;
     });
 
-    if (!productToUpdate) {
+    if (productToUpdateIndex === -1) {
       return res.status(404).json({ error: 'Product not found within the order' });
     }
 
-    const productSize = await ProductSize.findOne({ productId });
-
-    productToUpdate.productName = updateData.productName;
-
+    order.products[productToUpdateIndex].productName = updateData.productName;
     await order.save();
+    const productSize = await ProductSize.findOne({ productId });
 
     res.status(200).json({ message: 'Product within order updated successfully', productSize });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error updating product within order' });
+  }
+});
+
+router.delete("/orders/:id", async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const deletedOrder = await orderModel.findByIdAndDelete(orderId);
+
+    if (!deletedOrder) {
+      return res.status(404).json({ error: 'Cannot find the order to delete' });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
