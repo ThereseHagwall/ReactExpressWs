@@ -71,7 +71,7 @@ router.post('/add', async (req: Request, res: Response) => {
 
 
 
-//Hämta produktstorlekarna
+//HÄMTA PRODUKTSTORLEKARNA
 router.get('/:productId', async (req, res) => {
   const productId = req.params.productId;
   try {
@@ -83,6 +83,7 @@ router.get('/:productId', async (req, res) => {
   }
 });
 
+//REDIGERA EN PRODUKT
 router.put('/products/:id', async (req, res) => {
   try {
     const productId = req.params.id;
@@ -97,6 +98,22 @@ router.put('/products/:id', async (req, res) => {
     res.json(updatedProduct);
   } catch (error) {
     console.error('Error updating product:', error);
+    res.status(500).json({ error: 'Intern serverfel' });
+  }
+});
+
+//TA BORT EN PRODUKT
+router.delete('/products/:id', async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const deletedProduct = await Product.findOneAndDelete({ '_id': productId });
+    if (!deletedProduct) {
+      return res.status(404).json({ error: 'Produkten hittades inte' });
+    }
+    res.json(deletedProduct);
+  }
+  catch (error) {
+    console.error('Error deleting product:', error);
     res.status(500).json({ error: 'Intern serverfel' });
   }
 });
