@@ -1,4 +1,10 @@
-import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
+import {
+  createContext,
+  useContext,
+  ReactNode,
+  useState,
+  useEffect,
+} from "react";
 
 type ShoppingCartProviderProps = {
   children: ReactNode;
@@ -6,7 +12,7 @@ type ShoppingCartProviderProps = {
 
 export type CartItem = {
   productImage: string;
-  productId: number;
+  productId: string;
   sizeId: string;
   quantity: number;
   productPrice: number;
@@ -14,10 +20,16 @@ export type CartItem = {
 };
 
 type ShoppingCartContext = {
-  increaseQuantity: (productId: number, selectedSize: string, productPrice: number, productName: string, productImage: string) => void;
-  decreaseQuantity: (productId: number, selectedSize: string) => void;
-  getCartItemQuantity: (productId: number, selectedSize: string) => number;
-  removeFromCart: (productId: number, sizeId: string) => void;
+  increaseQuantity: (
+    productId: string,
+    selectedSize: string,
+    productPrice: number,
+    productName: string,
+    productImage: string
+  ) => void;
+  decreaseQuantity: (productId: string, selectedSize: string) => void;
+  getCartItemQuantity: (productId: string, selectedSize: string) => number;
+  removeFromCart: (productId: string, sizeId: string) => void;
   cartItems: CartItem[];
   totalPrice: number;
   cartItemCount: number;
@@ -31,54 +43,78 @@ const DefaultShoppingCartContext: ShoppingCartContext = {
   cartItems: [],
   totalPrice: 0,
   cartItemCount: 0,
-  
 };
 
-const ShoppingCartContext = createContext<ShoppingCartContext | undefined>(undefined);
+const ShoppingCartContext = createContext<ShoppingCartContext | undefined>(
+  undefined
+);
 
 export function useShoppingCart() {
   const context = useContext(ShoppingCartContext);
   if (!context) {
-    throw new Error('useShoppingCart must be used within a ShoppingCartProvider');
+    throw new Error(
+      "useShoppingCart must be used within a ShoppingCartProvider"
+    );
   }
   return context;
 }
 
 export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    const localStorageCart = localStorage.getItem('StarWars Shop Cart');
+    const localStorageCart = localStorage.getItem("StarWars Shop Cart");
     return localStorageCart ? JSON.parse(localStorageCart) : [];
   });
 
   const [totalPrice, setTotalPrice] = useState(() => {
-    const localStoragePrice = localStorage.getItem('tot sw pris');
+    const localStoragePrice = localStorage.getItem("tot sw pris");
     return localStoragePrice ? parseFloat(localStoragePrice) : 0;
   });
 
-  const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const cartItemCount = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
   useEffect(() => {
-    const total = cartItems.reduce((acc, item) => acc + item.quantity * item.productPrice, 0);
+    const total = cartItems.reduce(
+      (acc, item) => acc + item.quantity * item.productPrice,
+      0
+    );
     setTotalPrice(total);
-    localStorage.setItem('StarWars Shop Cart', JSON.stringify(cartItems));
-    localStorage.setItem('tot sw pris', total.toString());
+    localStorage.setItem("StarWars Shop Cart", JSON.stringify(cartItems));
+    localStorage.setItem("tot sw pris", total.toString());
   }, [cartItems]);
 
-  function getCartItemQuantity(productId: number, sizeId: string): number {
-    const item = cartItems.find((item) => item.productId === productId && item.sizeId === sizeId);
+  function getCartItemQuantity(productId: string, sizeId: string): number {
+    const item = cartItems.find(
+      (item) => item.productId === productId && item.sizeId === sizeId
+    );
     return item ? item.quantity : 0;
   }
 
-  function increaseQuantity(productId: number, selectedSize: string, productPrice: number, productName: string, productImage: string) {
+  function increaseQuantity(
+    productId: string,
+    selectedSize: string,
+    productPrice: number,
+    productName: string,
+    productImage: string
+  ) {
     setCartItems((currentItems) => {
       const existingItem = currentItems.find(
         (item) => item.productId === productId && item.sizeId === selectedSize
       );
-  
+
       if (!existingItem) {
         return [
           ...currentItems,
-          { productId, sizeId: selectedSize, quantity: 1, productPrice, productName, productImage }
+          {
+            productId,
+            sizeId: selectedSize,
+            quantity: 1,
+            productPrice,
+            productName,
+            productImage,
+          },
         ];
       } else {
         return currentItems.map((item) => {
@@ -91,9 +127,8 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
       }
     });
   }
-  
 
-  function decreaseQuantity(productId: number, selectedSize: string) {
+  function decreaseQuantity(productId: string, selectedSize: string) {
     setCartItems((currentItems) => {
       const existingItem = currentItems.find(
         (item) => item.productId === productId && item.sizeId === selectedSize
@@ -101,7 +136,8 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
 
       if (existingItem && existingItem.quantity === 1) {
         return currentItems.filter(
-          (item) => !(item.productId === productId && item.sizeId === selectedSize)
+          (item) =>
+            !(item.productId === productId && item.sizeId === selectedSize)
         );
       } else {
         return currentItems.map((item) => {
@@ -115,9 +151,11 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     });
   }
 
-  function removeFromCart(productId: number, sizeId: string) {
+  function removeFromCart(productId: string, sizeId: string) {
     setCartItems((currentItems) =>
-      currentItems.filter((item) => !(item.productId === productId && item.sizeId === sizeId))
+      currentItems.filter(
+        (item) => !(item.productId === productId && item.sizeId === sizeId)
+      )
     );
   }
 
@@ -128,7 +166,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     removeFromCart,
     cartItemCount,
     cartItems,
-    totalPrice
+    totalPrice,
   };
 
   return (
