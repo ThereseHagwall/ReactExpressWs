@@ -66,8 +66,8 @@ export function ChangeCartBtns({ product }: CartItem) {
 
     return (
         <>
-            <label htmlFor="sizeDropdown">Storlek:</label>
-            <select id="sizeDropdown" value={selectedSize} onChange={handleSizeChange}>
+            <label htmlFor={productId}>Storlek:</label>
+            <select id={productId} value={selectedSize} onChange={handleSizeChange}>
                 <option value="">Välj storlek</option>
                 {productSizes.map((productSize, index) => (
                     <option key={index} value={productSize.sizeName}>
