@@ -138,7 +138,7 @@ export default function AdminView() {
       <AdminLoggedIn
         loggedInContent={
           <div>
-            <h2>AdminView</h2>
+            <h2>Adminsida</h2>
 
             <Button
               variant="contained"

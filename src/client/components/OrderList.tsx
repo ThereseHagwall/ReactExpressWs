@@ -40,21 +40,21 @@ function OrderList() {
       <AdminLoggedIn
         loggedInContent={
           <div>
-            <h2>Order Lista</h2>
-            <ul>
+            <h2>Alla ordrar</h2>
+            <ol>
               {orders.map(
                 (order) => (
                   console.log(order),
                   (
                     <li key={order._id}>
                       <Link key={order._id} to={`/order/${order._id}`}>
-                        {order.name}'s
+                        Ordernummer: {order._id}
                       </Link>
                     </li>
                   )
                 )
               )}
-            </ul>
+            </ol>
           </div>
         }
       />
