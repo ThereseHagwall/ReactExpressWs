@@ -11,13 +11,12 @@ export default function CheckoutBtn() {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleCheckoutClick}>
-        Gå till kassan
-      </Button>
-
-      {showCheckout && <Checkout onHide={function (): void {
-        throw new Error('Function not implemented.');
-      } } />}
+      {!showCheckout && (
+        <Button variant="contained" onClick={handleCheckoutClick}>
+          Gå till kassan
+        </Button>
+      )}
+      {showCheckout && <Checkout />}
     </div>
   );
 }
