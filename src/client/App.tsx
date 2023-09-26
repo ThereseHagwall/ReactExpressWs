@@ -9,6 +9,7 @@ import CheckoutCart from "./components/CheckoutCart";
 import LoginForm from "./components/LoginForm";
 import AdminView from "./components/AdminView";
 import { AuthProvider } from './components/AuthContext';
+import Checkout from "./components/Checkout";
 
 
 function ProductPage() {
@@ -29,6 +30,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/admin" element={<AdminView />} />
           <Route path='/checkoutcart' element={<CheckoutCart />} />
+          <Route path='/Checkout' element={<Checkout />} />
         </Routes>
       </AuthProvider>
     </>

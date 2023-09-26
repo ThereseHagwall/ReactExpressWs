@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Checkout from './CheckoutBtn';
+import CheckoutBtn from './CheckoutBtn';
 
 interface Order {
   _id: string;
@@ -103,6 +105,9 @@ const CheckoutCart: React.FC = () => {
       />
       <button onClick={handlePurchaseClick}>Purchase</button>
       {message && <p>{message}</p>}
+      <div>
+        {CheckoutBtn()}
+      </div>
     </div>
   );
 };
