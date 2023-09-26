@@ -9,11 +9,13 @@ export default function Checkout() {
     const [adress, setAdress] = useState("");
     const [paymentMethod, setPaymentMethod] = useState("")
     const [shiping, setShiping] = useState ("");
+    const [bankDetails, setBankDetails] = useState("");
+    const [swishNumber, setSwishNumber] = useState("");
 
     const handelSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        console.log('användare', {name, mail, mobile, adress, paymentMethod, shiping });
+        console.log('användare', {name, mail, mobile, adress, paymentMethod, shiping, swishNumber, bankDetails });
         
         setName("");
         setMail("");
@@ -21,6 +23,21 @@ export default function Checkout() {
         setAdress("");
         setPaymentMethod("");
         setShiping("");
+    }
+
+    const handelPayment = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setPaymentMethod(value);
+
+        if(value !== 'Bankkort') {
+            setBankDetails("");
+        }
+
+        if(e.target.value === 'Swish') {
+            setSwishNumber(mobile);
+        }else {
+            setSwishNumber("")
+        }
     }
 
     const getDeliveryTime = (option: string) => {
@@ -45,12 +62,32 @@ export default function Checkout() {
     defaultValue=""
     name="radio-buttons-group"
     value={paymentMethod}
-    onChange={(e) => setPaymentMethod(e.target.value)}
+    onChange={handelPayment}
   >
     <FormControlLabel value="Bankkort" control={<Radio />} label="Bank Kort" />
     <FormControlLabel value="Swish" control={<Radio />} label="Swish" />
   </RadioGroup>
 </FormControl><br />
+{paymentMethod === 'Swish' && (
+    <TextField
+    required
+    id='swish-number'
+    label='Swish number'
+    value={swishNumber}
+    onChange={(e) => setSwishNumber(e.target.value)}
+    variant='standard'
+    /> 
+)}
+{paymentMethod === 'Bankkort' && (
+    <TextField
+    required
+    id='bank-details'
+    label='XXXX-XXXX-XXXX-XXXX'
+    value={bankDetails}
+    onChange={(e) => setBankDetails(e.target.value)}
+    variant='standard'
+    />
+)} 
 
 <FormControl>
   <FormLabel id="Shiping">Frakt</FormLabel>
