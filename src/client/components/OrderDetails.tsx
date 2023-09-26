@@ -2,45 +2,51 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import AdminLoggedIn from "./AdminLoggedIn";
 
-
 interface Order {
+  orderDate: string;
+  paymentMethod: string;
   _id: string;
-  customerName: string;
-  products: Product[];
+  name: string;
+  adress: string;
+  mobile: string;
+  mail: string;
+  shipping: string;
+  swishNumber: number;
+  totalPrice: number;
+  cartItems: Product[];
+  bankDetails: string;
 }
 
 interface Product {
   _id: string;
   productName: string;
   productPrice: number;
-  size: string;
+  sizeId: string;
   quantity: number;
 }
 
 function OrderDetails() {
-  const { orderId: orderIdParam} = useParams<{ orderId: string; }>();
+  const { orderId: orderIdParam } = useParams<{ orderId: string }>();
 
-  // Ensure orderId is always defined and a string
-  const orderId = orderIdParam || '';
+  const orderId = orderIdParam || "";
 
   const [order, setOrder] = useState<Order | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch the order details by orderId and productId
     fetch(`/order/orders/${orderId}`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`Network response was not ok (status ${response.status})`);
+          throw new Error(
+            `Network response was not ok (status ${response.status})`
+          );
         }
         return response.json();
       })
       .then((data) => {
-        //console.log("Data received:", data);
         setOrder(data);
       })
       .catch((error) => {
-        //console.error("Error fetching order details:", error.message);
         setError("Error fetching order details");
       });
   }, [orderId]);
@@ -51,30 +57,37 @@ function OrderDetails() {
 
   return (
     <>
-        <AdminLoggedIn
-    loggedInContent={
-    <div>
-      <h1>Order Details</h1>
-      {order ? (
-        <>
-          <p>Customer Name: {order.customerName}</p>
-          <h2>Product Details</h2>
-          <ul>
-            {order.products.map((product) => (
-              <li key={product._id}>
-                <p>Product Name: {product.productName}</p>
-                <p>Product Price: {product.productPrice}</p>
-                <p>Size: {product.size}</p>
-                <p>Quantity: {product.quantity}</p>
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
-     }/>
+      <AdminLoggedIn
+        loggedInContent={
+          <div>
+            <h1>Order Details</h1>
+            {order ? (
+              <>
+                <p>Kund namn: {order.name}</p>
+                <p>Valt Fraktsätt: {order.shipping}</p>
+                <p>Valt Betalsätt: {order.paymentMethod}</p>
+                <p>Adress: {order.adress}</p>
+                <p>Mail: {order.mail}</p>
+                <p>Telefon: {order.mobile}</p>
+                <h3>Totalpris: {order.totalPrice} kr</h3>
+                <h2>Product Details</h2>
+                <ul>
+                  {order.cartItems.map((product) => (
+                    <li key={product._id}>
+                      <p>Produkt Namn: {product.productName}</p>
+                      <p>Pris: {product.productPrice} kr/st</p>
+                      <p>Storlek: {product.sizeId}</p>
+                      <p>Antal: {product.quantity}</p>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p>Loading...</p>
+            )}
+          </div>
+        }
+      />
     </>
   );
 }

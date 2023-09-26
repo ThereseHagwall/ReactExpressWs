@@ -1,65 +1,147 @@
-import React, { useState } from 'react';
-import { ShoppingCartProvider } from './ShoppingCartContext';
-import { TextField, Button, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from '@mui/material';
+import React, { useState } from "react";
+import { useShoppingCart } from "./ShoppingCartContext";
+import {
+  TextField,
+  Button,
+  FormControl,
+  FormLabel,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
+} from "@mui/material";
 
-interface CheckoutProps {
-  onHide: () => void; 
+interface Order {
+  _id: string;
+  customerName: string;
 }
 
-const Checkout: React.FC<CheckoutProps> = ({ onHide }) => {
-  const [name, setName] = useState('');
-  const [mail, setMail] = useState('');
-  const [mobile, setMobile] = useState('');
-  const [address, setAddress] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [shipping, setShipping] = useState('');
-  const [bankDetails, setBankDetails] = useState('');
-  const [swishNumber, setSwishNumber] = useState('');
+export default function Checkout() {
+  const { cartItems, totalPrice } = useShoppingCart();
+  const [name, setName] = useState("");
+  const [mail, setMail] = useState("");
+  const [mobile, setMobil] = useState("");
+  const [adress, setAdress] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [shipping, setShipping] = useState("");
+  const [bankDetails, setBankDetails] = useState("");
+  const [swishNumber, setSwishNumber] = useState("");
+  const [message, setMessage] = useState<string | null>(null);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [newOrderData, setNewOrderData] = useState({});
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handelSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log('User details', { name, mail, mobile, address, paymentMethod, shipping, swishNumber, bankDetails });
+    const newOrderData = {
+      name,
+      mail,
+      mobile,
+      adress,
+      paymentMethod,
+      shipping,
+      swishNumber,
+      bankDetails,
+      cartItems,
+      totalPrice,
+    };
 
-    setName('');
-    setMail('');
-    setMobile('');
-    setAddress('');
-    setPaymentMethod('');
-    setShipping('');
-    onHide();
+    setName("");
+    setMail("");
+    setMobil("");
+    setAdress("");
+    setPaymentMethod("");
+    setShipping("");
+
+    fetch("/order/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newOrderData),
+    })
+      .then((response) => response.json())
+      .then((newOrder) => {
+
+        setMessage(`Order created with ID: ${newOrder._id}`);
+        setOrders([...orders, newOrder]);
+        setNewOrderData({
+          name: "",
+          mail: "",
+          mobile: "",
+          adress: "",
+          paymentMethod: "",
+          shipping: "",
+          swishNumber: "",
+          bankDetails: "",
+          cartItems: [],
+          totalPrice: 0,
+        });
+      })
+      .catch((error) => {
+        console.error("Error creating order:", error);
+      });
   };
 
-  const handlePayment = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handelPayment = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPaymentMethod(value);
 
-    if (value !== 'Bankkort') {
-      setBankDetails('');
+    if (value !== "Bankkort") {
+      setBankDetails("");
     }
 
-    if (value === 'Swish') {
+    if (e.target.value === "Swish") {
       setSwishNumber(mobile);
     } else {
-      setSwishNumber('');
+      setSwishNumber("");
     }
   };
 
   const getDeliveryTime = (option: string) => {
-    if (option === 'dhl') return '1-2 dagar';
-    if (option === 'postnord') return '2-3 dagar';
-    if (option === 'ups') return '3-4 dagar';
-    return '';
+    if (option === "dhl") return "1-2 dagar";
+    if (option === "postnord") return "2-3 dagar";
+    if (option === "ups") return "3-4 dagar";
+    return "";
   };
 
-
-
   return (
-    <form onSubmit={handleSubmit}>
-      <TextField required id="standard-basic" label="Name" value={name} onChange={(e) => setName(e.target.value)} variant="standard" /><br />
-      <TextField required id="standard-basic" label="Mail" value={mail} onChange={(e) => setMail(e.target.value)} variant="standard" /><br />
-      <TextField required id="standard-basic" label="Mobilnummer" value={mobile} onChange={(e) => setMobile(e.target.value)} variant="standard" /><br />
-      <TextField required id="standard-basic" label="Adress" value={address} onChange={(e) => setAddress(e.target.value)} variant="standard" /><br />
+    <form onSubmit={handelSubmit}>
+      <TextField
+        required
+        id="standard-basic1"
+        label="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        variant="standard"
+      />
+      <br />
+      <TextField
+        required
+        id="standard-basic2"
+        label="Mail"
+        value={mail}
+        onChange={(e) => setMail(e.target.value)}
+        variant="standard"
+      />
+      <br />
+      <TextField
+        required
+        id="standard-basic3"
+        label="Mobilnummer"
+        value={mobile}
+        onChange={(e) => setMobil(e.target.value)}
+        variant="standard"
+      />
+      <br />
+      <TextField
+        required
+        id="standard-basic4"
+        label="Adress"
+        value={adress}
+        onChange={(e) => setAdress(e.target.value)}
+        variant="standard"
+      />
+      <br />
       <FormControl>
         <FormLabel id="Payment">Betalsätt</FormLabel>
         <RadioGroup
@@ -114,3 +196,4 @@ const Checkout: React.FC<CheckoutProps> = ({ onHide }) => {
 };
 
 export default Checkout;
+

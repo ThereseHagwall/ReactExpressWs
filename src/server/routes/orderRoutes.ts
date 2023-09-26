@@ -9,21 +9,34 @@ import mongoose from 'mongoose'
 //SKAPA NY ORDER
 router.post('/add', async (req: Request, res: Response) => {
   try {
-    const { productName, productPrice, size, quantity, customerName } = req.body;
+    const {
+      name,
+      mail,
+      mobile,
+      adress,
+      paymentMethod,
+      shipping,
+      swishNumber,
+      bankDetails,
+      cartItems,
+      totalPrice, } = req.body;
 
-    const newOrder = new Order({
-      products: [{
-        productName,
-        productPrice,
-        size,
-        quantity,
-      }],
-      quantity,
-      customerName, // Use the customerName from the request body
+      const newOrder = new Order({
+        orderDate: new Date(),
+        cartItems,
+      name,
+      mail,
+      mobile,
+      adress,
+      paymentMethod,
+      shipping,
+      swishNumber,
+      bankDetails,
+      totalPrice,
     });
 
     const createOrder = await newOrder.save();
-    //console.log('createOrder', createOrder);
+    console.log('createOrder', createOrder);
     res.json(createOrder);
   } catch (err) {
     console.error("Error", err);
@@ -92,7 +105,7 @@ router.put("/orders/:id/products/:productId", async (req: Request, res: Response
 
     const productSize = await ProductSize.findOne({ productId });
 
-    productToUpdate.productName = updateData.productName; 
+    productToUpdate.productName = updateData.productName;
 
     await order.save();
 

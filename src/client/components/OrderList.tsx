@@ -3,10 +3,18 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AdminLoggedIn from "./AdminLoggedIn";
 
-interface Order {
+export interface Order {
+  orderDate: string;
   _id: string;
-  customerName: string;
-  products: Product[];
+  name: string;
+  adress: string;
+  mobile: string;
+  mail: string;
+  shipping: string;
+  swishNumber: number;
+  totalPrice: number;
+  cartItems: Product[];
+  bankDetails: string;
 }
 
 interface Product {
@@ -29,23 +37,27 @@ function OrderList() {
 
   return (
     <>
-    <AdminLoggedIn
-    loggedInContent={ 
-      <div>
-      <h2>Order Lista</h2>
-      <ul>
-        {orders.map((order) => (
-          //console.log(order),
-          <li key={order._id}>
-              <Link key={order._id} to={`/order/${order._id}`}>
-                {order.customerName}'s
-              </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-    }
-    /> 
+      <AdminLoggedIn
+        loggedInContent={
+          <div>
+            <h2>Order Lista</h2>
+            <ul>
+              {orders.map(
+                (order) => (
+                  console.log(order),
+                  (
+                    <li key={order._id}>
+                      <Link key={order._id} to={`/order/${order._id}`}>
+                        {order.name}'s
+                      </Link>
+                    </li>
+                  )
+                )
+              )}
+            </ul>
+          </div>
+        }
+      />
     </>
   );
 }

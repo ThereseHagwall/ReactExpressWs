@@ -35,7 +35,7 @@ type ShoppingCartContext = {
   cartItemCount: number;
 };
 
-const DefaultShoppingCartContext: ShoppingCartContext = {
+export const DefaultShoppingCartContext: ShoppingCartContext = {
   getCartItemQuantity: () => 0,
   increaseQuantity: () => {},
   decreaseQuantity: () => {},
