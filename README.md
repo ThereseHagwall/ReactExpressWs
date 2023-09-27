@@ -10,5 +10,5 @@ För att bygga och köra projektet lokalt, följ stegen nedan:
    ```bash
    npm install
 2. **Bygga klienten och starta servern**
-```bash
+    ```bash
     npm run dev
