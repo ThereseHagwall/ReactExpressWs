@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import AdminLoggedIn from "./AdminLoggedIn";
+import EditOrder from "./EditOrder";
 
-interface Order {
+export interface Order {
   orderDate: string;
   paymentMethod: string;
   _id: string;
@@ -15,9 +16,11 @@ interface Order {
   totalPrice: number;
   cartItems: Product[];
   bankDetails: string;
+  isSent: boolean;
+  products: Product[];
 }
 
-interface Product {
+export interface Product {
   _id: string;
   productName: string;
   productPrice: number;
@@ -72,15 +75,18 @@ function OrderDetails() {
                 <h3>Totalpris: {order.totalPrice} kr</h3>
                 <h2>Product Details</h2>
                 <ul>
-                  {order.cartItems.map((product) => (
+                  {order.products.map((product) => (
+                    
                     <li key={product._id}>
-                      <p>Produkt Namn: {product.productName}</p>
-                      <p>Pris: {product.productPrice} kr/st</p>
+                      
+                      <p>Produkt id: {product._id}</p>
+                      {/* <p>Pris: {product.productPrice} kr/st</p>
                       <p>Storlek: {product.sizeId}</p>
-                      <p>Antal: {product.quantity}</p>
+                      <p>Antal: {product.quantity}</p> */}
                     </li>
                   ))}
                 </ul>
+                <EditOrder />
               </>
             ) : (
               <p>Loading...</p>
