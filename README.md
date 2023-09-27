@@ -6,9 +6,14 @@ Detta projekt är en webbapplikation byggd med React, Vite, och Express. Det utn
 
 För att bygga och köra projektet lokalt, följ stegen nedan:
 
-1. **Installera beroenden**
+
+1. **Skapa en .env-fil**
+Skapa en .env-fil i rotmappen och lägg till din databas-URL i följande format:
+    ```bash
+    VITE_REACT_APP_URL=YOUR_DATABASE_URL
+2. **Installera beroenden**
    ```bash
    npm install
-2. **Bygga klienten och starta servern**
+3. **Bygga klienten och starta servern**
     ```bash
     npm run dev
