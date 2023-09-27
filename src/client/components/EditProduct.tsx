@@ -61,7 +61,6 @@ const EditProduct: React.FC<EditProductProps> = ({
     if (editedProduct) {
       updateProductOnServer(editedProduct);
       onClose();
-      // Uppdatera produktlistan när ändringar har sparats
       updateProductList();
     }
   };

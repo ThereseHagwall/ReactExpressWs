@@ -9,11 +9,9 @@ var router = express.Router();
 router.get('/products', async (req: Request, res: Response) => {
   try {
     const products = await Product.find();
-    // Send the products as a JSON response
     res.json(products);
   } catch (error) {
     console.error('Error fetching products:', error);
-    // Handle the error and send an appropriate response
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
@@ -119,10 +117,7 @@ router.delete('/products/:id', async (req, res) => {
   console.log('Delete product whit id:', productId);
 
   try {
-    // Ta bort produktstorlekar som tillhör den angivna produkten
     await ProductSize.deleteMany({ productId });
-
-    // Ta bort själva produkten
     const deletedProduct = await Product.findOneAndDelete({ '_id': productId });
     
     if (!deletedProduct) {

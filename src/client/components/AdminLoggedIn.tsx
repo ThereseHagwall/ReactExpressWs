@@ -29,11 +29,3 @@ interface AdminLoggedInProps {
   }
   
   export default AdminLoggedIn;
-
-{/* Använd detta i returnen du vill ska vara för enbart inloggad som admin importera även AdminLoggedIn
-<>
-    <AdminLoggedIn
-    loggedInContent={ lägg allt innanför här! }
-    />
-</>
- */}

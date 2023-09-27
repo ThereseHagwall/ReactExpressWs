@@ -50,12 +50,9 @@ router.post('/add', async (req: Request, res: Response) => {
 router.get('/orders', async (req: Request, res: Response) => {
   try {
     const orders = await Order.find();
-    //console.log('orders', orders);
-    // Send the products as a JSON response
     res.json(orders);
   } catch (error) {
     console.error('Error fetching orders:', error);
-    // Handle the error and send an appropriate response
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
@@ -83,7 +80,7 @@ router.put("/orders/:id", async (req, res) => {
 
     const updatedOrder = await orderModel.findByIdAndUpdate(
       orderId,
-      { isSent }, // Uppdatera isSent
+      { isSent }, 
       { new: true }
     );
 
@@ -98,35 +95,35 @@ router.put("/orders/:id", async (req, res) => {
 });
 
 
-// router.put("/orders/:id/products/:productId", async (req, res) => {
-//   try {
-//     const orderId = req.params.id;
-//     const productId = req.params.productId;
-//     const updateData = req.body;
+router.put("/orders/:id/products/:productId", async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const productId = req.params.productId;
+    const updateData = req.body;
 
-//     const order = await orderModel.findById(orderId);
+    const order = await orderModel.findById(orderId);
 
-//     if (!order) {
-//       return res.status(404).json({ error: 'Order not found' });
-//     }
-//     const productToUpdateIndex = order.products.findIndex(product => {
-//       return product._id && product._id.toString() === productId;
-//     });
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+    const productToUpdateIndex = order.products.findIndex(product => {
+      return product._id && product._id.toString() === productId;
+    });
 
-//     if (productToUpdateIndex === -1) {
-//       return res.status(404).json({ error: 'Product not found within the order' });
-//     }
+    if (productToUpdateIndex === -1) {
+      return res.status(404).json({ error: 'Product not found within the order' });
+    }
 
-//     order.products[productToUpdateIndex].productName = updateData.productName;
-//     await order.save();
-//     const productSize = await ProductSize.findOne({ productId });
+    order.products[productToUpdateIndex].productName = updateData.productName;
+    await order.save();
+    const productSize = await ProductSize.findOne({ productId });
 
-//     res.status(200).json({ message: 'Product within order updated successfully', productSize });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Error updating product within order' });
-//   }
-// });
+    res.status(200).json({ message: 'Product within order updated successfully', productSize });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error updating product within order' });
+  }
+});
 
 router.delete("/orders/:id", async (req, res) => {
   try {
