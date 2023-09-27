@@ -27,7 +27,7 @@ För att bygga och köra projektet lokalt, följ stegen nedan:
 
 ## Dokumentation
 
-För mer detaljerad information om komponentbiblioteket och designsystemet som används, se [dokumentationen här](https://mui.com/material-ui/getting-started/).
+För mer detaljerad information om komponentbiblioteket som används, se [dokumentationen här](https://mui.com/material-ui/getting-started/).
 
 ## Projektets medlemmar
 
