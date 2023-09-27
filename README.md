@@ -14,7 +14,7 @@ För att bygga och köra projektet lokalt, följ stegen nedan:
 2. **Navigera till projektmappen**  
 
   Gå till projektmappen genom att köra
-   ```bash
+    ```bash
     cd ReactExpressWs
 3. **Skapa en .env-fil i rotmappen och lägg till din databas-URL**
     ```bash
