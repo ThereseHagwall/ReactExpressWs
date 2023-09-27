@@ -104,11 +104,22 @@ export default function Checkout() {
     }
   };
 
-  const getDeliveryTime = (option: string) => {
-    if (option === "dhl") return "1-2 dagar";
-    if (option === "postnord") return "2-3 dagar";
-    if (option === "ups") return "3-4 dagar";
-    return "";
+  const getDeliveryDetails = (option: string) => {
+    let deliveryTime = "";
+    let shippingCost = 0;
+
+    if (option === "dhl") {
+      deliveryTime = "1-2 dagar";
+      shippingCost = 100;  
+    } else if (option === "postnord") {
+      deliveryTime = "2-3 dagar";
+      shippingCost = 50;  
+    } else if (option === "ups") {
+      deliveryTime = "3-4 dagar";
+      shippingCost = 150;  
+    }
+
+    return { deliveryTime, shippingCost };
   };
 
   return (
@@ -204,9 +215,9 @@ export default function Checkout() {
               value={shipping}
               onChange={(e) => setShipping(e.target.value)}
             >
-              <FormControlLabel value="dhl" control={<Radio />} label={`DHL (leveranstid: ${getDeliveryTime('dhl')})`} />
-              <FormControlLabel value="postnord" control={<Radio />} label={`Postnord (leveranstid: ${getDeliveryTime('postnord')})`} />
-              <FormControlLabel value="ups" control={<Radio />} label={`Ups (leveranstid: ${getDeliveryTime('ups')})`} />
+              <FormControlLabel value="dhl" control={<Radio />} label={`DHL (leveranstid: ${getDeliveryDetails('dhl')})`} />
+              <FormControlLabel value="postnord" control={<Radio />} label={`Postnord (leveranstid: ${getDeliveryDetails('postnord')})`} />
+              <FormControlLabel value="ups" control={<Radio />} label={`Ups (leveranstid: ${getDeliveryDetails('ups')})`} />
             </RadioGroup>
           </FormControl><br />
           <Button variant="contained" type="submit">Skicka beställning</Button>
