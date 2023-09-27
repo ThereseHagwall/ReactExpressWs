@@ -1,6 +1,6 @@
 # ReactExpressWs
 ## Beskrivning
-Detta projekt är en webbapplikation byggd med React, Vite, och Express. Det utnyttjar också andra teknologier som Node.js, MongoDB, TypeScript, och Material-UI (MUI). Applikationen är utformad med hjälp av ett komponentbibliotek och designsystem för att skapa en enhetlig och användarvänlig upplevelse.
+Detta projekt är en webbapplikation byggd med React, Vite, och Express. Det utnyttjar också andra teknologier som Node.js, MongoDB, TypeScript, och Material-UI (MUI). Applikationen är utformad med hjälp av ett komponentbibliotek för att skapa en enhetlig och användarvänlig upplevelse.
 
 ## Bygga och köra projektet
 
@@ -20,4 +20,15 @@ För att bygga och köra projektet lokalt, följ stegen nedan:
 ## Dokumentation
 
 För mer detaljerad information om komponentbiblioteket och designsystemet som används, se [dokumentationen här](https://mui.com/material-ui/getting-started/).
+
+## Projektets medlemmar
+
+Här är projektets medlemmar och länk till deras GitHub-profiler:
+
+- [Tony Hagwall](https://github.com/Hagwall86)
+- [Felix Anneblad](https://github.com/AnnebladFelix)
+- [Sebastian Håkansson](https://github.com/sebbehakansson)
+- [Matias Bengtsson](https://github.com/Mrmbengan)
+- [Therese Hagwall](https://github.com/ThereseHagwall)
+
 
