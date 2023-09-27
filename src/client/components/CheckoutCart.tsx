@@ -2,15 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useShoppingCart } from './ShoppingCartContext';
 import CheckoutBtn from './CheckoutBtn';
 import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { Box, Card, CardContent, CardMedia, IconButton, Typography} from '@mui/material';
 
 interface Order {
   _id: string;
@@ -21,13 +16,6 @@ const CheckoutCart: React.FC = () => {
   const theme = useTheme();
   const [message, setMessage] = useState<string | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
-  const [newOrderData, setNewOrderData] = useState({
-    productName: "",
-    productPrice: 0,
-    size: "",
-    quantity: 0,
-    customerName: "",
-  });
 
   const {
     cartItems,
@@ -43,14 +31,6 @@ const CheckoutCart: React.FC = () => {
       .then((data) => setOrders(data))
       .catch((error) => console.error("Error fetching orders:", error));
   }, []);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setNewOrderData({
-      ...newOrderData,
-      [name]: value,
-    });
-  };
 
   return (
     <div>

@@ -18,7 +18,7 @@ export default function LoginForm() {
   });
 
   const navigate = useNavigate();
-  const { login } = useAuth(); 
+  const { login } = useAuth();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -31,7 +31,7 @@ export default function LoginForm() {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     if (formData.userName !== '' && formData.password !== '') {
-      login(); 
+      login();
       navigate('/admin');
     } else {
       console.error('Inloggning misslyckades');
@@ -40,7 +40,11 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
+      <div style={{
+        backgroundColor: '#ffffff',
+        color: '#000000',
+        maxWidth: '180px'
+      }}>
         <TextField
           label="Användarnamn"
           type="text"
@@ -49,8 +53,6 @@ export default function LoginForm() {
           onChange={handleChange}
           required
         />
-      </div>
-      <div>
         <TextField
           label="Lösenord"
           type="password"
