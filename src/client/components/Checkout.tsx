@@ -215,9 +215,9 @@ export default function Checkout() {
               value={shipping}
               onChange={(e) => setShipping(e.target.value)}
             >
-              <FormControlLabel value="dhl" control={<Radio />} label={`DHL (leveranstid: ${getDeliveryDetails('dhl')})`} />
-              <FormControlLabel value="postnord" control={<Radio />} label={`Postnord (leveranstid: ${getDeliveryDetails('postnord')})`} />
-              <FormControlLabel value="ups" control={<Radio />} label={`Ups (leveranstid: ${getDeliveryDetails('ups')})`} />
+              <FormControlLabel value="dhl" control={<Radio />} label={`DHL (leveranstid: ${getDeliveryDetails('dhl').deliveryTime}, kostnad: ${getDeliveryDetails('dhl').shippingCost} kr)`} />
+              <FormControlLabel value="postnord" control={<Radio />} label={`Postnord (leveranstid: ${getDeliveryDetails('postnord').deliveryTime}, kostnad: ${getDeliveryDetails('postnord').shippingCost} kr)`} />
+              <FormControlLabel value="ups" control={<Radio />} label={`Ups (leveranstid: ${getDeliveryDetails('ups').deliveryTime}, kostnad: ${getDeliveryDetails('ups').shippingCost} kr)`} />
             </RadioGroup>
           </FormControl><br />
           <Button variant="contained" type="submit">Skicka beställning</Button>
