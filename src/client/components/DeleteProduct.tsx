@@ -16,13 +16,11 @@ const DeleteProduct: React.FC<DeleteProductProps> = ({ productId, onDelete }) =>
 
   const handleConfirmDelete = async () => {
     try {
-      // Gör ett anrop till backenden för att ta bort produkten
       const response = await fetch(`/product/products/${productId}`, {
         method: 'DELETE',
       });
 
       if (response.ok) {
-        // Om produkten har raderats från databasen, anropa onDelete för att uppdatera frontend
         onDelete(productId);
       } else {
         console.error('Misslyckades med att ta bort produkten.');

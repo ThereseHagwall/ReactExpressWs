@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 interface CustomConfirmDialogProps {
-  message: string; // Ange rätt typ här, i detta fall antar vi att meddelandet är en sträng
+  message: string; 
   onConfirm: () => void;
 }
 

@@ -1,10 +1,8 @@
-// LoginForm.tsx
-
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from './AuthContext'; // Importera useAuth-hook
+import { useAuth } from './AuthContext'; 
 
 interface FormData {
   userName: string;

@@ -17,15 +17,15 @@ export interface Product {
 
 const FetchProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const navigate = useNavigate(); // Get the navigate function
+  const navigate = useNavigate();
   const handleProductClick = (productId: ProductId | null) => {
     if (productId) {
-      navigate(`/products/${productId._id}`); // Navigate to the single product page
+      navigate(`/products/${productId._id}`);
     }
   };
   const handleCartClick = (productId: ProductId | null) => {
     if (productId) {
-      navigate(`/products/${productId._id}`); // Navigate to the single product page
+      navigate(`/products/${productId._id}`); 
     }
   };
 

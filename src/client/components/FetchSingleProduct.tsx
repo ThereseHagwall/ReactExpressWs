@@ -33,13 +33,11 @@ const FetchSingleProduct: React.FC<Props> = ({ productId }) => {
   const resolvedProductId = routeProductId || productId;
 
   useEffect(() => {
-    // Fetch the single product from your Express backend using the resolvedProductId
     fetch(`http://localhost:3000/product/products/${resolvedProductId}`)
       .then((response) => response.json())
       .then((data) => setSingleProduct(data))
       .catch((error) => console.error('Error fetching Product:', error));
 
-    // Fetch product sizes for the single product from your Express backend using the resolvedProductId
     fetch(`http://localhost:3000/product/${resolvedProductId}`)
       .then((response) => response.json())
       .then((data) => setProductSizes(data))
@@ -50,7 +48,6 @@ const FetchSingleProduct: React.FC<Props> = ({ productId }) => {
     setSelectedSize(event.target.value);
   };
 
-  // ...
   return (
     <Box
       sx={{

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import AdminLoggedIn from "./AdminLoggedIn";
-import EditProduct from "./EditProduct"; // Importera EditProduct-komponenten
+import EditProduct from "./EditProduct"; 
 import DeleteProduct from "./DeleteProduct";
 
 export interface Product {
@@ -36,8 +36,8 @@ export default function AdminView() {
   const [products, setProducts] = useState<Product[]>([]);
   const [refreshData, setRefreshData] = useState(false);
   const [showAddProductForm, setShowAddProductForm] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Håll koll på den valda produkten
-  const [openEditDialog, setOpenEditDialog] = useState(false); // Öppna och stäng redigeringsdialogen
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); 
+  const [openEditDialog, setOpenEditDialog] = useState(false); 
   const [newProduct, setNewProduct] = useState<NewProduct>({
     productName: "",
     productPrice: 0,
@@ -110,20 +110,17 @@ export default function AdminView() {
     }
   };
 
-  // Funktion för att öppna redigeringsdialogen och ställa in den valda produkten
   const handleOpenEditDialog = (product: Product) => {
     setSelectedProduct(product);
     setOpenEditDialog(true);
   };
 
-  // Funktion för att stänga redigeringsdialogen
   const handleCloseEditDialog = () => {
     setSelectedProduct(null);
     setOpenEditDialog(false);
   };
 
   const handleUpdateProductList = () => {
-    // Uppdatera produktlistan genom att sätta refreshData till det omvända värdet
     setRefreshData((prevRefresh) => !prevRefresh);
   };
 
