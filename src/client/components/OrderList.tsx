@@ -88,7 +88,7 @@ function OrderList() {
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={order.isSent}
+                        checked={order.isSent || false}
                           onChange={() => handleCheckboxChange(order)}
                         />
                       }
