@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import AdminLoggedIn from "./AdminLoggedIn";
+import EditOrder from "./EditOrder";
 
-interface Order {
+export interface Order {
   orderDate: string;
   paymentMethod: string;
   _id: string;
@@ -15,9 +16,10 @@ interface Order {
   totalPrice: number;
   cartItems: Product[];
   bankDetails: string;
+  orderSent: boolean;
 }
 
-interface Product {
+export interface Product {
   _id: string;
   productName: string;
   productPrice: number;
@@ -81,6 +83,7 @@ function OrderDetails() {
                     </li>
                   ))}
                 </ul>
+                <EditOrder />
               </>
             ) : (
               <p>Loading...</p>
