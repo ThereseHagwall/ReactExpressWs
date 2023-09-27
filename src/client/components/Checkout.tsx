@@ -22,8 +22,8 @@ export default function Checkout() {
   const [mail, setMail] = useState("");
   const [mobile, setMobil] = useState("");
   const [adress, setAdress] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("");
-  const [shipping, setShipping] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("Bankkort");
+  const [shipping, setShipping] = useState("dhl");
   const [bankDetails, setBankDetails] = useState("");
   const [swishNumber, setSwishNumber] = useState("");
   const [message, setMessage] = useState<string | null>(null);
@@ -116,7 +116,12 @@ export default function Checkout() {
       {message ? (
         <div>{message}</div>
       ) : (
-        <form onSubmit={handelSubmit}>
+        <div style={{
+          backgroundColor: '#ffffff', 
+          color: '#000000', 
+          maxWidth:'300px'
+        }}>
+        <form onSubmit={handelSubmit} >
           <TextField
             required
             id="standard-basic1"
@@ -154,7 +159,10 @@ export default function Checkout() {
           />
           <br />
           <FormControl>
-            <FormLabel id="Payment">Betalsätt</FormLabel>
+            <FormLabel sx={{
+              backgroundColor: '#ffffff', 
+              color: '#000000', 
+            }}id="Payment">Betalsätt</FormLabel>
             <RadioGroup
               aria-labelledby="payment"
               defaultValue=""
@@ -203,6 +211,7 @@ export default function Checkout() {
           </FormControl><br />
           <Button variant="contained" type="submit">Skicka beställning</Button>
         </form>
+        </div>
       )}
     </div>
   );
