@@ -6,14 +6,22 @@ Detta projekt är en webbapplikation byggd med React, Vite, och Express. Det utn
 
 För att bygga och köra projektet lokalt, följ stegen nedan:
 
+1. **Klona projektet**
 
-1. **Skapa en .env-fil i rotmappen och lägg till din databas-URL**
+   Klona detta projekt till din lokala maskin genom att köra följande kommando i din terminal:
+   ```bash
+   git clone https://github.com/din-användaradress/ReactExpressWs.git
+2. **Navigera till projektmappen**
+  Gå till projektmappen genom att köra
+  ```bash
+    cd ReactExpressWs
+3. **Skapa en .env-fil i rotmappen och lägg till din databas-URL**
     ```bash
     VITE_REACT_APP_URL=YOUR_DATABASE_URL
-2. **Installera beroenden**
+4. **Installera beroenden**
    ```bash
    npm install
-3. **Bygga klienten och starta servern**
+5. **Bygga klienten och starta servern**
     ```bash
     npm run dev
 
