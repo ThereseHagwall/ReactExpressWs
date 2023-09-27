@@ -17,3 +17,8 @@ Skapa en .env-fil i rotmappen och lägg till din databas-URL i följande format:
 3. **Bygga klienten och starta servern**
     ```bash
     npm run dev
+
+## Dokumentation
+
+För mer detaljerad information om komponentbiblioteket och designsystemet som används, se [dokumentationen här](https://mui.com/material-ui/getting-started/).
+
