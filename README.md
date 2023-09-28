@@ -14,14 +14,17 @@ För att bygga och köra projektet lokalt, följ stegen nedan:
   Gå till projektmappen genom att köra
     ```bash
     cd ReactExpressWs
-3. **Skapa en .env-fil**  
+3. **Öppna din favorit IDE, t.ex. vs Code**
+    ```bash
+     code .
+4. **Skapa en .env-fil**  
    Skapa en .env-fil i rotmappen och lägg till din databas-URL på följande sätt:
     ```bash
     VITE_REACT_APP_URL=YOUR_DATABASE_URL
-4. **Installera beroenden**
+5. **Installera beroenden**
    ```bash
    npm install
-5. **Bygga klienten och starta servern**
+6. **Bygga klienten och starta servern**
     ```bash
     npm run dev
 
