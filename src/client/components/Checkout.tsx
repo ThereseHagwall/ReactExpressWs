@@ -112,34 +112,45 @@ export default function Checkout() {
     }
   };
 
-  
+
   const getDeliveryDetails = (option: string) => {
     let deliveryTime = "";
     let shippingCost = 0;
-    
+    let estimatedDeliveryDate = "";
+
     if (option === "dhl") {
       deliveryTime = "1-2 dagar";
       shippingCost = 100;
+      estimatedDeliveryDate = calculateEstimatedDeliveryDate(1);
     } else if (option === "postnord") {
       deliveryTime = "2-3 dagar";
       shippingCost = 50;
+      estimatedDeliveryDate = calculateEstimatedDeliveryDate(2);
     } else if (option === "ups") {
       deliveryTime = "3-4 dagar";
       shippingCost = 150;
+      estimatedDeliveryDate = calculateEstimatedDeliveryDate(3);
     }
-    
-    return { deliveryTime, shippingCost };
+
+    return { deliveryTime, shippingCost, estimatedDeliveryDate };
   };
-  const updatedTotalPrice = totalPrice + shippingCost;
-  
+
+  const calculateEstimatedDeliveryDate = (daysToAdd: number) => {
+    const today = new Date();
+    const estimatedDate = new Date(today);
+    estimatedDate.setDate(estimatedDate.getDate() + daysToAdd);
+    return estimatedDate.toLocaleDateString();
+  };
+  const [updatedTotalPrice, setUpdatedTotalPrice] = useState(totalPrice + shippingCost);
+
   return (
     <div>
       {message ? (
         <div>{message}</div>
-        ) : (
-          <div style={{
-            backgroundColor: '#ffffff',
-            color: '#000000',
+      ) : (
+        <div style={{
+          backgroundColor: '#ffffff',
+          color: '#000000',
           maxWidth: '300px'
         }}>
           <form onSubmit={handelSubmit} >
@@ -215,27 +226,42 @@ export default function Checkout() {
                 variant="standard"
               />
             )}
-
-            <FormControl>
-              <FormLabel id="shipping">Frakt</FormLabel>
-              <RadioGroup
-                aria-labelledby="shipping"
-                defaultValue=""
-                name="radio-buttons-group"
-                value={shipping}
-                onChange={(e) => {
-                  setShipping(e.target.value);
-                  handleShippingChange(e.target.value);
-                }}
-              >
-                <FormControlLabel value="dhl" control={<Radio />} label={`DHL (leveranstid: ${getDeliveryDetails('dhl').deliveryTime}, kostnad: ${getDeliveryDetails('dhl').shippingCost} kr)`} />
-                <FormControlLabel value="postnord" control={<Radio />} label={`Postnord (leveranstid: ${getDeliveryDetails('postnord').deliveryTime}, kostnad: ${getDeliveryDetails('postnord').shippingCost} kr)`} />
-                <FormControlLabel value="ups" control={<Radio />} label={`Ups (leveranstid: ${getDeliveryDetails('ups').deliveryTime}, kostnad: ${getDeliveryDetails('ups').shippingCost} kr)`} />
-              </RadioGroup>
-            </FormControl><br />
-                <Typography variant="subtitle1" color="text.main" component="div">
-                  Total pris inkl. frakt och moms: {(updatedTotalPrice).toFixed(2)} kr
-                </Typography>
+            <br/>
+            <FormLabel sx={{
+                backgroundColor: '#ffffff',
+                color: '#000000',
+              }} id="Shipping">Fraktsätt</FormLabel>
+            <RadioGroup
+              aria-labelledby="shipping"
+              defaultValue=""
+              name="radio-buttons-group"
+              value={shipping}
+              onChange={(e) => {
+                setShipping(e.target.value);
+                handleShippingChange(e.target.value);
+                setUpdatedTotalPrice(totalPrice + getDeliveryDetails(e.target.value).shippingCost);
+              }}
+            ><br/>
+              <FormControlLabel
+                value="dhl"
+                control={<Radio />}
+                label={`DHL  ${getDeliveryDetails('dhl').shippingCost} kr, leveranstid: ${getDeliveryDetails('dhl').deliveryTime},  (preliminärt leveransdatum: ${getDeliveryDetails('dhl').estimatedDeliveryDate})`}
+              /><br/>
+              <FormControlLabel
+                value="postnord"
+                control={<Radio />}
+                label={`Postnord ${getDeliveryDetails('postnord').shippingCost} kr, leveranstid: ${getDeliveryDetails('postnord').deliveryTime} (preliminärt leveransdatum: ${getDeliveryDetails('postnord').estimatedDeliveryDate})`}
+              /><br/>
+              <FormControlLabel
+                value="ups"
+                control={<Radio />}
+                label={`Ups ${getDeliveryDetails('ups').shippingCost} kr, leveranstid: ${getDeliveryDetails('ups').deliveryTime},  (preliminärt leveransdatum: ${getDeliveryDetails('ups').estimatedDeliveryDate})`}
+              />
+            </RadioGroup>
+            <br />
+            <Typography variant="subtitle1" color="text.main" component="div">
+              Total pris inkl. frakt och moms: {(updatedTotalPrice).toFixed(2)} kr
+            </Typography>
             <Button variant="contained" type="submit">Skicka beställning</Button>
           </form>
         </div>
