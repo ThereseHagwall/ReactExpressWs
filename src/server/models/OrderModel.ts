@@ -21,7 +21,7 @@ const OrderSchema = new Schema({
   swishNumber: { type: Number },
   bankDetails: { type: String},
   cartItems: {type: Array},
-  totalPrice: { type: Number, required: true },
+  updatedTotalPrice: { type: Number, required: true },
   isSent: {type: Boolean}
 });
 
