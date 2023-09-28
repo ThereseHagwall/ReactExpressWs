@@ -72,8 +72,8 @@ function OrderDetails() {
                 <h3>Totalpris inkl. frakt: {order.updatedTotalPrice} kr</h3>
                 <h2>Product Details</h2>
                 <ul>
-                  {order.cartItems.map((product) => (
-                    <li key={product._id}>
+                  {order.cartItems.map((product, index) => (
+                    <li key={index}>
                       <p>Produkt Namn: {product.productName}</p>
                       <p>Pris: {product.productPrice} kr/st</p>
                       <p>Storlek: {product.sizeId}</p>
