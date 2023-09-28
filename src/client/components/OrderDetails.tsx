@@ -12,7 +12,7 @@ interface Order {
   mail: string;
   shipping: string;
   swishNumber: number;
-  totalPrice: number;
+  updatedTotalPrice: number;
   cartItems: Product[];
   bankDetails: string;
 }
@@ -69,7 +69,7 @@ function OrderDetails() {
                 <p>Adress: {order.adress}</p>
                 <p>Mail: {order.mail}</p>
                 <p>Telefon: {order.mobile}</p>
-                <h3>Totalpris: {order.totalPrice} kr</h3>
+                <h3>Totalpris inkl. frakt: {order.updatedTotalPrice} kr</h3>
                 <h2>Product Details</h2>
                 <ul>
                   {order.cartItems.map((product) => (

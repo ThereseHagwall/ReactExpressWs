@@ -19,7 +19,7 @@ router.post('/add', async (req: Request, res: Response) => {
       swishNumber,
       bankDetails,
       cartItems,
-      totalPrice, } = req.body;
+      updatedTotalPrice, } = req.body;
 
       const newOrder = new Order({
         orderDate: new Date(),
@@ -32,7 +32,7 @@ router.post('/add', async (req: Request, res: Response) => {
       shipping,
       swishNumber,
       bankDetails,
-      totalPrice,
+      updatedTotalPrice,
       isSent: false,
     });
 
