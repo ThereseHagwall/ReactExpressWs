@@ -14,6 +14,7 @@ import {
     DialogContent,
     DialogActions,
 } from "@mui/material";
+import {useNavigate } from 'react-router-dom';
 
 interface Order {
     _id: string;
@@ -21,7 +22,7 @@ interface Order {
 }
 
 export default function Checkout() {
-    const { cartItems, totalPrice } = useShoppingCart();
+    const { cartItems, totalPrice, clearCart } = useShoppingCart();
     const [name, setName] = useState("");
     const [mail, setMail] = useState("");
     const [mobile, setMobil] = useState("");
@@ -36,6 +37,7 @@ export default function Checkout() {
     const [shippingCost, setShippingCost] = useState(100);
     const [openModal, setOpenModal] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
+    const navigate = useNavigate();
 
     const validateForm = () => {
         if (name.trim() === "") {
@@ -76,11 +78,6 @@ export default function Checkout() {
             return false;
         }
         return true;
-    };
-
-    const handleClearCart = () => {
-        localStorage.removeItem("StarWars Shop Cart");
-        localStorage.removeItem("tot sw pris");
     };
 
     const handelSubmit = (e: React.FormEvent) => {
@@ -136,7 +133,8 @@ export default function Checkout() {
                 setPaymentMethod("");
                 setShipping("");
 
-                handleClearCart();
+                clearCart();
+                navigate(`/order-confirmation/${newOrder._id}`);
             })
             .catch((error) => {
                 console.error("Error creating order:", error);
