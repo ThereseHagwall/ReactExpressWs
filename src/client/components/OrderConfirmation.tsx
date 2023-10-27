@@ -1,6 +1,5 @@
 import { Button } from "@mui/material";
-import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const OrderConfirmation = () => {
     const { orderId } = useParams();
@@ -11,7 +10,7 @@ const OrderConfirmation = () => {
             <p>
                 Tack för din beställning. Ditt beställningsnummer är: {orderId}
             </p>
-            <Button variant="contained">Handla mer ?</Button>
+            <Link to="/"><Button variant="contained">Fortsätt handla</Button></Link>
         </div>
     );
 };
