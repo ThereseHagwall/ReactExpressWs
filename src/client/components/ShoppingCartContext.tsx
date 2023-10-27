@@ -151,6 +151,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
         localStorage.removeItem("StarWars Shop Cart");
         localStorage.removeItem("tot sw pris");
         setTotalPrice(0);
+        setCartItems([]);
         return [];
       }
   

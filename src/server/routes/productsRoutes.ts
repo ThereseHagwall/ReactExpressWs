@@ -41,7 +41,7 @@ router.post('/add', async (req: Request, res: Response) => {
       productPrice: req.body.productPrice,
       productMaterial: req.body.productMaterial,
       productDescription: req.body.productDescription,
-      productImage: '',
+      productImage: req.body.productImage,
     });
 
     const createdProduct = await newProduct.save();

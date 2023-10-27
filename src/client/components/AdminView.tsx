@@ -30,6 +30,7 @@ interface NewProduct {
   productPrice: number;
   productMaterial: string;
   productDescription: string;
+  productImage: string;
 }
 
 export default function AdminView() {
@@ -43,6 +44,7 @@ export default function AdminView() {
     productPrice: 0,
     productMaterial: "",
     productDescription: "",
+    productImage: "",
   });
 
   useEffect(() => {
@@ -99,6 +101,7 @@ export default function AdminView() {
           productPrice: 0,
           productMaterial: "",
           productDescription: "",
+          productImage: "",
         });
         setRefreshData(!refreshData);
         toggleAddProductForm();
@@ -156,12 +159,14 @@ export default function AdminView() {
               <div>
                 <h3>Lägg till ny produkt</h3>
                 <TextField
+                  required
                   name="productName"
                   label="Produktnamn"
                   value={newProduct.productName}
                   onChange={handleInputChange}
                 />
                 <TextField
+                  required
                   name="productPrice"
                   label="Pris"
                   type="number"
@@ -169,17 +174,26 @@ export default function AdminView() {
                   onChange={handleInputChange}
                 />
                 <TextField
+                  required
                   name="productMaterial"
                   label="Material"
                   value={newProduct.productMaterial}
                   onChange={handleInputChange}
                 />
                 <TextField
+                  required
                   name="productDescription"
                   label="Beskrivning"
                   multiline
                   rows={4}
                   value={newProduct.productDescription}
+                  onChange={handleInputChange}
+                />
+                <TextField
+                  required
+                  name="productImage"
+                  label="Produkt bild"
+                  value={newProduct.productImage}
                   onChange={handleInputChange}
                 />
                 <Button
@@ -199,7 +213,8 @@ export default function AdminView() {
                     <TableCell>Namn</TableCell>
                     <TableCell>Pris</TableCell>
                     <TableCell>Material</TableCell>
-                    <TableCell>Beskrivning</TableCell>
+                    <TableCell sx={{ maxWidth: '100px' }}>Beskrivning</TableCell>
+                    <TableCell sx={{ maxWidth: '100px' }}>Produkt bild</TableCell>
                     <TableCell>Storlekar</TableCell>
                     <TableCell>Åtgärder</TableCell>
                   </TableRow>
@@ -210,7 +225,8 @@ export default function AdminView() {
                       <TableCell>{product.productName}</TableCell>
                       <TableCell>{product.productPrice}</TableCell>
                       <TableCell>{product.productMaterial}</TableCell>
-                      <TableCell>{product.productDescription}</TableCell>
+                      <TableCell sx={{ maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{product.productDescription}</TableCell>
+                      <TableCell sx={{ maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{product.productImage}</TableCell>
                       <TableCell>
                         {product.sizes && (
                           <ul>
