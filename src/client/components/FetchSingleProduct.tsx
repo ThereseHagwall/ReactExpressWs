@@ -68,8 +68,8 @@ const FetchSingleProduct: React.FC<Props> = ({ productId }) => {
           <Box
             component="img"
             sx={{
-              maxWidth: '90%',
-              maxHeight: '50%',
+              maxWidth: '300px',
+              maxHeight: '300px',
               borderRadius: '10px',
             }}
             src={singleProduct.productImage}

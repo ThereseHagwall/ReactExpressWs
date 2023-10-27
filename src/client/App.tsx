@@ -11,6 +11,7 @@ import AdminView from "./components/AdminView";
 import { AuthProvider } from './components/AuthContext';
 import { ShoppingCartProvider } from "./components/ShoppingCartContext";
 import Footer from "./components/Footer";
+import OrderConfirmation from "./components/OrderConfirmation";
 
 function ProductPage() {
   return <FetchSingleProduct productId={""} />;
@@ -30,6 +31,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/admin" element={<AdminView />} />
           <Route path='/checkoutcart' element={<CheckoutCart />} />
+          <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
         </Routes>
         <Footer />
       </AuthProvider>
